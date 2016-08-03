@@ -69,13 +69,42 @@ class User extends \SlimController\SlimController
 
     public function showAction()
     {
-        $user_id = $this->param('user_id');
+        // reads multiple params only if they are POST
+        $usernames = $this->param('usernames');
 
-        $result = $this->model->getUserById($user_id);
-        if ($result) {
-            $this->echoRespnse(200, array('user' => $result));
+		// Call API
+		$postdata = http_build_query(
+			array(
+				'usernames' => $usernames
+			)
+		);
+
+		$opts = array('http' =>
+			array(
+				'method'  => 'POST',
+				'header'  => 'Content-type: application/x-www-form-urlencoded',
+				'content' => $postdata
+			)
+		);
+		$context  = stream_context_create($opts);
+		$result = file_get_contents('http://trading.gametv.vn/api_app/user_info', false, $context);
+
+        $response = array();
+		$result = json_decode($result);
+
+		if($result->status != 1) {
+			$response['error'] = $result->message;
+            $this->echorespnse(400, $response);
+			return;
+		}
+		
+        $user = $this->model->getUserByLogin($username, $password);
+        if(empty($user)) {
+            $response['error'] = 'Logged in unsuccessfully. Not found in database.';
+            $this->echoRespnse(400, $response);
         } else {
-            $this->echoRespnse(400, array('user' => false));
+            $response['user'] = $user;
+            $this->echoRespnse(200, $response);
         }
     }
 	
