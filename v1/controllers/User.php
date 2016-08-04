@@ -16,44 +16,50 @@ class User extends \SlimController\SlimController
 
     public function loginAction()
     {
-        // reads multiple params only if they are POST
-        $username = $this->param('username', 'post');
-        $password = $this->param('password', 'post');
-
-		// Call API
-		$postdata = http_build_query(
-			array(
-				'username' => $username, 
-				'password' => $password
-			)
-		);
-
-		$opts = array('http' =>
-			array(
-				'method'  => 'POST',
-				'header'  => 'Content-type: application/x-www-form-urlencoded',
-				'content' => $postdata
-			)
-		);
-		$context  = stream_context_create($opts);
-		$result = file_get_contents('http://trading.gametv.vn/api_app/app_login', false, $context);
-
-        $response = array();
-		$result = json_decode($result);
-
-		if($result->status != 1) {
-			$response['error'] = $result->message;
-            $this->echorespnse(400, $response);
-			return;
-		}
-		
-        $user = $this->model->getUserByLogin($username, $password);
-        if(empty($user)) {
-            $response['error'] = 'Logged in unsuccessfully. Not found in database.';
-            $this->echoRespnse(400, $response);
-        } else {
-            $response['user'] = $user;
-            $this->echoRespnse(200, $response);
+        try {
+            // reads multiple params only if they are POST
+            $username = $this->param('username', 'post');
+            $password = $this->param('password', 'post');
+            $state = $this->param('state', 'post');
+    
+    		// Call API
+    		$postdata = http_build_query(
+    			array(
+    				'username' => $username, 
+    				'password' => $password
+    			)
+    		);
+    
+    		$opts = array('http' =>
+    			array(
+    				'method'  => 'POST',
+    				'header'  => 'Content-type: application/x-www-form-urlencoded',
+    				'content' => $postdata
+    			)
+    		);
+    		$context  = stream_context_create($opts);
+    		$result = file_get_contents('http://trading.gametv.vn/api_app/app_login', false, $context);
+    
+            $response = array();
+    		$result = json_decode($result);
+    
+    		if($result->status != 1) {
+    			$response['error'] = $result->message;
+                $this->echorespnse(400, $response);
+    		} else {
+    		    $response['avatar'] = isset($result->avatar) ? $result->avatar : '';
+    		    $response['level'] = isset($result->level) ? $result->level : '';
+    		    $response['diamond'] = isset($result->diamond) ? $result->diamond : '';
+    		    $response['needpay'] = isset($result->needpay) ? $result->needpay : '';
+    		    $response['password'] = $password;
+    		    $response['username'] = $username;
+    		    $response['state'] = is_null($state)?1:$state;
+    
+    		    $this->model->syncUserInfo($response);
+    		    $this->echorespnse(200, $response);
+    		}
+        } catch(\Exception $ex) {
+            $this->echorespnse(400, array("error" => "Can't not connect to API."));
         }
     }
 	
@@ -69,43 +75,7 @@ class User extends \SlimController\SlimController
 
     public function showAction()
     {
-        // reads multiple params only if they are POST
-        $usernames = $this->param('usernames');
-
-		// Call API
-		$postdata = http_build_query(
-			array(
-				'usernames' => $usernames
-			)
-		);
-
-		$opts = array('http' =>
-			array(
-				'method'  => 'POST',
-				'header'  => 'Content-type: application/x-www-form-urlencoded',
-				'content' => $postdata
-			)
-		);
-		$context  = stream_context_create($opts);
-		$result = file_get_contents('http://trading.gametv.vn/api_app/user_info', false, $context);
-
-        $response = array();
-		$result = json_decode($result);
-
-		if($result->status != 1) {
-			$response['error'] = $result->message;
-            $this->echorespnse(400, $response);
-			return;
-		}
-		
-        $user = $this->model->getUserByLogin($username, $password);
-        if(empty($user)) {
-            $response['error'] = 'Logged in unsuccessfully. Not found in database.';
-            $this->echoRespnse(400, $response);
-        } else {
-            $response['user'] = $user;
-            $this->echoRespnse(200, $response);
-        }
+        $this->echoRespnse(200, array("message" => "API aren't installed"));
     }
 	
 	public function friendListAction()
@@ -121,7 +91,6 @@ class User extends \SlimController\SlimController
         // reads multiple params only if they are POST
         $user_id = $this->param('user_id', 'post');
         $friend_name = $this->param('friend_name', 'post');
-        $message = $this->param('message', 'post');
 
         $friend_id = $this->model->addFriend($user_id, $friend_name, $message);
 

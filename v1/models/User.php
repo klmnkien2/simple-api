@@ -65,6 +65,53 @@ class User {
 
         return $r;
     }
+    
+    public function syncUserInfo(&$data) {
+
+        $sql = "SELECT user_id,user_name,status FROM user_caches WHERE user_name=:username";
+        $stmt = $this->core->dbh->prepare($sql);
+        $stmt->bindParam(':username', $data['username'], PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        if (!empty($r)) {
+            $r = $r[0];
+            $data['user_id'] = $r['user_id'];
+            $data['status'] = $r['status'];
+
+            //UPDATE
+            $stmt = $this->core->dbh->prepare("UPDATE user_caches SET " .
+                "user_name=:user_name," .
+                "password=:password," .
+                "avatar=:avatar," .
+                "level=:level," .
+                "diamond=:diamond," .
+                "state=:state," .
+                "last_active = now() " .
+                "WHERE user_id = :user_id");
+            $stmt->bindParam(':user_name', $data['username'], PDO::PARAM_STR);
+            $stmt->bindParam(':password', $data['password'], PDO::PARAM_STR);
+            $stmt->bindParam(':avatar', $data['avatar'], PDO::PARAM_STR);
+            $stmt->bindParam(':level', $data['level'], PDO::PARAM_INT);
+            $stmt->bindParam(':diamond', $data['diamond'], PDO::PARAM_INT);
+            $stmt->bindParam(':state', $data['state'], PDO::PARAM_INT);
+            $stmt->bindParam(':user_id', $r['user_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            //Insert
+            $stmt = $this->core->dbh->prepare("INSERT INTO user_caches (user_name, password, avatar, level, diamond, state) " .
+                "VALUES (:user_name, :password, :avatar, :level, :diamond, :state)");
+            $stmt->bindParam(':user_name', $data['username'], PDO::PARAM_STR);
+            $stmt->bindParam(':password', $data['password'], PDO::PARAM_STR);
+            $stmt->bindParam(':avatar', $data['avatar'], PDO::PARAM_STR);
+            $stmt->bindParam(':level', $data['level'], PDO::PARAM_INT);
+            $stmt->bindParam(':diamond', $data['diamond'], PDO::PARAM_INT);
+            $stmt->bindParam(':state', $data['state'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    }
 
 	public function updateLastLogin($user_id) {
         $stmt = $this->core->dbh->prepare("UPDATE user_caches SET last_active = now() WHERE user_id = :user_id AND is_active = 1");
@@ -114,12 +161,11 @@ class User {
         $r1 = array();
         $r2 = array();
 
-        // Get follow user1
+        // Get friend send request to me
         $sql = "SELECT f.*, u.*
-        	FROM friends f
-            LEFT JOIN user_caches u ON f.user1 = u.user_id 
-        	WHERE u.is_active = 1
-            AND f.user2 = :user_id";
+        	FROM user_caches u
+            LEFT JOIN friends f ON f.user1 = u.user_id
+            WHERE f.user2 = :user_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     
@@ -127,12 +173,11 @@ class User {
             $r1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        // Get follow user2
+        // Get friend I send request to
         $sql = "SELECT f.*, u.*
-        	FROM friends f
-            LEFT JOIN user_caches u ON f.user2 = u.user_id 
-        	WHERE u.is_active = 1
-            AND f.user1 = :user_id";
+        	FROM user_caches u
+            LEFT JOIN friends f ON f.user2 = u.user_id
+            WHERE f.user1 = :user_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 
@@ -143,9 +188,9 @@ class User {
         return array_merge ($r1, $r2);
     }
 
-    public function addFriend($user_id, $friend_name, $message = '') {
+    public function addFriend($user_id, $friend_name) {
         
-		$sql = "SELECT user_id FROM user_caches WHERE user_name=:user_name AND is_active = 1";
+		$sql = "SELECT user_id FROM user_caches WHERE user_name=:user_name";
 		$stmt = $this->core->dbh->prepare($sql);
 		$stmt->bindParam(':user_name', $friend_name, PDO::PARAM_STR);
 
@@ -159,12 +204,11 @@ class User {
 			}
 		}
 	
-		$sql = "INSERT INTO friends (user1, user2, message) 
-				VALUES (:user1, :user2, :message)";
+		$sql = "INSERT INTO friends (user1, user2) 
+				VALUES (:user1, :user2)";
 		$stmt = $this->core->dbh->prepare($sql);
 		$stmt->bindParam(':user1', $user_id, PDO::PARAM_INT);
 		$stmt->bindParam(':user2', $friend_id, PDO::PARAM_INT);
-		$stmt->bindParam(':message', $message, PDO::PARAM_STR);
 
 		if ($stmt->execute()) {
 			return $friend_id;
@@ -186,22 +230,12 @@ class User {
         }
     }
 
-    public function acceptFriendRequest($user1, $user2) {
-        $stmt = $this->core->dbh->prepare("UPDATE friends SET accept_time=now() WHERE user1 = :user1 AND user2 = :user2");
+    public function updateFriend($user1, $user2, $type, $ignore=1) {
+        $stmt = $this->core->dbh->prepare("UPDATE friends SET type=:type, ignore=:ignore WHERE user1 = :user1 AND user2 = :user2");
         $stmt->bindParam(':user1', $user1, PDO::PARAM_INT);
         $stmt->bindParam(':user2', $user2, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function denyFriendRequest($user1, $user2) {
-        $stmt = $this->core->dbh->prepare("DELETE FROM friends WHERE user1 = :user1 AND user2 = :user2");
-        $stmt->bindParam(':user1', $user1, PDO::PARAM_INT);
-        $stmt->bindParam(':user2', $user2, PDO::PARAM_INT);
+        $stmt->bindParam(':type', $type, PDO::PARAM_INT);
+        $stmt->bindParam(':ignore', $ignore, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return true;
