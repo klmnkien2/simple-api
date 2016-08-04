@@ -51,11 +51,12 @@ class User extends \SlimController\SlimController
     		    $response['level'] = isset($result->level) ? $result->level : '';
     		    $response['diamond'] = isset($result->diamond) ? $result->diamond : '';
     		    $response['needpay'] = isset($result->needpay) ? $result->needpay : '';
-    		    $response['password'] = $password;
     		    $response['username'] = $username;
+				$response['password'] = $password;
     		    $response['state'] = is_null($state)?1:$state;
     
     		    $this->model->syncUserInfo($response);
+				$response['password'] = '';//unset not to response
     		    $this->echorespnse(200, $response);
     		}
         } catch(\Exception $ex) {

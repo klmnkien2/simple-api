@@ -68,7 +68,7 @@ class User {
     
     public function syncUserInfo(&$data) {
 
-        $sql = "SELECT user_id,user_name,status FROM user_caches WHERE user_name=:username";
+        $sql = "SELECT user_id,user_name,status,UNIX_TIMESTAMP(last_active) AS last_active FROM user_caches WHERE user_name=:username";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':username', $data['username'], PDO::PARAM_STR);
 
@@ -80,6 +80,7 @@ class User {
             $r = $r[0];
             $data['user_id'] = $r['user_id'];
             $data['status'] = $r['status'];
+			$data['last_active'] = $r['last_active'];
 
             //UPDATE
             $stmt = $this->core->dbh->prepare("UPDATE user_caches SET " .
@@ -114,7 +115,7 @@ class User {
     }
 
 	public function updateLastLogin($user_id) {
-        $stmt = $this->core->dbh->prepare("UPDATE user_caches SET last_active = now() WHERE user_id = :user_id AND is_active = 1");
+        $stmt = $this->core->dbh->prepare("UPDATE user_caches SET last_active = now() WHERE user_id = :user_id");
 		$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 		
         if ($stmt->execute()) {
@@ -162,10 +163,10 @@ class User {
         $r2 = array();
 
         // Get friend send request to me
-        $sql = "SELECT f.*, u.*
+        $sql = "SELECT f.*, u.user_name, u.user_id, u.avatar, u.status, u.state
         	FROM user_caches u
             LEFT JOIN friends f ON f.user1 = u.user_id
-            WHERE f.user2 = :user_id";
+            WHERE f.user2 = :user_id AND NOT(f.type=-1 AND f.ignore_type=1)";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     
@@ -174,10 +175,10 @@ class User {
         }
 
         // Get friend I send request to
-        $sql = "SELECT f.*, u.*
+        $sql = "SELECT f.*, u.user_name, u.user_id, u.avatar, u.status, u.state
         	FROM user_caches u
             LEFT JOIN friends f ON f.user2 = u.user_id
-            WHERE f.user1 = :user_id";
+            WHERE f.user1 = :user_id AND NOT(f.type=-1 AND f.ignore_type=2)";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 
