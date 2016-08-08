@@ -346,4 +346,59 @@ class User {
         }
         return $r;
     }
+    
+    public function receiveAllMessage($user_id, $read_ids) {
+        $r = array();
+
+        $condition = "";
+        $param = array();
+        if ($read_ids) {
+            $condition .= " AND m.message_id NOT IN ($read_ids) ";
+        }
+
+        $sql = "SELECT message_id, user_id, receive_id, user_name, receive_name, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
+        FROM messages m
+        WHERE m.is_read = 0
+            AND m.user_id <> 0
+            AND m.receive_id <> 0
+            AND m.receive_id = :receive_id
+            $condition
+        ORDER BY m.create_time DESC";
+        $param[':receive_id'] = $user_id;
+        $stmt = $this->core->dbh->prepare($sql);
+    
+        if ($stmt->execute($param)) {
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // Update is_read = 1;
+        if ($read_ids) {
+            $stmt = $this->core->dbh->prepare("UPDATE messages SET is_read=1 WHERE message_id IN ($read_ids) ");
+            $stmt->execute();
+        }
+
+        return $r;
+    }
+
+    public function historyMessage($user_id, $receive_id, $last_view_id, $limit) {
+        $r = array();
+
+        $sql = "SELECT message_id, user_id, receive_id, user_name, receive_name, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
+        FROM messages m
+        WHERE
+            AND m.user_id = :user_id
+            AND m.receive_id = :receive_id
+            AND m.message_id < :last_view_id
+        ORDER BY m.create_time DESC
+        LIMIT $limit";
+        $param[':user_id'] = $user_id;
+        $param[':receive_id'] = $receive_id;
+        $param[':last_view_id'] = $last_view_id;
+        $stmt = $this->core->dbh->prepare($sql);
+    
+        if ($stmt->execute($param)) {
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $r;
+    }
 }

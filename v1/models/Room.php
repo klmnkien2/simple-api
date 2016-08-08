@@ -84,8 +84,8 @@ class Room {
 
     public function createMessage($message) {
         try {
-            $sql = "INSERT INTO messages (user_id, user_name, receive_id, receive_name, room_id, notify, message_format, message)
-                    VALUES (:user_id, :user_name, :receive_id, :receive_name, :room_id, :notify, :message_format, :message)";
+            $sql = "INSERT INTO messages (user_id, user_name, receive_id, receive_name, room_id, notify, message)
+                    VALUES (:user_id, :user_name, :receive_id, :receive_name, :room_id, :notify, :message)";
             $stmt = $this->core->dbh->prepare($sql);
             if ($stmt->execute($message)) {
                 return $this->core->dbh->lastInsertId();

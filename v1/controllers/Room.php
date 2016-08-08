@@ -92,7 +92,7 @@ class Room extends \SlimController\SlimController
     {
         // reads multiple params only if they are POST
         $message = $this->params(
-            array('room_id', 'user_id', 'user_name', 'receive_id', 'receive_name', 'notify', 'message_format', 'message'), 
+            array('room_id', 'user_id', 'user_name', 'receive_id', 'receive_name', 'notify', 'message'), 
             'post', 
             array(
                 'room_id' => 0,
@@ -101,8 +101,7 @@ class Room extends \SlimController\SlimController
 				'receive_id' => 0,
 				'receive_name' => '',
                 'message' => '',
-                'notify' => 0,
-                'message_format' => 'html'
+                'notify' => 0
             )
         );
 

@@ -188,17 +188,17 @@ class User extends \SlimController\SlimController
     */
     public function historyAction()
     {
-        $params = $this->params(array('user_id', 'is_read', 'date', 'part'), 'get', array(
+        $params = $this->params(array('user_id', 'receive_id', 'read_ids', 'last_view_id'), 'get', array(
                 'user_id' => 0, // default
-                'is_read' => 0, // default
-				'date' => time(), // default
-				'part' => 'new'
+                'receive_id' => 0, // default
+                'read_ids' => "", // must be string
+				'last_view_id' => 0
             ));
         $message_list = array();
-		if ($params['part'] == 'new') {
-			$message_list = $this->model->newPrivateMessage($params['user_id'], $params['is_read'], $params['date'], 50);
+		if ($params['receive_id'] == 0) {
+			$message_list = $this->model->receiveAllMessage($params['user_id'], $params['read_ids']);
 		} else {
-			$message_list = $this->model->oldPrivateMessage($params['user_id'], $params['is_read'], $params['date'], 50);
+			$message_list = $this->model->oldPrivateMessage($params['user_id'], $params['receive_id'], $params['last_view_id'], 20);
 		}
 
 		$this->model->updateLastLogin($params['user_id']);
