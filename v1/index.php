@@ -71,9 +71,13 @@ $app->addRoutes(array(
 	'/user/show/' => 'User:show',
 	'/user/room/' => 'User:room',
 	'/user/history/' => 'User:history',
-	'/user/join/' => array('post' => array('User:join', function() {
+	'/user/status/' => array('post' => array('User:status', function() {
             error_log("THIS ROUTE IS ONLY POST");
         }
+    )),
+    '/user/join/' => array('post' => array('User:join', function() {
+    error_log("THIS ROUTE IS ONLY POST");
+    }
     )),
 	'/user/leave/' => array('post' => array('User:leave', function() {
             error_log("THIS ROUTE IS ONLY POST");

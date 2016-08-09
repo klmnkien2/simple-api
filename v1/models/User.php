@@ -113,6 +113,29 @@ class User {
             $stmt->execute();
         }
     }
+    
+    public function updateUserInfo($user_id, $state, $status) {
+    
+        $condition = "";
+        $param = array();
+        $param[':user_id'] = $user_id;
+        
+        if ($status!==null) {
+            $condition .= " ,status=:status ";
+            $param[':status'] = $status;
+        }
+        if ($state!==null) {
+            $condition .= " ,state=:state ";
+            $param[':state'] = $state;
+        }
+        
+        //UPDATE
+        $stmt = $this->core->dbh->prepare("UPDATE user_caches SET " .
+            "last_active = now() " .
+            $condition .
+            "WHERE user_id = :user_id");
+        $stmt->execute($param);
+    }
 
 	public function updateLastLogin($user_id) {
         $stmt = $this->core->dbh->prepare("UPDATE user_caches SET last_active = now() WHERE user_id = :user_id");
@@ -383,17 +406,23 @@ class User {
     public function historyMessage($user_id, $receive_id, $last_view_id, $limit) {
         $r = array();
 
+        $condition = "";
+        $param = array();
+        if ($last_view_id) {
+            $condition .= " AND m.message_id < :last_view_id ";
+            $param[':last_view_id'] = $last_view_id;
+        }
+        
         $sql = "SELECT message_id, user_id, receive_id, user_name, receive_name, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
         FROM messages m
-        WHERE
-            AND m.user_id = :user_id
+        WHERE m.user_id = :user_id
             AND m.receive_id = :receive_id
-            AND m.message_id < :last_view_id
+            $condition
         ORDER BY m.create_time DESC
         LIMIT $limit";
         $param[':user_id'] = $user_id;
         $param[':receive_id'] = $receive_id;
-        $param[':last_view_id'] = $last_view_id;
+        
         $stmt = $this->core->dbh->prepare($sql);
     
         if ($stmt->execute($param)) {

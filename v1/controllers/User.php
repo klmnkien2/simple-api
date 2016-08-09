@@ -78,6 +78,27 @@ class User extends \SlimController\SlimController
     {
         $this->echoRespnse(200, array("message" => "API aren't installed"));
     }
+    
+	public function statusAction()
+    {
+        // reads multiple params only if they are POST
+        $param = $this->params(
+            array('user_id', 'state', 'status'), 
+            'post', 
+            array(
+                'user_id' => null,
+                'state' => null,
+                'status' => null
+            )
+        );
+
+        if (isset($param['user_id']) && $param['user_id']) {
+            $this->model->updateUserInfo($param['user_id'],$param['state'], $param['status']);
+            $this->echoRespnse(200, array('status' => 'updated'));
+        }else {
+            $this->echoRespnse(400, array('error' => 'no user'));
+        }
+    }
 	
 	public function friendListAction()
     {
@@ -195,10 +216,10 @@ class User extends \SlimController\SlimController
 				'last_view_id' => 0
             ));
         $message_list = array();
-		if ($params['receive_id'] == 0) {
+		if (!$params['receive_id']) {
 			$message_list = $this->model->receiveAllMessage($params['user_id'], $params['read_ids']);
 		} else {
-			$message_list = $this->model->oldPrivateMessage($params['user_id'], $params['receive_id'], $params['last_view_id'], 20);
+			$message_list = $this->model->historyMessage($params['user_id'], $params['receive_id'], $params['last_view_id'], 20);
 		}
 
 		$this->model->updateLastLogin($params['user_id']);
