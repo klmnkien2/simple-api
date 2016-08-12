@@ -56,15 +56,7 @@ $app->addRoutes(array(
             error_log("THIS ROUTE IS ONLY POST");
         }
     )),
-	'/friend/delete/' => array('post' => array('User:deleteFriend', function() {
-            error_log("THIS ROUTE IS ONLY POST");
-        }
-    )),
-	'/friend/accept/' => array('post' => array('User:acceptFriend', function() {
-            error_log("THIS ROUTE IS ONLY POST");
-        }
-    )),
-	'/friend/deny/' => array('post' => array('User:denyFriend', function() {
+	'/friend/update/' => array('post' => array('User:updateFriend', function() {
             error_log("THIS ROUTE IS ONLY POST");
         }
     )),

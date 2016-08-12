@@ -150,35 +150,63 @@ class User {
     //=========================
     // BELLOW FOR FRIENDS QUERY
     //=========================
-    public function getUserInRoom($room_id) {
-        $r = array();
 
-        $sql = "SELECT ru.*, u.*
-        	FROM room_users ru
-            LEFT JOIN user_caches u ON ru.user_id = u.user_id 
-        	WHERE u.is_active = 1
-            AND ru.room_id = :room_id";
+    public function addFriend($user_id, $friend_name) {    
+        //CHECK IF USER EXIST OR NOT
+        $sql = "SELECT user_id FROM user_caches WHERE user_name=:user_name";
         $stmt = $this->core->dbh->prepare($sql);
-        $stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-    
+        $stmt->bindParam(':user_name', $friend_name, PDO::PARAM_STR);
+        $friend_id = 0;
         if ($stmt->execute()) {
             $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(empty($r)) {
+                return 0;
+            } else {
+                $friend_id = $r[0]['user_id'];
+            }
         }
-		
-		return $r;
-	}
-	
-	public function updateUserRoom($room_id, $user_id, $user_lan_ip) {
-        $stmt = $this->core->dbh->prepare("UPDATE room_users SET user_lan_ip = :user_lan_ip WHERE user_id = :user_id AND room_id = :room_id");
-		$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-		$stmt->bindParam(':user_lan_ip', $user_lan_ip, PDO::PARAM_STR);
-		
+    
+        // CHECK IF FRIEND ALREADY ADD ME OR NOT
+        $sql = "SELECT user1 FROM friends WHERE user1=:user1 AND user2=:user2";
+        $stmt = $this->core->dbh->prepare($sql);
+        $stmt->bindParam(':user1', $friend_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user2', $user_id, PDO::PARAM_INT);
         if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if(!empty($r)) {
+                return 0;
+            }
         }
+
+        // IF CAN BE ADD THEN ADD
+        $sql = "INSERT INTO friends (user1, user2)
+				VALUES (:user1, :user2)";
+        $stmt = $this->core->dbh->prepare($sql);
+        $stmt->bindParam(':user1', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':user2', $friend_id, PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            return $friend_id;
+        } else {
+            return 0;
+        }
+    
+    }
+    
+    public function updateFriend($user1, $user2, $type, $ignore_type) {
+        $stmt = $this->core->dbh->prepare("UPDATE friends SET type=:type, ignore_type=:ignore_type WHERE user1 = :user1 AND user2 = :user2 OR user1 = :user2 AND user2 = :user1");
+        $stmt->bindParam(':user1', $user1, PDO::PARAM_INT);
+        $stmt->bindParam(':user2', $user2, PDO::PARAM_INT);
+        $stmt->bindParam(':type', $type, PDO::PARAM_INT);
+        $stmt->bindParam(':ignore_type', $ignore_type, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+	
+	public function deleteFriend($user1, $user2) {
+        $stmt = $this->core->dbh->prepare("DELETE FROM friends WHERE user1 = :user1 AND user2 = :user2 OR user1 = :user2 AND user2 = :user1");
+        $stmt->bindParam(':user1', $user1, PDO::PARAM_INT);
+        $stmt->bindParam(':user2', $user2, PDO::PARAM_INT);
+        $stmt->execute();
     }
 	
 	public function getFriendList($user_id) {
@@ -211,56 +239,34 @@ class User {
 
         return array_merge ($r1, $r2);
     }
+    
+    //=========================
+    // BELLOW FOR ROOM QUERY
+    //=========================
+    public function getUserInRoom($room_id) {
+        $r = array();
 
-    public function addFriend($user_id, $friend_name) {
-        
-		$sql = "SELECT user_id FROM user_caches WHERE user_name=:user_name";
-		$stmt = $this->core->dbh->prepare($sql);
-		$stmt->bindParam(':user_name', $friend_name, PDO::PARAM_STR);
-
-		$friend_id = 0;
-		if ($stmt->execute()) {
-			$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			if(empty($r)) {
-				return 0;
-			} else {
-				$friend_id = $r[0]['user_id'];
-			}
-		}
-	
-		$sql = "INSERT INTO friends (user1, user2) 
-				VALUES (:user1, :user2)";
-		$stmt = $this->core->dbh->prepare($sql);
-		$stmt->bindParam(':user1', $user_id, PDO::PARAM_INT);
-		$stmt->bindParam(':user2', $friend_id, PDO::PARAM_INT);
-
-		if ($stmt->execute()) {
-			return $friend_id;
-		} else {
-			return 0;
-		}
-        
-    }
-	
-	public function deleteFriend($user1, $user2) {
-        $stmt = $this->core->dbh->prepare("DELETE FROM friends WHERE user1 = :user1 AND user2 = :user2 OR user1 = :user2 AND user2 = :user1");
-        $stmt->bindParam(':user1', $user1, PDO::PARAM_INT);
-        $stmt->bindParam(':user2', $user2, PDO::PARAM_INT);
-
+        $sql = "SELECT ru.*, u.*
+        	FROM room_users ru
+            LEFT JOIN user_caches u ON ru.user_id = u.user_id 
+        	WHERE u.is_active = 1
+            AND ru.room_id = :room_id";
+        $stmt = $this->core->dbh->prepare($sql);
+        $stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+    
         if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-    }
-
-    public function updateFriend($user1, $user2, $type, $ignore=1) {
-        $stmt = $this->core->dbh->prepare("UPDATE friends SET type=:type, ignore=:ignore WHERE user1 = :user1 AND user2 = :user2");
-        $stmt->bindParam(':user1', $user1, PDO::PARAM_INT);
-        $stmt->bindParam(':user2', $user2, PDO::PARAM_INT);
-        $stmt->bindParam(':type', $type, PDO::PARAM_INT);
-        $stmt->bindParam(':ignore', $ignore, PDO::PARAM_INT);
-
+		
+		return $r;
+	}
+	
+	public function updateUserRoom($room_id, $user_id, $user_lan_ip) {
+        $stmt = $this->core->dbh->prepare("UPDATE room_users SET user_lan_ip = :user_lan_ip WHERE user_id = :user_id AND room_id = :room_id");
+		$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->bindParam(':user_lan_ip', $user_lan_ip, PDO::PARAM_STR);
+		
         if ($stmt->execute()) {
             return true;
         } else {
@@ -310,7 +316,10 @@ class User {
 
 		return $result;
     }
-
+    
+    //=========================
+    // BELLOW FOR MESSAGE QUERY
+    //=========================
 	public function oldPrivateMessage($user_id, $is_read, $date, $limit) {
         $r = array();
 		

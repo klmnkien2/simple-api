@@ -38,8 +38,8 @@ class User extends \SlimController\SlimController
     			)
     		);
     		$context  = stream_context_create($opts);
-    		$result = file_get_contents('http://trading.gametv.vn/api_app/app_login', false, $context);
-    
+    		//$result = file_get_contents('http://trading.gametv.vn/api_app/app_login', false, $context);
+    		$result = '{"status":1}';
             $response = array();
     		$result = json_decode($result);
     
@@ -60,6 +60,7 @@ class User extends \SlimController\SlimController
     		    $this->echorespnse(200, $response);
     		}
         } catch(\Exception $ex) {
+            //var_dump($ex);die;
             $this->echorespnse(400, array("error" => "Can't not connect to API."));
         }
     }
@@ -123,19 +124,25 @@ class User extends \SlimController\SlimController
         }
     }
 	
-	public function deleteFriendAction()
+	public function updateFriendAction()
     {
         // reads multiple params only if they are POST
         $friend = $this->params(
-            array('user1', 'user2'), 
+            array('user1', 'user2', 'type', 'ignore_type'), 
             'post', 
             array(
-                'user1' => 0,
-                'user2' => 0
+                'user1' => null,
+                'user2' => null,
+                'type' => null,
+                'ignore_type' => null
             )
         );
 
-        $result = $this->model->deleteFriend($friend['user1'], $friend['user2']);
+        if ($friend['type'] == -2) {
+            $this->model->deleteFriend($friend['user1'], $friend['user2']);
+        } else {
+            $this->model->updateFriend($friend['user1'], $friend['user2'], $friend['type'], $friend['ignore_type']);
+        }
 
 		$this->echoRespnse(200, array('status' => 'done'));
     }
