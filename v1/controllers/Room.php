@@ -64,6 +64,28 @@ class Room extends \SlimController\SlimController
         $this->echoRespnse(200, array('rooms' => $rooms));
     }
 
+    public function adsAction()
+    {
+        $ads = array(
+            array(
+                'url' => "banner.com",
+                'image' => "https://think.storage.googleapis.com/images/youtube-homepage-ads-lg.jpg",
+                'type' => 0
+            ),
+            array(
+                'url' => "ad1.com",
+                'image' => "http://www.adbusters.org/wp-content/uploads/2016/02/adbusters_absolut_impotence-520x736.jpg",
+                'type' => 1
+            ),
+            array(
+                'url' => "ad2.com",
+                'image' => "https://s-media-cache-ak0.pinimg.com/564x/14/c6/38/14c638c4f17f0986574f5035c908e21d.jpg",
+                'type' => 2
+            ),
+        );
+        $this->echoRespnse(200, array('ads' => $ads));
+    }
+
     /**
      * @param room_id Required. ID of the room.
      */

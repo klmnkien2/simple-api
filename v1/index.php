@@ -32,6 +32,7 @@ $app = New \SlimController\Slim(array(
 $app->addRoutes(array(
     // BELOW PART FOR [ROOM] CONTROLLER ROUTER
     '/room/list/' => 'Room:list',
+    '/room/ads/' => 'Room:ads',
     '/room/create/' => array('post' => array('Room:create', function() {
             error_log("THIS ROUTE IS ONLY POST");
         }
