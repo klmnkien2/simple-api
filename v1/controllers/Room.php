@@ -60,7 +60,7 @@ class Room extends \SlimController\SlimController
 
     public function listAction()
     {
-        $rooms = $this->model->getRoomList();
+        $rooms = $this->model->getAllTree(0);
         $this->echoRespnse(200, array('rooms' => $rooms));
     }
 

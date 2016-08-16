@@ -14,7 +14,7 @@ class Core {
         $dsn = 'mysql:host=' . Config::read('db.host') .
                ';dbname='    . Config::read('db.basename') .
                ';port='      . Config::read('db.port') .
-               ';connect_timeout=15';
+               ';connect_timeout=15;charset=utf8';
         // getting DB user from config
         $user = Config::read('db.user');
         // getting DB password from config

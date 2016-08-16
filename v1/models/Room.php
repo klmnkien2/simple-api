@@ -18,13 +18,40 @@ class Room {
         //$this->core->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
+    public function getAllTree($root_id) {
+        $nodes = $this->listByParent($root_id);
+        foreach ($nodes as &$node) {
+            $child = $this->getAllTree($node['room_id']);
+            if (!empty($child)) {
+                $node['child'] = $child;
+            }
+        }
+        return $nodes;
+    }
+
+    public function listByParent($parent_id) {
+        $r = array();
+    
+        $sql = "SELECT r.*, s.host, s.port, s.hub
+        	FROM rooms r
+			LEFT JOIN servers s ON s.server_id = r.server_id
+            WHERE parent_id=?";
+        $stmt = $this->core->dbh->prepare($sql);
+    
+        if ($stmt->execute(array($parent_id))) {
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $r = 0;
+        }
+        return $r;
+    }
+    
     public function getRoomList() {
         $r = array();
 
-        $sql = "SELECT r.room_id, r.room_name, r.create_user, r.host_ip, s.server_id, s.hub
+        $sql = "SELECT r.*, s.host, s.port, s.hub
         	FROM rooms r
-			LEFT JOIN servers s ON r.server_id = s.server_id
-        	WHERE s.is_active = 1 AND r.is_active = 1";
+			LEFT JOIN servers s ON s.server_id = r.server_id";
         $stmt = $this->core->dbh->prepare($sql);
 
         if ($stmt->execute()) {
