@@ -246,11 +246,10 @@ class User {
     public function getUserInRoom($room_id) {
         $r = array();
 
-        $sql = "SELECT ru.*, u.*
+        $sql = "SELECT ru.room_id, ru.ip, u.user_id, u.user_name, u.avatar, u.state
         	FROM room_users ru
             LEFT JOIN user_caches u ON ru.user_id = u.user_id 
-        	WHERE u.is_active = 1
-            AND ru.room_id = :room_id";
+        	WHERE ru.room_id = :room_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
     
@@ -261,27 +260,23 @@ class User {
 		return $r;
 	}
 	
-	public function updateUserRoom($room_id, $user_id, $user_lan_ip) {
-        $stmt = $this->core->dbh->prepare("UPDATE room_users SET user_lan_ip = :user_lan_ip WHERE user_id = :user_id AND room_id = :room_id");
+	public function updateUserRoom($room_id, $user_id, $ip) {
+        $stmt = $this->core->dbh->prepare("UPDATE room_users SET ip = :ip WHERE user_id = :user_id AND room_id = :room_id");
 		$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-		$stmt->bindParam(':user_lan_ip', $user_lan_ip, PDO::PARAM_STR);
+		$stmt->bindParam(':ip', $ip, PDO::PARAM_STR);
 		
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+        $stmt->execute();
     }
 
 	public function createRoomUser($data) {
-        $sql = "INSERT INTO room_users (user_id, user_name, user_lan_ip, room_id)
-                VALUES (:user_id, :user_name, :user_lan_ip, :room_id)";
+        $sql = "INSERT INTO room_users (user_id, user_name, room_id)
+                VALUES (:user_id, :user_name, :room_id)";
         $stmt = $this->core->dbh->prepare($sql);
         if ($stmt->execute($data)) {
-            return 1;
+            return true;
         } else {
-            return 0;
+            return false;
         }
     }
 

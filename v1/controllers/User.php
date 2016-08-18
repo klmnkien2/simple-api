@@ -151,9 +151,9 @@ class User extends \SlimController\SlimController
     {
 		$room_id = $this->param('room_id');
 		$user_id = $this->param('user_id');
-		$user_lan_ip = $this->param('user_lan_ip');
+		$ip = $this->param('ip');
 		
-		$this->model->updateUserRoom($room_id, $user_id, $user_lan_ip);
+		$this->model->updateUserRoom($room_id, $user_id, $ip);
         $users = $this->model->getUserInRoom($room_id);
         $this->echoRespnse(200, array('users' => $users));
     }
@@ -162,13 +162,12 @@ class User extends \SlimController\SlimController
     {
         // reads multiple params only if they are POST
         $room_user = $this->params(
-            array('room_id', 'user_id', 'user_name', 'user_lan_ip'), 
+            array('room_id', 'user_id', 'user_name'), 
             'post', 
             array(
                 'room_id' => 0,
                 'user_id' => 0,
-                'user_name' => '',
-				'user_lan_ip' => ''
+                'user_name' => ''
             )
         );
 
@@ -176,7 +175,7 @@ class User extends \SlimController\SlimController
         $currentRoom = $this->model->currentRoom($room_user['user_id']);
         // leave current room
         if (!empty($currentRoom)) {
-            $this->leaveRoom($currentRoom['room_id'], $currentRoom['user_id']);
+            $this->leaveRoom($room_user['room_id'], $room_user['user_id']);
         }
         // create new room
         $result = $this->model->createRoomUser($room_user);
@@ -238,23 +237,23 @@ class User extends \SlimController\SlimController
     //==================================================
     private function leaveRoom($room_id, $user_id)
     {
-        $users = $this->model->getUserInRoom($room_id);
-        if (empty($users)) {
-            return 0;
-        }
+//         $users = $this->model->getUserInRoom($room_id);
+//         if (empty($users)) {
+//             return 0;
+//         }
 
         $result = $this->model->deleteRoomUser($room_id, $user_id);
         if ($result == 0) {
             return 0;
         }
 
-        if (count($users) == 1) { // last user in room. remove room
-            $r1 = $this->serverModel->unbindServer($room_id);
-            $r2 = $this->roomModel->deleteRoom($room_id);
-            if($r1 && $r2) {
-                return 2;//2-also delete room
-            } 
-        }
+//         if (count($users) == 1) { // last user in room. remove room
+//             $r1 = $this->serverModel->unbindServer($room_id);
+//             $r2 = $this->roomModel->deleteRoom($room_id);
+//             if($r1 && $r2) {
+//                 return 2;//2-also delete room
+//             } 
+//         }
 
         return 1;//1-only delete room_users
     }

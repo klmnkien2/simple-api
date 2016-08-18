@@ -125,51 +125,59 @@ class Room {
         }
     }
 
-    public function oldMessageByRoom($room_id, $message_id, $limit) {
+    public function receiveNewMessage($room_id, $read_ids) {
         $r = array();
-	
-		if ($message_id) {
-			$sql = "SELECT *
-				FROM messages m
-				WHERE 
-				m.receive_id = 0
-				AND m.room_id = :room_id
-				AND message_id < :message_id
-				ORDER BY create_time DESC
-				LIMIT $limit";
-			$stmt = $this->core->dbh->prepare($sql);
-			$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-			$stmt->bindParam(':message_id', $message_id, PDO::PARAM_INT);
-		} else {
-			$sql = "SELECT *
-				FROM messages m
-				WHERE m.receive_id = 0
-				AND m.room_id = :room_id
-				ORDER BY create_time DESC
-				LIMIT $limit";
-			$stmt = $this->core->dbh->prepare($sql);
-			$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-		}
-        if ($stmt->execute()) {
+
+        $condition = "";
+        $param = array();
+        if ($read_ids) {
+            $condition .= " AND m.message_id NOT IN ($read_ids) ";
+        }
+
+        $sql = "SELECT message_id, user_id, user_name, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
+        FROM messages m
+        WHERE m.is_read = 0
+            AND m.user_id <> 0
+            AND m.room_id = :room_id
+            $condition
+        ORDER BY m.create_time DESC";
+        $param[':room_id'] = $room_id;
+        $stmt = $this->core->dbh->prepare($sql);
+    
+        if ($stmt->execute($param)) {
             $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        // Update is_read = 1;
+        if ($read_ids) {
+            $stmt = $this->core->dbh->prepare("UPDATE messages SET is_read=1 WHERE message_id IN ($read_ids) ");
+            $stmt->execute();
+        }
+
         return $r;
     }
-	
-	public function newMessageByRoom($room_id, $message_id) {
+
+    public function historyMessage($room_id, $last_view_id, $limit) {
         $r = array();
-	
-		$sql = "SELECT *
-			FROM messages m
-			WHERE m.receive_id = 0
-				AND m.room_id = :room_id
-			AND message_id > :message_id
-			ORDER BY create_time DESC";
-		$stmt = $this->core->dbh->prepare($sql);
-		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-		$stmt->bindParam(':message_id', $message_id, PDO::PARAM_INT);
-		
-        if ($stmt->execute()) {
+
+        $condition = "";
+        $param = array();
+        if ($last_view_id) {
+            $condition .= " AND m.message_id < :last_view_id ";
+            $param[':last_view_id'] = $last_view_id;
+        }
+        
+        $sql = "SELECT message_id, user_id, user_name, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
+        FROM messages m
+        WHERE m.room_id = :room_id
+            $condition
+        ORDER BY m.create_time DESC
+        LIMIT $limit";
+        $param[':room_id'] = $room_id;
+        
+        $stmt = $this->core->dbh->prepare($sql);
+    
+        if ($stmt->execute($param)) {
             $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         return $r;

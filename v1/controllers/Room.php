@@ -142,16 +142,17 @@ class Room extends \SlimController\SlimController
     */
     public function historyAction()
     {
-        $params = $this->params(array('room_id', 'message_id', 'part'), 'get', array(
-                'room_id' => 0, // default
-                'message_id' => 0, // default
-				'part' => 'new'
-            ));
+        $params = $this->params(array('room_id', 'read_ids', 'last_view_id', 'old'), 'get', array(
+            'room_id' => 0, // default
+            'read_ids' => "", // must be string
+			'last_view_id' => 0,
+            'old' => 0
+        ));
         $message_list = array();
-		if ($params['part'] == 'new') {
-			$message_list = $this->model->newMessageByRoom($params['room_id'], $params['message_id']);
+		if (!$params['old']) {
+			$message_list = $this->model->receiveNewMessage($params['room_id'], $params['read_ids']);
 		} else {
-			$message_list = $this->model->oldMessageByRoom($params['room_id'], $params['message_id'], 50);
+			$message_list = $this->model->historyMessage($params['room_id'], $params['last_view_id'], 20);
 		}
 
         $this->echoRespnse(200, array('history' => $message_list));

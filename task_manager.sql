@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 16, 2016 at 10:52 AM
+-- Generation Time: Aug 18, 2016 at 10:27 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `message` text NOT NULL,
   `notify` tinyint(1) NOT NULL DEFAULT '0',
   `is_read` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `messages`
@@ -81,7 +81,10 @@ INSERT INTO `messages` (`message_id`, `user_id`, `user_name`, `receive_id`, `rec
 (5, 9, 'admintest1', 12, 'CyberZ', 0, '2016-08-08 08:59:02', 'alala', 0, 1),
 (6, 9, 'admintest1', 12, 'CyberZ', 0, '2016-08-08 08:59:18', 'homnay toi muon,homnay toi muon,homnay toi muon,homnay toi muon,homnay toi muon,homnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muonhomnay toi muon', 0, 1),
 (7, 9, 'admintest1', 12, 'CyberZ', 0, '2016-08-08 09:43:05', 'afff', 0, 1),
-(8, 9, 'admintest1', 12, 'CyberZ', 0, '2016-08-08 09:43:11', 'oh la la', 0, 1);
+(8, 9, 'admintest1', 12, 'CyberZ', 0, '2016-08-08 09:43:11', 'oh la la', 0, 1),
+(9, 9, 'admintest1', 0, '', 118, '2016-08-18 07:58:28', 'abc', 0, 1),
+(10, 9, 'admintest1', 0, '', 118, '2016-08-18 08:21:29', 'oh me agian', 0, 1),
+(11, 9, 'admintest1', 0, '', 118, '2016-08-18 08:23:48', 'Sao khong co gi', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -93,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   `room_id` int(11) NOT NULL,
   `room_name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `parent_id` int(11) NOT NULL,
+  `has_child` tinyint(4) NOT NULL,
   `server_id` int(11) NOT NULL,
   `members` smallint(6) NOT NULL COMMENT 'current of mem',
   `maximum` smallint(6) NOT NULL COMMENT 'max of member',
@@ -103,15 +107,14 @@ CREATE TABLE IF NOT EXISTS `rooms` (
 -- Dumping data for table `rooms`
 --
 
-INSERT INTO `rooms` (`room_id`, `room_name`, `parent_id`, `server_id`, `members`, `maximum`, `create_time`) VALUES
-(1, 'AOE', 0, 0, 0, 100, '2016-08-01 08:50:38'),
-(2, 'Hà nội', 1, 0, 0, 100, '2016-08-01 14:39:19'),
-(116, 'Tp Hồ Chí Minh', 1, 0, 0, 100, '2016-08-01 14:39:19'),
-(117, 'Hải phòng', 1, 0, 0, 100, '2016-08-01 14:39:19'),
-(118, 'Cầu giấy', 2, 0, 0, 100, '2016-08-01 14:39:19'),
-(119, 'Trần Duy Hưng', 2, 0, 0, 100, '2016-08-01 14:39:19'),
-(120, 'Quận 1', 116, 0, 0, 100, '2016-08-01 14:39:19'),
-(121, 'Quận 3', 116, 0, 0, 100, '2016-08-01 14:39:19');
+INSERT INTO `rooms` (`room_id`, `room_name`, `parent_id`, `has_child`, `server_id`, `members`, `maximum`, `create_time`) VALUES
+(1, 'AOE', 0, 1, 0, 0, 100, '2016-08-01 08:50:38'),
+(2, 'Hà nội', 1, 1, 0, 0, 100, '2016-08-01 14:39:19'),
+(116, 'Tp Hồ Chí Minh', 1, 1, 0, 0, 100, '2016-08-01 14:39:19'),
+(117, 'Hải phòng', 1, 0, 1, 0, 100, '2016-08-01 14:39:19'),
+(118, 'Cầu giấy', 2, 0, 2, 0, 100, '2016-08-01 14:39:19'),
+(120, 'Quận 1', 116, 0, 4, 0, 100, '2016-08-01 14:39:19'),
+(121, 'Quận 3', 116, 0, 5, 0, 100, '2016-08-01 14:39:19');
 
 -- --------------------------------------------------------
 
@@ -122,10 +125,10 @@ INSERT INTO `rooms` (`room_id`, `room_name`, `parent_id`, `server_id`, `members`
 CREATE TABLE IF NOT EXISTS `room_users` (
   `room_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `user_name` varchar(255) NOT NULL,
-  `ip` varchar(255) NOT NULL,
-  `join_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `last_active` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `user_name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `ip` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `join_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_active` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -133,21 +136,8 @@ CREATE TABLE IF NOT EXISTS `room_users` (
 --
 
 INSERT INTO `room_users` (`room_id`, `user_id`, `user_name`, `ip`, `join_time`, `last_active`) VALUES
-(61, 13, 'dinhtan89', '192.168.60.10', '2016-05-17 13:56:43', '0000-00-00 00:00:00'),
-(67, 13, 'dinhtan89', '', '2016-05-27 09:40:48', '0000-00-00 00:00:00'),
-(97, 14, 'qthai2502', '192.168.40.13', '2016-06-24 10:09:52', '0000-00-00 00:00:00'),
-(101, 16, 'wantlose', '192.168.60.12', '2016-06-27 09:45:12', '0000-00-00 00:00:00'),
-(103, 12, 'CyberZ', '192.168.60.10', '2016-07-01 10:02:12', '0000-00-00 00:00:00'),
-(105, 17, 'duongdt', '', '2016-07-07 10:08:40', '0000-00-00 00:00:00'),
-(107, 14, 'qthai2502', '', '2016-07-08 09:08:06', '0000-00-00 00:00:00'),
-(108, 10, 'tranvutuan', '192.168.50.12', '2016-07-08 09:09:59', '0000-00-00 00:00:00'),
-(112, 11, 'kimhc0210', '192.168.60.17', '2016-07-28 09:20:11', '0000-00-00 00:00:00'),
-(114, 10, 'tranvutuan', '192.168.60.11', '2016-08-01 09:37:26', '0000-00-00 00:00:00'),
-(114, 11, 'kimhc0210', '192.168.60.14', '2016-08-01 09:36:36', '0000-00-00 00:00:00'),
-(114, 12, 'CyberZ', '192.168.60.12', '2016-08-01 09:36:33', '0000-00-00 00:00:00'),
-(114, 16, 'wantlose', '192.168.60.17', '2016-08-01 09:39:06', '0000-00-00 00:00:00'),
-(114, 17, 'duongdt', '192.168.60.10', '2016-08-01 09:36:40', '0000-00-00 00:00:00'),
-(115, 14, 'qthai2502', '192.168.40.11', '2016-08-01 14:40:58', '0000-00-00 00:00:00');
+(118, 9, 'admintest1', '', '2016-08-18 08:23:39', '2016-08-18 08:23:39'),
+(119, 9, 'admintest1', '', '2016-08-18 07:07:27', '2016-08-18 07:07:27');
 
 -- --------------------------------------------------------
 
@@ -169,16 +159,16 @@ CREATE TABLE IF NOT EXISTS `servers` (
 --
 
 INSERT INTO `servers` (`server_id`, `host`, `port`, `hub`, `create_time`, `number_connected`) VALUES
-(2, '103.56.157.252', 992, 'aoe_vpn_hub', '2016-01-25 17:14:46', 1),
-(3, '103.56.157.252', 5556, 'aoe_vpn_hub2', '2016-01-25 17:14:46', 1),
-(4, '103.56.157.252', 443, 'aoe_vpn_hub3', '2016-01-25 17:16:11', 1),
+(1, '103.56.157.252', 5561, 'aoe_vpn_hub10', '2016-01-25 17:16:11', 0),
+(2, '103.56.157.252', 992, 'aoe_vpn_hub', '2016-01-25 17:14:46', 0),
+(3, '103.56.157.252', 5556, 'aoe_vpn_hub2', '2016-01-25 17:14:46', 0),
+(4, '103.56.157.252', 443, 'aoe_vpn_hub3', '2016-01-25 17:16:11', 0),
 (5, '103.56.157.252', 5555, 'aoe_vpn_hub4', '2016-01-25 17:16:11', 0),
 (6, '103.56.157.252', 5556, 'aoe_vpn_hub5', '2016-01-25 17:16:11', 0),
 (7, '103.56.157.252', 5557, 'aoe_vpn_hub6', '2016-01-25 17:16:11', 0),
 (8, '103.56.157.252', 5558, 'aoe_vpn_hub7', '2016-01-25 17:16:11', 0),
 (9, '103.56.157.252', 5559, 'aoe_vpn_hub8', '2016-01-25 17:16:11', 0),
-(10, '103.56.157.252', 5560, 'aoe_vpn_hub9', '2016-01-25 17:16:11', 0),
-(11, '103.56.157.252', 5561, 'aoe_vpn_hub10', '2016-01-25 17:16:11', 0);
+(10, '103.56.157.252', 5560, 'aoe_vpn_hub9', '2016-01-25 17:16:11', 0);
 
 -- --------------------------------------------------------
 
@@ -204,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `user_caches` (
 --
 
 INSERT INTO `user_caches` (`user_id`, `user_name`, `user_email`, `password`, `last_active`, `avatar`, `level`, `diamond`, `status`, `state`) VALUES
-(9, 'admintest1', '', 'Admin12345678', '2016-08-16 08:36:36', '', 0, 0, 'Lan dau choi game', 1),
+(9, 'admintest1', '', 'Admin12345678', '2016-08-18 08:25:00', '', 0, 0, 'Lan dau choi game', 1),
 (10, 'tranvutuan', '', 'Tuan@123', '2016-08-04 12:34:16', '', 0, 0, 'yeu doi vai luong', 1),
 (11, 'kimhc0210', '', 'A123987@@', '2016-08-01 10:26:57', '', 0, 0, '', 1),
 (12, 'CyberZ', '', 'Zone@$132', '2016-08-01 10:26:31', '', 0, 0, '', 1),
@@ -266,7 +256,7 @@ ALTER TABLE `user_caches`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `rooms`
 --
