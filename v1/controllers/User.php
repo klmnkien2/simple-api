@@ -113,14 +113,35 @@ class User extends \SlimController\SlimController
     {
         // reads multiple params only if they are POST
         $user_id = $this->param('user_id', 'post');
+        $user_name = $this->param('user_name', 'post');
         $friend_name = $this->param('friend_name', 'post');
+        $message = $this->param('message', 'post');
 
         $friend_id = $this->model->addFriend($user_id, $friend_name, $message);
 
-        if(!$friend_id) {
-            $this->echoRespnse(400,  array('success' => false));
+        if($friend_id) {
+            // NOTIFY MESSAGE
+            $messageArr = array(
+                'room_id' => 0,
+                'notify' => 0,
+                'user_id' => $user_id,
+                'user_name' => $user_name,
+                'receive_id' => $friend_id,
+                'receive_name' => $friend_name,
+                'message' => $message
+            );
+            $result = $this->roomModel->createMessage($messageArr);
+            // RETURN RESPONSE
+            if ($result>0) {
+                $this->echoRespnse(200, array('friend_id' => $friend_id));
+            }
+            else {
+                $this->echoRespnse(400,  array('success' => false, 'error' => 'MES=false'));
+            }
+            
         } else {
-            $this->echoRespnse(200, array('friend_id' => $friend_id));
+            // DEFAULT RETURN
+            $this->echoRespnse(400,  array('success' => false, 'error' => 'CF=false'));
         }
     }
 	

@@ -117,11 +117,11 @@ class Room {
             if ($stmt->execute($message)) {
                 return $this->core->dbh->lastInsertId();
             } else {
-                return null;
+                return -1;
             }
         } catch(PDOException $e) {
             echo $e->getMessage();
-            return null;
+            return -1;
         }
     }
 

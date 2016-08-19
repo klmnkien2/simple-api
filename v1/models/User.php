@@ -165,7 +165,7 @@ class User {
                 $friend_id = $r[0]['user_id'];
             }
         }
-    
+
         // CHECK IF FRIEND ALREADY ADD ME OR NOT
         $sql = "SELECT user1 FROM friends WHERE user1=:user1 AND user2=:user2";
         $stmt = $this->core->dbh->prepare($sql);
@@ -179,18 +179,17 @@ class User {
         }
 
         // IF CAN BE ADD THEN ADD
-        $sql = "INSERT INTO friends (user1, user2)
-				VALUES (:user1, :user2)";
+        $sql = "INSERT INTO friends (user1, user2) VALUES (:user1, :user2)";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':user1', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':user2', $friend_id, PDO::PARAM_INT);
-    
+
         if ($stmt->execute()) {
             return $friend_id;
         } else {
             return 0;
         }
-    
+
     }
     
     public function updateFriend($user1, $user2, $type, $ignore_type) {

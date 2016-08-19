@@ -128,8 +128,8 @@ class Room extends \SlimController\SlimController
         );
 
         $result = $this->model->createMessage($message);
-        if ($result) {
-            $this->echoRespnse(200, array('status' => 'sent'));
+        if ($result>0) {
+            $this->echoRespnse(200, array('status' => 'sent', 'message_id' => $result));
         } else {
             $this->echoRespnse(400, array('status' => 'error'));
         }
