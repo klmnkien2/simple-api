@@ -38,8 +38,8 @@ class User extends \SlimController\SlimController
     			)
     		);
     		$context  = stream_context_create($opts);
-    		//$result = file_get_contents('http://trading.gametv.vn/api_app/app_login', false, $context);
-    		$result = '{"status":1}';
+    		$result = file_get_contents('http://trading.gametv.vn/api_platform/app_login', false, $context);
+    		//$result = '{"status":1}';
             $response = array();
     		$result = json_decode($result);
     
@@ -47,6 +47,7 @@ class User extends \SlimController\SlimController
     			$response['error'] = $result->message;
                 $this->echorespnse(400, $response);
     		} else {
+    		    var_dump($result);die;
     		    $response['avatar'] = isset($result->avatar) ? $result->avatar : '';
     		    $response['level'] = isset($result->level) ? $result->level : '';
     		    $response['diamond'] = isset($result->diamond) ? $result->diamond : '';

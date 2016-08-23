@@ -66,24 +66,40 @@ class Room extends \SlimController\SlimController
 
     public function adsAction()
     {
-        $ads = array(
-            array(
-                'url' => "banner.com",
-                'image' => "https://think.storage.googleapis.com/images/youtube-homepage-ads-lg.jpg",
-                'type' => 0
-            ),
-            array(
-                'url' => "ad1.com",
-                'image' => "http://www.adbusters.org/wp-content/uploads/2016/02/adbusters_absolut_impotence-520x736.jpg",
-                'type' => 1
-            ),
-            array(
-                'url' => "ad2.com",
-                'image' => "https://s-media-cache-ak0.pinimg.com/564x/14/c6/38/14c638c4f17f0986574f5035c908e21d.jpg",
-                'type' => 2
-            ),
-        );
-        $this->echoRespnse(200, array('ads' => $ads));
+        try {
+            $result = file_get_contents('http://trading.gametv.vn/api_platform/ads');
+            $result = json_decode($result);
+            $ads = array();
+            if($result->status == true) {
+                foreach ($result->data as $record) {
+                    if ($record->id == 1) {//banner
+                        $ads[] = array(
+                            'url' => $record->link,
+                            'image' => $record->image,
+                            'type' => 0
+                        );
+                    }
+                    if ($record->id == 2) {//ad1
+                        $ads[] = array(
+                            'url' => $record->link,
+                            'image' => $record->image,
+                            'type' => 0
+                        );
+                    }
+                    if ($record->id == 3) {//ad2
+                        $ads[] = array(
+                            'url' => $record->link,
+                            'image' => $record->image,
+                            'type' => 0
+                        );
+                    }
+                }
+            }
+            $this->echoRespnse(200, array('ads' => $ads));
+        } catch(\Exception $ex) {
+            //var_dump($ex);die;
+            $this->echorespnse(400, array("error" => "Can't not connect to API."));
+        }
     }
 
     /**
@@ -91,6 +107,41 @@ class Room extends \SlimController\SlimController
      */
     public function showAction()
     {
+        try {
+            $result = file_get_contents('http://trading.gametv.vn/api_platform/rooms');
+            $result = json_decode($result, true);
+            var_dump($result);die;
+            $rooms = array();
+            if($result->status == true) {
+                foreach ($result->data as $record) {
+                    if ($record->id == 1) {//banner
+                        $ads[] = array(
+                            'url' => $record->link,
+                            'image' => $record->image,
+                            'type' => 0
+                        );
+                    }
+                    if ($record->id == 2) {//ad1
+                        $ads[] = array(
+                            'url' => $record->link,
+                            'image' => $record->image,
+                            'type' => 0
+                        );
+                    }
+                    if ($record->id == 3) {//ad2
+                        $ads[] = array(
+                            'url' => $record->link,
+                            'image' => $record->image,
+                            'type' => 0
+                        );
+                    }
+                }
+            }
+            $this->echoRespnse(200, array('ads' => $ads));
+        } catch(\Exception $ex) {
+            //var_dump($ex);die;
+            $this->echorespnse(400, array("error" => "Can't not connect to API."));
+        }
         $room_id = $this->param('room_id');
 
         $result = $this->model->getRoomById($room_id);
