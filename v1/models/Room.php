@@ -104,6 +104,62 @@ class Room {
 
         return $r;
     }
+	
+	public function syncRoom(&$data) {
+
+        $sql = "SELECT room_id, room_name, server_id FROM rooms WHERE room_id=:room_id";
+        $stmt = $this->core->dbh->prepare($sql);
+        $stmt->bindParam(':room_id', $data['id'], PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        if (!empty($r)) {
+            $r = $r[0];
+            $data['room_id'] = $r['room_id'];
+			$data['room_name'] = $r['room_id'];
+            $data['server_id'] = $r['server_id'];
+        } else {
+            //Insert		
+			$data['room_id'] = $data['id'];
+			$data['room_name'] = $data['name'];
+			if ($data['has_child'] == 0) {
+				$data['server_id'] = $this->getFreeServer();
+			} else {
+				$data['server_id'] = -1;
+			}
+			
+            $stmt = $this->core->dbh->prepare("INSERT INTO rooms (room_id, room_name, parent_id, has_child, server_id) " .
+                "VALUES (:room_id, :room_name, :parent_id, :has_child, :server_id)");
+            $stmt->bindParam(':room_id', $data['room_id'], PDO::PARAM_INT);
+			$stmt->bindParam(':room_name', $data['room_name'], PDO::PARAM_STR);
+            $stmt->bindParam(':parent_id', $data['parent_id'], PDO::PARAM_INT);
+            $stmt->bindParam(':has_child', $data['has_child'], PDO::PARAM_INT);
+            $stmt->bindParam(':server_id', $data['server_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    }
+	
+	public function getFreeServer() {
+        $r = array();
+
+        $sql = "SELECT server_id FROM servers WHERE server_id NOT IN (SELECT server_id FROM rooms r) LIMIT 1";
+        $stmt = $this->core->dbh->prepare($sql);
+
+        if ($stmt->execute()) {
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+		
+        if(!empty($r)) {	
+			$server_id = $r[0]['server_id'];	
+			// $stmt = $this->core->dbh->prepare("UPDATE servers SET number_connected = 1 WHERE server_id = :server_id");
+			// $stmt->bindParam(':server_id', $server_id, PDO::PARAM_INT);
+			return $server_id;
+        } else {
+			return -1;
+		}
+    }
 
     //=========================
     // BELLOW FOR MESSAGE QUERY

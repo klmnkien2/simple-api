@@ -41,21 +41,22 @@ class User extends \SlimController\SlimController
     		$result = file_get_contents('http://trading.gametv.vn/api_platform/app_login', false, $context);
     		//$result = '{"status":1}';
             $response = array();
-    		$result = json_decode($result);
+    		$result = json_decode($result, true);
     
-    		if($result->status != 1) {
-    			$response['error'] = $result->message;
+    		if($result['status'] != 1) {
+    			$response['error'] = $result['message'];
                 $this->echorespnse(400, $response);
     		} else {
-    		    var_dump($result);die;
-    		    $response['avatar'] = isset($result->avatar) ? $result->avatar : '';
-    		    $response['level'] = isset($result->level) ? $result->level : '';
-    		    $response['diamond'] = isset($result->diamond) ? $result->diamond : '';
-    		    $response['needpay'] = isset($result->needpay) ? $result->needpay : '';
+    		    $result = $result['data'];
+				$response['user_id'] = isset($result['id']) ? $result['id'] : null;
+    		    $response['avatar'] = isset($result['avatar']) ? $result['avatar'] : '';
+    		    $response['level'] = isset($result['platform_level']) ? $result['platform_level'] : '';
+    		    $response['diamond'] = isset($result['platform_kimcuong']) ? $result['platform_kimcuong'] : '';
+    		    $response['needpay'] = isset($result['platform_expried']) ? $result['platform_expried'] : '';
     		    $response['username'] = $username;
 				$response['password'] = $password;
     		    $response['state'] = is_null($state)?1:$state;
-    
+				//var_dump($response);die;
     		    $this->model->syncUserInfo($response);
 				$response['password'] = '';//unset not to response
     		    $this->echorespnse(200, $response);

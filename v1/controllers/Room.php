@@ -60,8 +60,23 @@ class Room extends \SlimController\SlimController
 
     public function listAction()
     {
-        $rooms = $this->model->getAllTree(0);
-        $this->echoRespnse(200, array('rooms' => $rooms));
+		// BY DATABASE DATA NOT USE NOW
+        //$rooms = $this->model->getAllTree(0);
+        //$this->echoRespnse(200, array('rooms' => $rooms));
+		
+		// BY API
+		try {
+            $result = file_get_contents('http://trading.gametv.vn/api_platform/rooms');
+            $result = json_decode($result, true);
+            $rooms = array();
+            if($result['status'] == true) {
+				$rooms = $this->syncRoomList($result['data']);
+            }
+            $this->echoRespnse(200, array('rooms' => $rooms));
+        } catch(\Exception $ex) {
+            //var_dump($ex);die;
+            $this->echorespnse(400, array("error" => "Can't not connect to API."));
+        }
     }
 
     public function adsAction()
@@ -107,41 +122,7 @@ class Room extends \SlimController\SlimController
      */
     public function showAction()
     {
-        try {
-            $result = file_get_contents('http://trading.gametv.vn/api_platform/rooms');
-            $result = json_decode($result, true);
-            var_dump($result);die;
-            $rooms = array();
-            if($result->status == true) {
-                foreach ($result->data as $record) {
-                    if ($record->id == 1) {//banner
-                        $ads[] = array(
-                            'url' => $record->link,
-                            'image' => $record->image,
-                            'type' => 0
-                        );
-                    }
-                    if ($record->id == 2) {//ad1
-                        $ads[] = array(
-                            'url' => $record->link,
-                            'image' => $record->image,
-                            'type' => 0
-                        );
-                    }
-                    if ($record->id == 3) {//ad2
-                        $ads[] = array(
-                            'url' => $record->link,
-                            'image' => $record->image,
-                            'type' => 0
-                        );
-                    }
-                }
-            }
-            $this->echoRespnse(200, array('ads' => $ads));
-        } catch(\Exception $ex) {
-            //var_dump($ex);die;
-            $this->echorespnse(400, array("error" => "Can't not connect to API."));
-        }
+        
         $room_id = $this->param('room_id');
 
         $result = $this->model->getRoomById($room_id);
@@ -151,6 +132,22 @@ class Room extends \SlimController\SlimController
             $this->echoRespnse(400, array('room' => false));
         }
     }
+	
+	private function syncRoomList($list) 
+	{
+		foreach ($list as &$room) {
+			$child = $room['child'];
+			if (!empty($child)) {
+				$room['child'] = $this->syncRoomList($child);
+				$room['has_child'] = 1;
+			} else {
+				$room['has_child'] = 0;
+			}			
+			$this->model->syncRoom($room);
+		}
+		
+		return $list;
+	}
 
     /**
      * @param room_id Required. ID or name of the room.

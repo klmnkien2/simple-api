@@ -78,7 +78,7 @@ class User {
     
         if (!empty($r)) {
             $r = $r[0];
-            $data['user_id'] = $r['user_id'];
+            //$data['user_id'] = $r['user_id'];
             $data['status'] = $r['status'];
 			$data['last_active'] = $r['last_active'];
 
@@ -102,9 +102,10 @@ class User {
             $stmt->execute();
         } else {
             //Insert
-            $stmt = $this->core->dbh->prepare("INSERT INTO user_caches (user_name, password, avatar, level, diamond, state) " .
-                "VALUES (:user_name, :password, :avatar, :level, :diamond, :state)");
-            $stmt->bindParam(':user_name', $data['username'], PDO::PARAM_STR);
+            $stmt = $this->core->dbh->prepare("INSERT INTO user_caches (user_id, user_name, password, avatar, level, diamond, state) " .
+                "VALUES (:user_id, :user_name, :password, :avatar, :level, :diamond, :state)");
+            $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_INT);
+			$stmt->bindParam(':user_name', $data['username'], PDO::PARAM_STR);
             $stmt->bindParam(':password', $data['password'], PDO::PARAM_STR);
             $stmt->bindParam(':avatar', $data['avatar'], PDO::PARAM_STR);
             $stmt->bindParam(':level', $data['level'], PDO::PARAM_INT);
