@@ -141,6 +141,7 @@ class Room extends \SlimController\SlimController
 				$room['child'] = $this->syncRoomList($child);
 				$room['has_child'] = 1;
 			} else {
+			    unset($room['child']);
 				$room['has_child'] = 0;
 			}			
 			$this->model->syncRoom($room);

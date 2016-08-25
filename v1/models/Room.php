@@ -107,7 +107,10 @@ class Room {
 	
 	public function syncRoom(&$data) {
 
-        $sql = "SELECT room_id, room_name, server_id FROM rooms WHERE room_id=:room_id";
+        $sql = "SELECT r.room_id, r.room_name, r.server_id, s.host, s.port, s.hub
+            FROM rooms r
+			LEFT JOIN servers s ON s.server_id = r.server_id
+            WHERE r.room_id=:room_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':room_id', $data['id'], PDO::PARAM_INT);
 
@@ -120,12 +123,19 @@ class Room {
             $data['room_id'] = $r['room_id'];
 			$data['room_name'] = $r['room_id'];
             $data['server_id'] = $r['server_id'];
+            $data['host'] = $r['host'];
+            $data['port'] = $r['port'];
+            $data['hub'] = $r['hub'];
         } else {
             //Insert		
 			$data['room_id'] = $data['id'];
 			$data['room_name'] = $data['name'];
 			if ($data['has_child'] == 0) {
-				$data['server_id'] = $this->getFreeServer();
+			    $server = $this->getFreeServer();
+				$data['server_id'] = $server['server_id'];
+				$data['host'] = $server['host'];
+				$data['port'] = $server['port'];
+				$data['hub'] = $server['hub'];
 			} else {
 				$data['server_id'] = -1;
 			}
@@ -144,7 +154,9 @@ class Room {
 	public function getFreeServer() {
         $r = array();
 
-        $sql = "SELECT server_id FROM servers WHERE server_id NOT IN (SELECT server_id FROM rooms r) LIMIT 1";
+        $sql = "SELECT server_id, host, port, hub
+            FROM servers 
+            WHERE server_id NOT IN (SELECT server_id FROM rooms r) LIMIT 1";
         $stmt = $this->core->dbh->prepare($sql);
 
         if ($stmt->execute()) {
@@ -152,12 +164,9 @@ class Room {
         }
 		
         if(!empty($r)) {	
-			$server_id = $r[0]['server_id'];	
-			// $stmt = $this->core->dbh->prepare("UPDATE servers SET number_connected = 1 WHERE server_id = :server_id");
-			// $stmt->bindParam(':server_id', $server_id, PDO::PARAM_INT);
-			return $server_id;
+			return $r[0];
         } else {
-			return -1;
+			return null;
 		}
     }
 
