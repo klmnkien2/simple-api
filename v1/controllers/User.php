@@ -106,9 +106,20 @@ class User extends \SlimController\SlimController
 	public function friendListAction()
     {
 		$user_id = $this->param('user_id');
-		
+		$this->model->updateLastLogin($user_id);
         $friends = $this->model->getFriendList($user_id);
+        $this->filterInactiveFriend($friends);
         $this->echoRespnse(200, array('friends' => $friends));
+    }
+    
+    private function filterInactiveFriend(&$list) {
+        $current = time();
+        foreach ($list as &$friend) {
+            $delay_minute = ($current - $friend['last_active'])/60;
+            if ($delay_minute > 5) {
+                $friend['state'] = "-1";
+            }
+        }
     }
 	
 	public function addFriendAction()
@@ -178,9 +189,25 @@ class User extends \SlimController\SlimController
 		
 		$this->model->updateUserRoom($room_id, $user_id, $ip);
         $users = $this->model->getUserInRoom($room_id);
+        $users = $this->filterInactiveMember($users);
         $this->echoRespnse(200, array('users' => $users));
     }
 	
+    private function filterInactiveMember($list) {
+        $current = time();
+        $output_list = array();
+        foreach ($list as $user) {
+            $delay_minute = ($current - $user['last_active'])/60;
+            if ($delay_minute > 5) {
+                $this->model->deleteRoomUser($user['room_id'], $user['user_id']);
+                // [TODO] remove from vpn
+            } else {
+                $output_list[] = $user;
+            }
+        }
+        return $output_list;
+    }
+    
 	public function joinAction()
     {
         // reads multiple params only if they are POST

@@ -214,7 +214,7 @@ class User {
         $r2 = array();
 
         // Get friend send request to me
-        $sql = "SELECT f.*, u.user_name, u.user_id, u.avatar, u.status, u.state
+        $sql = "SELECT f.*, u.user_name, u.user_id, u.avatar, u.status, u.state, UNIX_TIMESTAMP(u.last_active) AS last_active
         	FROM user_caches u
             LEFT JOIN friends f ON f.user1 = u.user_id
             WHERE f.user2 = :user_id AND NOT(f.type=-1 AND f.ignore_type=1)";
@@ -226,7 +226,7 @@ class User {
         }
 
         // Get friend I send request to
-        $sql = "SELECT f.*, u.user_name, u.user_id, u.avatar, u.status, u.state
+        $sql = "SELECT f.*, u.user_name, u.user_id, u.avatar, u.status, u.state, UNIX_TIMESTAMP(u.last_active) AS last_active
         	FROM user_caches u
             LEFT JOIN friends f ON f.user2 = u.user_id
             WHERE f.user1 = :user_id AND NOT(f.type=-1 AND f.ignore_type=2)";
@@ -246,7 +246,7 @@ class User {
     public function getUserInRoom($room_id) {
         $r = array();
 
-        $sql = "SELECT ru.room_id, ru.ip, u.user_id, u.user_name, u.avatar, u.state
+        $sql = "SELECT ru.room_id, ru.ip, u.user_id, u.user_name, u.avatar, u.state, UNIX_TIMESTAMP(u.last_active) AS last_active
         	FROM room_users ru
             LEFT JOIN user_caches u ON ru.user_id = u.user_id 
         	WHERE ru.room_id = :room_id";
