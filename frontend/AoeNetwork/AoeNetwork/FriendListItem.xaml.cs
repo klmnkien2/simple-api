@@ -136,12 +136,12 @@ namespace AoeNetwork
                     {
                         existedUser.avatar = user.avatar;
 
-                        BitmapImage bi3 = new BitmapImage();
-                        bi3.BeginInit();
-                        bi3.UriSource = new Uri(user.avatar, UriKind.RelativeOrAbsolute);
-                        bi3.CacheOption = BitmapCacheOption.OnLoad;
-                        bi3.EndInit();
-                        existedItem.avatar.Source = bi3;
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.UriSource = new Uri(user.avatar, UriKind.RelativeOrAbsolute);
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        existedItem.avatar.Source = bitmap;
                     }
                 }
 

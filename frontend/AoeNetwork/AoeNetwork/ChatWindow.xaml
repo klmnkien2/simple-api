@@ -1,7 +1,8 @@
 ﻿<Window x:Class="AoeNetwork.ChatWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ChatWindow" Height="720" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="480" MinHeight="720" ResizeMode="NoResize" AllowsTransparency="True">
+        xmlns:local="clr-namespace:AoeNetwork;assembly=AoeNetwork"
+        Title="ChatWindow" Height="720" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="480" MinHeight="720" ResizeMode="NoResize" AllowsTransparency="True" Top="3">
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
@@ -10,7 +11,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
         <Image Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_left.png" Stretch="Fill"/>
 
@@ -26,7 +27,7 @@
                 <ColumnDefinition Width="24"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
             <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
             <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="10,0,57,0" Grid.ColumnSpan="2" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" RenderTransformOrigin="0.316,0.808" Height="40" VerticalContentAlignment="Center"/>
@@ -41,7 +42,7 @@
             <Border.BorderBrush>
                 <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
             </Border.BorderBrush>
-            <Grid>
+            <Grid VerticalAlignment="Top" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
@@ -49,7 +50,7 @@
                     <RowDefinition Height="70"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="40"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="100*"/>
                     <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
                 <Grid Background="Transparent">
@@ -64,15 +65,15 @@
                     </Grid.RowDefinitions>
                     <Image x:Name="userAvatar" Source="Images/user.png" Stretch="Fill" Grid.RowSpan="2" Margin="5" />
                     <WrapPanel Grid.Column="1" Grid.Row="0" Margin="5">
-                        <Label Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,0,5,0" />
+                        <Label x:Name="userName" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,0,5,0" />
                         <Image x:Name="userState" Source="Images/state_avail.png" Stretch="None"  />
                     </WrapPanel>
-                    <Label Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Level" Margin="5,0" />
+                    <Label x:Name="userLevel" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Level" Margin="5,0" />
                     <WrapPanel Grid.Column="2" Grid.Row="1" Margin="5">
                         <Image Source="Images/diamond.png"  Stretch="None"  />
-                        <Label Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="99" Grid.Row="1" />
+                        <Label x:Name="userDiamond" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="99" Grid.Row="1" />
                     </WrapPanel>
-                    <TextBox Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="11" Text="status..." Margin="5" />
+                    <TextBox x:Name="userStatus" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="11" Text="status..." Margin="5" />
                 </Grid>
                 <Grid Grid.Row="1" Margin="10,5,5,5">
                     <Grid.ColumnDefinitions>
@@ -85,7 +86,7 @@
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
                     <Image Grid.Column="0" Source="Images/search_left.png" Stretch="Fill"/>
-                    <TextBox Grid.Column="1" BorderThickness="0" Foreground="White" FontSize="12" Text="search..." Padding="5,0,0,0" VerticalContentAlignment="Center"  >
+                    <TextBox x:Name="userSearchBox" Grid.Column="1" BorderThickness="0" Foreground="White" FontSize="12" Text="search..." Padding="5,0,0,0" VerticalContentAlignment="Center" CaretBrush="White" TextChanged="userSearchBox_TextChanged"  >
                         <TextBox.Background>
                             <ImageBrush TileMode="Tile" ImageSource="Images/search_center.png"/>
                         </TextBox.Background>
@@ -170,6 +171,7 @@
                         </Border.BorderBrush>
                         <Label Content="Danh sách chặn" Grid.Column="1" Margin="10,0,0,0" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     </Border>
+                        
                     <Button Content="" BorderThickness="0,1,1,1" Height="25" Width="25" Grid.Row="4"  Grid.Column="1">
                         <Button.BorderBrush>
                             <ImageBrush ImageSource="Images/border.png"/>
@@ -179,10 +181,18 @@
                         </Button.Background>
 
                     </Button>
-
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="1" MinHeight="100">
+                        <StackPanel x:Name="recentListControl"  />
+                    </ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="3" MinHeight="100">
+                        <StackPanel x:Name="friendListControl" />
+                    </ScrollViewer>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="5" MinHeight="100">
+                        <StackPanel x:Name="ignoreListControl" />
+                    </ScrollViewer>
 
                 </Grid>
-                <Button x:Name="aoeGameButton" Content="" BorderBrush="{x:Null}" BorderThickness="0" Height="90" Width="100" Grid.Row="4"  >
+                <Button x:Name="aoeGameButton" Content="" BorderBrush="{x:Null}" BorderThickness="0" Height="90" Width="100" Grid.Row="4" Click="aoeGameButton_Click"  >
                     <Button.Background>
                         <ImageBrush ImageSource="Images/aoe.png"/>
                     </Button.Background>

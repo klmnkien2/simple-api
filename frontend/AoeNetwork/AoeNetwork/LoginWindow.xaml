@@ -59,7 +59,7 @@
                 <Label Content="Online" Canvas.Left="201" Canvas.Top="296" Foreground="White"/>
                 <Label Content="Offline" Canvas.Left="326" Canvas.Top="296" Foreground="White"/>
                 <Image x:Name="stateButton" Height="20" Canvas.Left="240" Canvas.Top="300" Width="81" Source="Images/available.png" Stretch="None" MouseDown="stateButton_MouseDown"/>
-                <CheckBox x:Name="rememberPassChk" Content="" Canvas.Left="114" Canvas.Top="255" Click="rememberPassChk_Click"/>
+                <CheckBox x:Name="rememberPassChk" Content="" Canvas.Left="114" Canvas.Top="255" />
                 <Grid Height="82" Canvas.Left="99" Canvas.Top="163" Width="277">
                     <Grid.Background>
                         <ImageBrush ImageSource="Images/login_border.png"/>

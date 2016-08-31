@@ -16,7 +16,6 @@ namespace AoeNetwork
         public AuthenController(LoginWindow view)
         {
             _view = view;
-            view.SetController(this);
         }
 
         public void LoadView()
@@ -83,7 +82,6 @@ namespace AoeNetwork
                     StaticValue.last_active = long.Parse(data["last_active"]);
                 }
 
-                MessageBox.Show("OK NGON.");
                 _view.GoChat();
             }
             catch (Exception ex)

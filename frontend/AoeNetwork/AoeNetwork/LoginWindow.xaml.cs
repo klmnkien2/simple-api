@@ -43,15 +43,16 @@ namespace AoeNetwork
         #region setup controller and share fields
         private int state = 1;
         AuthenController _controller;
-        public void SetController(AuthenController controller)
-        {
-            _controller = controller;
-        }
 
         public void ClearForm()
         {
             this.usernameTextbox.Clear();
             this.passwordTextbox.Clear();
+        }
+
+        public void ResetForm()
+        {
+            this.Window_Loaded(null, null);
         }
 
         public string UserName
@@ -93,20 +94,11 @@ namespace AoeNetwork
         {
             Dispatcher.Invoke(new Action(() => {
                 // close the form on the forms thread
-                //this.Hide();
+                this.Hide();
 
-                //ChatView view = new ChatView();
-                //view.Visible = false;
-
-                //ChatController controller = new ChatController(view);
-                //controller.LoadView();
-                //view.setRootView(this);
-
-                //PrivateController privateController = new PrivateController(view);
-                //privateController.LoadView();
-
-                //view.SetPrivateController(privateController);
-                //view.ShowDialog();
+                ChatWindow view = new ChatWindow();
+                view.setLoginWindow(this);
+                view.ShowDialog();
             }));
 
         }
@@ -175,11 +167,6 @@ namespace AoeNetwork
             {
                 loginButton_Click(sender, e);
             }
-        }
-
-        private void rememberPassChk_Click(object sender, RoutedEventArgs e)
-        {
-            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
