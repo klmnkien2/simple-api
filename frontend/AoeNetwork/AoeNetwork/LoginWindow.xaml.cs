@@ -78,8 +78,8 @@ namespace AoeNetwork
         public void NeedPay()
         {
             Dispatcher.Invoke(new Action(() => {
-                //RegisterForm form = new RegisterForm("http://trading.gametv.vn/api_app/need_to_pay");
-                //form.ShowDialog();
+                WebWindow browser = new WebWindow();
+                browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
             }));
         }
 
@@ -96,7 +96,7 @@ namespace AoeNetwork
                 // close the form on the forms thread
                 this.Hide();
 
-                ChatWindow view = new ChatWindow();
+                RoomWindow view = new RoomWindow();
                 view.setLoginWindow(this);
                 view.ShowDialog();
             }));
@@ -129,8 +129,8 @@ namespace AoeNetwork
 
         private void registerButton_Click(object sender, RoutedEventArgs e)
         {
-            //RegisterForm form = new RegisterForm("http://trading.gametv.vn/api_app/app_register");
-            //form.ShowDialog();
+            WebWindow browser = new WebWindow();
+            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
         }
 
         private void stateButton_MouseDown(object sender, MouseButtonEventArgs e)
@@ -149,8 +149,8 @@ namespace AoeNetwork
 
         private void forgotPassLink_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //RegisterForm form = new RegisterForm("http://trading.gametv.vn/api_app/app_register");
-            //form.ShowDialog();
+            WebWindow browser = new WebWindow();
+            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
         }
 
         private void usernameTextbox_KeyDown(object sender, KeyEventArgs e)

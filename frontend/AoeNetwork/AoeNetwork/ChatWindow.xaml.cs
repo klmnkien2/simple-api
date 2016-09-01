@@ -49,7 +49,7 @@ namespace AoeNetwork
         #region controller and their callback
         ChatController chatController;
         //PrivateController privateController = null;
-        //RoomController roomController = null;
+        RoomController roomController = null;
 
         RoomWindow roomView = null;
         AddFriendWindow addFriendView;
@@ -212,11 +212,11 @@ namespace AoeNetwork
                 }
 
                 roomView = new RoomWindow();
-                //roomView.SetChatView(this);
+                roomView.SetChatView(this);
                 roomView.Show();
                 roomView.Focus();
-                //roomController = new RoomController(roomView);
-                //roomController.LoadView();
+                roomController = new RoomController(roomView);
+                roomController.LoadView();
             }));
         }
     }
