@@ -32,6 +32,7 @@ namespace AoeNetwork
             privateController.LoadView();
 
             initFriendLists();
+            tabfriendText_MouseDown(null, null);//select tab friend;
         }
 
         #region action for extend MainWindow (title bar, border, ...)
@@ -63,6 +64,10 @@ namespace AoeNetwork
         Dictionary<int, PrivateWindow> privateViews = new Dictionary<int, PrivateWindow>();
         Dictionary<int, Friend> mapFriend = new Dictionary<int, Friend>();
 
+        public PrivateController getPrivateController()
+        {
+            return this.privateController;
+        }
 
         public void setLoginWindow(LoginWindow loginView)
         {
@@ -177,6 +182,36 @@ namespace AoeNetwork
             loginView.Show();
             loginView.LoginEnable(true);
             loginView.ResetForm();
+        }
+
+        public void OpenPrivate(Friend friendInfo, bool focus = false)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                PrivateWindow privateView;
+                bool needNew = false;
+                if (!privateViews.TryGetValue(friendInfo.user_id, out privateView))
+                {
+                    needNew = true;
+                }
+
+                if (needNew)
+                {
+                    privateView = new PrivateWindow();
+                    privateView.SetController(privateController);
+                    privateView.SetChatView(this);
+
+                    privateView.SetFriendInfo(friendInfo);
+                    privateViews.Add(friendInfo.user_id, privateView);
+                }
+
+                privateView.Show();
+
+                if (focus)
+                {
+                    privateView.Focus();
+                }
+            }));
+
         }
 
         public void AddPrivateMessage(APIMessage message)
@@ -340,7 +375,6 @@ namespace AoeNetwork
 
         private void tabrecentText_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("gan day");
             this.gridListContainer.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
             this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
             this.gridListContainer.RowDefinitions[5].Height = new GridLength(0);
@@ -348,7 +382,6 @@ namespace AoeNetwork
 
         private void tabfriendText_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("ban be");
             this.gridListContainer.RowDefinitions[3].Height = new GridLength(100, GridUnitType.Star);
             this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
             this.gridListContainer.RowDefinitions[5].Height = new GridLength(0);
@@ -356,7 +389,6 @@ namespace AoeNetwork
 
         private void tabIgnoretext_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("ds chan");
             this.gridListContainer.RowDefinitions[5].Height = new GridLength(100, GridUnitType.Star);
             this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
             this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);

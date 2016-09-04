@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -17,6 +18,8 @@ namespace AoeNetwork
         {
             this.parentList = parentList;
             this.parentWindow = parentWindow;
+
+            InitContextMenu();
         }
 
         class DataItem
@@ -40,43 +43,42 @@ namespace AoeNetwork
                 return this._IDs;
             }
         }
-        private int _SelectedContextId = -1;
-        public int SelectedContextId
-        {
-            get
-            {
-                return _SelectedContextId;
-            }
-            set
-            {
-                _SelectedContextId = value;
-            }
-        }
 
-        public Friend SelectedContextData
+        private ContextMenu contextMenu;
+        MenuItem acceptFriendMenu;
+        MenuItem denyFriendMenu;
+        MenuItem removeFriendMenu;
+        MenuItem ignoreFriendMenu;
+        MenuItem noIgonreFriendMenu;
+        private void InitContextMenu()
         {
-            get
-            {
-                DataItem existedItem = null;
-                this.dataItems.TryGetValue(this._SelectedContextId, out existedItem);
-                if (existedItem != null)
-                {
-                    return existedItem.user;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+            contextMenu = new ContextMenu();
 
-        private Friend _SelectedClickData = null;
-        public Friend SelectedClickData
-        {
-            get
-            {
-                return _SelectedClickData;
-            }
+            acceptFriendMenu = new MenuItem();
+            acceptFriendMenu.Header = "Dong y ket ban";
+            acceptFriendMenu.Click += acceptFriendItem_Click;
+
+            denyFriendMenu = new MenuItem();
+            denyFriendMenu.Header = "Tu choi ket ban";
+            denyFriendMenu.Click += denyFriendItem_Click;
+
+            removeFriendMenu = new MenuItem();
+            removeFriendMenu.Header = "Huy ket ban";
+            removeFriendMenu.Click += removeFriendItem_Click;
+
+            ignoreFriendMenu = new MenuItem();
+            ignoreFriendMenu.Header = "Chan nguoi nay";
+            ignoreFriendMenu.Click += ignoreFriendItem_Click;
+
+            noIgonreFriendMenu = new MenuItem();
+            noIgonreFriendMenu.Header = "Bo chan nguoi nay";
+            noIgonreFriendMenu.Click += removeIgnoreItem_Click;
+
+            contextMenu.Items.Add(acceptFriendMenu);
+            contextMenu.Items.Add(denyFriendMenu);
+            contextMenu.Items.Add(removeFriendMenu);
+            contextMenu.Items.Add(ignoreFriendMenu);
+            contextMenu.Items.Add(noIgonreFriendMenu);
         }
 
         public void deleteUser(int user_id)
@@ -159,8 +161,6 @@ namespace AoeNetwork
             status.Content = user.status;
             Grid.SetRow(status, 1);
             Grid.SetColumn(status, 1);
-            //status.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listItem_MouseDown);
-            //status.MouseDoubleClick += new MouseEventHandler(this.listItem_MouseDoubleClick);
 
             Image state = new Image();
             state.StretchDirection = StretchDirection.Both;
@@ -185,6 +185,9 @@ namespace AoeNetwork
             Grid.SetRowSpan(avatar, 2);
 
             Grid itemPanel = new Grid();
+            itemPanel.Tag = user;
+            itemPanel.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
+            itemPanel.MouseRightButtonDown += itemPanel_MouseRightButtonDown;
             itemPanel.Children.Clear();
 
             // Adding Rows and Colums to Grid.
@@ -232,6 +235,23 @@ namespace AoeNetwork
             this.parentList.Children.Add(itemPanel);
         }
 
+        void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                Friend user = (sender as Grid).Tag as Friend;
+                if (user != null)
+                {
+                    parentWindow.OpenPrivate(user, true);
+                }
+            }
+        }
+
+        void itemPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //context menu stuff
+        }
+
         public void SearchByString(string searchKey)
         {
             foreach (KeyValuePair<int, DataItem> entry in dataItems)
@@ -262,5 +282,52 @@ namespace AoeNetwork
 
             return bitmap;
         }
+
+        #region contextmenu action
+        private void acceptFriendItem_Click(object sender, EventArgs e)
+        {
+            Friend friend = (sender as Grid).Tag as Friend;
+            if (friend != null)
+            {
+                parentWindow.getPrivateController().UpdateFriendStatus(friend, 1, 0);
+            }
+        }
+
+        private void denyFriendItem_Click(object sender, EventArgs e)
+        {
+            Friend friend = (sender as Grid).Tag as Friend;
+            if (friend != null)
+            {
+                parentWindow.getPrivateController().UpdateFriendStatus(friend, -2, 0);
+            }
+        }
+
+        private void removeFriendItem_Click(object sender, EventArgs e)
+        {
+            Friend friend = (sender as Grid).Tag as Friend;
+            if (friend != null)
+            {
+                parentWindow.getPrivateController().UpdateFriendStatus(friend, -2, 0);
+            }
+        }
+
+        private void ignoreFriendItem_Click(object sender, EventArgs e)
+        {
+            Friend friend = (sender as Grid).Tag as Friend;
+            if (friend != null)
+            {
+                parentWindow.getPrivateController().UpdateFriendStatus(friend, -1, -2);
+            }
+        }
+
+        private void removeIgnoreItem_Click(object sender, EventArgs e)
+        {
+            Friend friend = (sender as Grid).Tag as Friend;
+            if (friend != null)
+            {
+                parentWindow.getPrivateController().UpdateFriendStatus(friend, 0, -2);
+            }
+        }
+        #endregion
     }
 }

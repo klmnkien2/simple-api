@@ -61,9 +61,9 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="friendState" Source="Images/available.png" Stretch="Fill" Margin="5,0,0,0" Height="15" Width="15" HorizontalAlignment="Left" />
+                    <Image x:Name="friendState" Source="Images/state_avail.png" Stretch="Fill" Margin="5,0,0,0" Height="15" Width="15" HorizontalAlignment="Left" />
                     <Label x:Name="friendStatus" Foreground="White" FontSize="14" VerticalContentAlignment="Center" Content="Available" Margin="25,0,0,0" />
-                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,10,0">
                         <Button x:Name="btnAcceptFriend" Content="Accept Friend" FontSize="11" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnAcceptFriend_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
@@ -74,12 +74,12 @@
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btnIgnore" Content="Ignore Friend" Width="90" FontSize="11" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnIgnore_Click">
+                        <Button x:Name="btnIgnore" Content="Ignore Friend" Width="90" FontSize="11" BorderThickness="0" Foreground="White" Height="30" Margin="0" Click="btnIgnore_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btnRemoveIgnore" FontSize="11" Content="Remove Ignore" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnRemoveIgnore_Click">
+                        <Button x:Name="btnRemoveIgnore" FontSize="11" Content="Remove Ignore" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0" Click="btnRemoveIgnore_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
@@ -93,7 +93,7 @@
                     <Border.BorderBrush>
                         <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
                     </Border.BorderBrush>
-                    <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent"/>
+                    <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent" Padding="0,20,0,0"/>
                 </Border>
                 <Label x:Name="loadMoreLbl" Content="Load more messages" Grid.Row="1" Grid.ColumnSpan="2" Foreground="White" VerticalAlignment="Top" VerticalContentAlignment="Center" Padding="5" Margin="0,10,0,0" HorizontalContentAlignment="Center" MouseDown="loadMoreLbl_MouseDown" />
                 <TextBox x:Name="messageBox" Grid.Row="2" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" Margin="10,0,5,10" >

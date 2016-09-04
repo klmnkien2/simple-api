@@ -64,7 +64,7 @@ namespace AoeNetwork
 
             if (friend.state == 1)
             {
-                this.friendState.Source = (ImageSource)Resources["state_avail"];
+                this.friendState.Source = SystemUtils.getResource("state_avail");
                 if (friend.status == null || friend.status == "")
                 {
                     friend.status = "Available";
@@ -78,7 +78,7 @@ namespace AoeNetwork
                 }
                 if (friend.state == 0)
                 {
-                    this.friendState.Source = (ImageSource)Resources["state_invi"];
+                    this.friendState.Source = SystemUtils.getResource("state_invi");
                 }
             }
             this.friendStatus.Content = friend.status;
@@ -86,23 +86,23 @@ namespace AoeNetwork
             // CHeck button showing
             if (friend.type == 1)
             {
-                this.btnAcceptFriend.Visibility = Visibility.Hidden;
-                this.btnDenyFriend.Visibility = Visibility.Hidden;
-                this.btnIgnore.Visibility = Visibility.Visible;
-                this.btnRemoveIgnore.Visibility = Visibility.Hidden;
+                this.btnAcceptFriend.Width = 0;
+                this.btnDenyFriend.Width = 0;
+                this.btnIgnore.Width = 90;
+                this.btnRemoveIgnore.Width = 0;
             }
             else if (friend.type == 0)
             {
-                this.btnAcceptFriend.Visibility = Visibility.Visible;
-                this.btnDenyFriend.Visibility = Visibility.Visible;
-                this.btnIgnore.Visibility = Visibility.Hidden;
+                this.btnAcceptFriend.Width = 90;
+                this.btnDenyFriend.Width = 90;
+                this.btnIgnore.Width = 0;
             }
             else if (friend.type == -1)
             {
-                this.btnAcceptFriend.Visibility = Visibility.Hidden;
-                this.btnDenyFriend.Visibility = Visibility.Hidden;
-                this.btnIgnore.Visibility = Visibility.Hidden;
-                this.btnRemoveIgnore.Visibility = Visibility.Visible;
+                this.btnAcceptFriend.Width = 0;
+                this.btnDenyFriend.Width = 0;
+                this.btnIgnore.Width = 0;
+                this.btnRemoveIgnore.Width = 90;
             }
         }
 
