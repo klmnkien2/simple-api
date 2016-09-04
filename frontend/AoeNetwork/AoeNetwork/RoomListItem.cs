@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -17,6 +18,44 @@ namespace AoeNetwork
         {
             this.parentList = parentList;
             this.parentWindow = parentWindow;
+            InitContextMenu();
+        }
+
+        private ContextMenu contextMenu;
+        MenuItem showUsername;
+        MenuItem showUserIp;
+        MenuItem copyIpMenu;
+        private void InitContextMenu()
+        {
+            contextMenu = new ContextMenu();
+            
+            showUsername = new MenuItem();
+            showUsername.IsEnabled = false;
+            showUserIp = new MenuItem();
+            showUserIp.IsEnabled = false;
+            copyIpMenu = new MenuItem();
+            copyIpMenu.Header = "Copy IP Address";
+            copyIpMenu.Click += copyIpMenu_Click;
+
+            contextMenu.Items.Add(showUsername);
+            contextMenu.Items.Add(showUserIp);
+            contextMenu.Items.Add(new Separator());
+            contextMenu.Items.Add(copyIpMenu);
+        }
+
+        void copyIpMenu_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.Clipboard.SetText(copyIpMenu.Header as string);
+        }
+
+        private void listItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Grid container = sender as Grid;
+            UserCache user = (UserCache)container.Tag;
+            contextMenu.PlacementTarget = container;
+            showUsername.Header = user.user_name;
+            showUserIp.Header = user.ip;
+            contextMenu.IsOpen = true;
         }
 
         class DataItem
@@ -36,44 +75,6 @@ namespace AoeNetwork
             get
             {
                 return this._IDs;
-            }
-        }
-        private int _SelectedContextId = -1;
-        public int SelectedContextId
-        {
-            get
-            {
-                return _SelectedContextId;
-            }
-            set
-            {
-                _SelectedContextId = value;
-            }
-        }
-
-        public UserCache SelectedContextData
-        {
-            get
-            {
-                DataItem existedItem = null;
-                this.dataItems.TryGetValue(this._SelectedContextId, out existedItem);
-                if (existedItem != null)
-                {
-                    return existedItem.user;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        private UserCache _SelectedClickData = null;
-        public UserCache SelectedClickData
-        {
-            get
-            {
-                return _SelectedClickData;
             }
         }
 
@@ -123,17 +124,26 @@ namespace AoeNetwork
             }
 
             Label indexLbl = new Label();
-            indexLbl.Content = _IDs.Count + 1;
+            indexLbl.Content = (_IDs.Count + 1) + ".";
+            indexLbl.VerticalContentAlignment = VerticalAlignment.Center;
+            indexLbl.Foreground = Brushes.White;
+            indexLbl.FontWeight = FontWeights.Bold;
             Grid.SetRow(indexLbl, 0);
             Grid.SetColumn(indexLbl, 0);
 
             Label name = new Label();
+            name.Foreground = Brushes.White;
+            name.VerticalContentAlignment = VerticalAlignment.Center;
+            name.FontWeight = FontWeights.Bold;
             name.Tag = user.user_id;
             name.Content = user.user_name;
             Grid.SetRow(name, 0);
             Grid.SetColumn(name, 1);
 
             Image state = new Image();
+            state.StretchDirection = StretchDirection.Both;
+            state.Width = 12;
+            state.Height = 12;
             Grid.SetRow(state, 0);
             Grid.SetColumn(state, 2);
             if (user.state == 1)
@@ -146,14 +156,16 @@ namespace AoeNetwork
             }
 
             Grid itemPanel = new Grid();
+            itemPanel.Tag = user;
             itemPanel.Children.Clear();
+            itemPanel.MouseDown += this.listItem_MouseDown;
 
             // Adding Rows and Colums to Grid.
             RowDefinition[] rows = new RowDefinition[1];
             ColumnDefinition[] columns = new ColumnDefinition[3];
             // Draw Rows.
             rows[0] = new RowDefinition();
-            rows[0].Height = new GridLength(50);
+            rows[0].Height = new GridLength(30);
             itemPanel.RowDefinitions.Add(rows[0]);
 
             // Draw Columns.

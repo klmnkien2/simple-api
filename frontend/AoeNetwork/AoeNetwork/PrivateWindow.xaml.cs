@@ -23,5 +23,196 @@ namespace AoeNetwork
         {
             InitializeComponent();
         }
+
+        #region action for extend MainWindow (title bar, border, ...)
+        private void coolform_titletext_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+        private void coolform_close_btn_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void coolform_mini_btn_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Minimized;
+        }
+        #endregion
+
+        #region IntefaceView implementation
+        PrivateController privateController;
+        Friend friend;
+        int last_view_id = 0;
+        ChatWindow chatView;
+
+        public void SetController(PrivateController controller)
+        {
+            privateController = controller;
+        }
+
+        public void SetChatView(ChatWindow chatView)
+        {
+            this.chatView = chatView;
+        }
+
+        public void SetFriendInfo(Friend friend)
+        {
+            this.friend = friend;
+            this.coolform_titletext.Content = friend.user_name;
+
+            if (friend.state == 1)
+            {
+                this.friendState.Source = (ImageSource)Resources["state_avail"];
+                if (friend.status == null || friend.status == "")
+                {
+                    friend.status = "Available";
+                }
+            }
+            else
+            {
+                if (friend.status == null || friend.status == "")
+                {
+                    friend.status = "Offline";
+                }
+                if (friend.state == 0)
+                {
+                    this.friendState.Source = (ImageSource)Resources["state_invi"];
+                }
+            }
+            this.friendStatus.Content = friend.status;
+
+            // CHeck button showing
+            if (friend.type == 1)
+            {
+                this.btnAcceptFriend.Visibility = Visibility.Hidden;
+                this.btnDenyFriend.Visibility = Visibility.Hidden;
+                this.btnIgnore.Visibility = Visibility.Visible;
+                this.btnRemoveIgnore.Visibility = Visibility.Hidden;
+            }
+            else if (friend.type == 0)
+            {
+                this.btnAcceptFriend.Visibility = Visibility.Visible;
+                this.btnDenyFriend.Visibility = Visibility.Visible;
+                this.btnIgnore.Visibility = Visibility.Hidden;
+            }
+            else if (friend.type == -1)
+            {
+                this.btnAcceptFriend.Visibility = Visibility.Hidden;
+                this.btnDenyFriend.Visibility = Visibility.Hidden;
+                this.btnIgnore.Visibility = Visibility.Hidden;
+                this.btnRemoveIgnore.Visibility = Visibility.Visible;
+            }
+        }
+
+        public int GetLastViewId()
+        {
+            return this.last_view_id;
+        }
+
+        public void SetLastViewId(int last_view_id)
+        {
+            this.last_view_id = last_view_id;
+        }
+
+        public void RenderMessage(APIMessage message)
+        {
+            string extend = "";
+            //DateTime mesDate = new DateTime();
+            //extend += mesDate.ToString("[H:mm:ss]");
+            if (message.notify == 0)
+            {
+                if (message.user_id == StaticValue.user_id)
+                {
+                    extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                }
+                else
+                {
+                    extend += ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                }
+
+            }
+            else if (message.notify == 1)
+            {
+                extend += ("<span style='color:red'>[Thông báo]:</span>" + "<span style='color:white'>" + message.message + "</span>");
+            }
+            htmlChatContent.Text += YahooIcon.translateText("<div>" + extend + "</div>");
+            if (last_view_id == 0 || last_view_id > message.message_id)
+            {
+                last_view_id = message.message_id;
+            }
+        }
+
+        public void RenderOldMessage(APIMessage message)
+        {
+            string extend = "";
+            //DateTime mesDate = new DateTime();
+            //extend += mesDate.ToString("[H:mm:ss]");
+            if (message.notify == 0)
+            {
+                if (message.user_id == StaticValue.user_id)
+                {
+                    extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                }
+                else
+                {
+                    extend += ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                }
+
+            }
+            htmlChatContent.Text = YahooIcon.translateText("<div>" + extend + "</div>") + htmlChatContent.Text;
+            if (last_view_id == 0 || last_view_id > message.message_id)
+            {
+                last_view_id = message.message_id;
+            }
+        }
+        #endregion
+
+        #region handle events
+        private void buttonEnter_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.messageBox.Text.Trim() != "")
+            {
+                privateController.SendMessage(this.friend, this.messageBox.Text.Trim());
+                this.messageBox.Text = "";
+            }
+        }
+
+        private void messageBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                buttonEnter_Click(null, null);
+            }
+        }
+
+        private void loadMoreLbl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            privateController.HistoryMessage(this.friend.user_id, this.last_view_id);
+        }
+
+        private void btnAcceptFriend_Click(object sender, RoutedEventArgs e)
+        {
+            privateController.UpdateFriendStatus(this.friend, 1, 0);
+        }
+
+        private void btnDenyFriend_Click(object sender, RoutedEventArgs e)
+        {
+            privateController.UpdateFriendStatus(this.friend, -2, 0);
+        }
+
+        private void btnIgnore_Click(object sender, RoutedEventArgs e)
+        {
+            privateController.UpdateFriendStatus(this.friend, 0, -2);//ignore type can xem xet this.user
+        }
+
+        private void btnRemoveIgnore_Click(object sender, RoutedEventArgs e)
+        {
+            privateController.UpdateFriendStatus(this.friend, 0, -2);//ignore type can xem xet this.user
+        }
+
+        #endregion
     }
 }

@@ -143,12 +143,18 @@ namespace AoeNetwork
             }
 
             Label name = new Label();
+            name.Foreground = Brushes.White;
+            name.VerticalContentAlignment = VerticalAlignment.Bottom;
+            name.FontWeight = FontWeights.Bold;
             name.Tag = user.user_id;
             name.Content = user.user_name;
             Grid.SetRow(name, 0);
             Grid.SetColumn(name, 1);
 
             Label status = new Label();
+            status.VerticalContentAlignment = VerticalAlignment.Top;
+            status.Foreground = Brushes.White;
+            status.FontSize = status.FontSize - 2;
             status.Tag = user.user_id;
             status.Content = user.status;
             Grid.SetRow(status, 1);
@@ -157,6 +163,9 @@ namespace AoeNetwork
             //status.MouseDoubleClick += new MouseEventHandler(this.listItem_MouseDoubleClick);
 
             Image state = new Image();
+            state.StretchDirection = StretchDirection.Both;
+            state.Width = 12;
+            state.Height = 12;
             Grid.SetRow(state, 0);
             Grid.SetColumn(state, 2);
             Grid.SetRowSpan(state, 2);

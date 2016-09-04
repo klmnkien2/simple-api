@@ -1,7 +1,8 @@
-﻿<Window x:Class="AoeNetwork.AddFriendWindow"
+﻿<Window x:Class="AoeNetwork.SelectRunWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddFriendWindow" Height="300" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" ResizeMode="NoResize" AllowsTransparency="True" Top="3">
+        xmlns:local="clr-namespace:AoeNetwork;assembly=AoeNetwork"
+        Title="SelectRunWindow" Height="200" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White"  ResizeMode="NoResize" AllowsTransparency="True" Top="3" Loaded="Window_Loaded_1">
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
@@ -42,11 +43,14 @@
                 <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
             </Border.BorderBrush>
             <Grid>
-                <Label Content="User name" HorizontalAlignment="Left" Margin="48,10,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <TextBox x:Name="username" HorizontalAlignment="Left" Height="23" Margin="48,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" KeyDown="username_KeyDown"/>
-                <Label Content="Message" HorizontalAlignment="Left" Margin="48,78,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <TextBox x:Name="message" HorizontalAlignment="Left" Height="77" Margin="48,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" KeyDown="message_KeyDown"/>
-                <Button x:Name="submit" Content="Ket ban" HorizontalAlignment="Left" Margin="197,200,0,0" VerticalAlignment="Top" Width="75" Click="submit_Click" BorderThickness="0" Foreground="White" Height="30">
+                <TextBox x:Name="textboxLink" HorizontalAlignment="Left" Height="23" Margin="56,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="368"/>
+                <Label Content="Duong dan den game de che" HorizontalAlignment="Left" Margin="56,26,0,0" VerticalAlignment="Top" Foreground="White"/>
+                <Button x:Name="btnComplete" Content="Hoan tat" HorizontalAlignment="Left" Margin="137,102,0,0" VerticalAlignment="Top" Width="83" Foreground="White" BorderThickness="0" Height="30" Click="btnComplete_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/friend_tab.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnSelect" Content="Chon URL" HorizontalAlignment="Left" Margin="260,102,0,0" VerticalAlignment="Top" Width="75" Foreground="White" BorderThickness="0" Height="30" Click="btnSelect_Click">
                     <Button.Background>
                         <ImageBrush ImageSource="Images/friend_tab.png"/>
                     </Button.Background>

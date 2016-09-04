@@ -95,6 +95,9 @@
     <Compile Include="RoomWindow.xaml.cs">
       <DependentUpon>RoomWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SelectRunWindow.xaml.cs">
+      <DependentUpon>SelectRunWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WebWindow.xaml.cs">
       <DependentUpon>WebWindow.xaml</DependentUpon>
     </Compile>
@@ -149,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RoomWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectRunWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

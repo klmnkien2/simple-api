@@ -27,6 +27,11 @@ namespace AoeNetwork
         }
 
         #region action for extend MainWindow (title bar, border, ...)
+        private void coolform_titletext_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
         private void coolform_close_btn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Hide();
@@ -96,7 +101,7 @@ namespace AoeNetwork
                 // close the form on the forms thread
                 this.Hide();
 
-                RoomWindow view = new RoomWindow();
+                ChatWindow view = new ChatWindow();
                 view.setLoginWindow(this);
                 view.ShowDialog();
             }));
@@ -188,5 +193,6 @@ namespace AoeNetwork
         }
 
         #endregion
+
     }
 }

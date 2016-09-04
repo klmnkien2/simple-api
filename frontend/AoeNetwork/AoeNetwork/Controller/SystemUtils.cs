@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace AoeNetwork
 {
@@ -166,6 +167,26 @@ namespace AoeNetwork
             {
                 //LOG can not run file
             }
+        }
+
+        public static BitmapImage getResource(string name)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri("pack://application:,,,/Images/" + name + ".png");
+            bitmap.EndInit();
+
+            return bitmap;
+        }
+
+        public static BitmapImage getImageUrl(string url)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
+            bitmap.EndInit();
+
+            return bitmap;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp.Extensions.MonoHttp;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -27,10 +28,16 @@ namespace AoeNetwork
             InitializeComponent();
 
             InitTabView();
-            InitChatHistory();
+            InitUserList();
+            DisplayLoadingGame(false);
         }
 
         #region action for extend MainWindow (title bar, border, ...)
+        private void coolform_titletext_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
         private void coolform_close_btn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.Hide();
@@ -43,7 +50,9 @@ namespace AoeNetwork
         #endregion
 
         private ChatWindow chatView;
+        private SelectRunWindow selectRunWindow;
         private RoomController roomController;
+        private RoomListItem userList;
         public void SetRoomController(RoomController roomController)
         {
             this.roomController = roomController;
@@ -60,21 +69,33 @@ namespace AoeNetwork
             set { this.last_view_id = value; }
         }
 
-        private HtmlPanel htmlChatContent;
-        private void InitChatHistory()
-        {
-            htmlChatContent = new HtmlPanel();
-            htmlChatContent.Text = "";
-            //htmlChatContent.Dock = DockStyle.Fill;
-            //htmlChatContent.BackColor = Color.Transparent;
-            //htmlChatContent.BorderStyle = BorderStyle.None;
-            this.chatHistoryContainer.Child = htmlChatContent;
-        }
+
+        #region private function, init function...
 
         private void InitTabView() 
         {
             tabHome_Click(null, null);
         }
+        
+        private void InitUserList()
+        {
+            this.userList = new RoomListItem(this, this.userListControl);
+        }
+
+        private void DisplayLoadingGame(bool loading)
+        {
+            if (loading)
+            {
+                this.tabGameContent.RowDefinitions[1].Height = new GridLength(30);
+                this.tabGameContent.RowDefinitions[2].Height = new GridLength(40);
+            }
+            else
+            {
+                this.tabGameContent.RowDefinitions[1].Height = new GridLength(0);
+                this.tabGameContent.RowDefinitions[2].Height = new GridLength(0);
+            }
+        }
+        #endregion
 
         #region controller callback
         public void AddPrivateMessage(APIMessage message)
@@ -83,7 +104,7 @@ namespace AoeNetwork
                 string extend = "";
                 //DateTime mesDate = new DateTime();
                 //extend += mesDate.ToString("[H:mm:ss]");
-                extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
                 htmlChatContent.Text += YahooIcon.translateText("<div>" + extend + "</div>");
 
             }));
@@ -102,17 +123,17 @@ namespace AoeNetwork
                     {
                         if (message.user_id == StaticValue.user_id)
                         {
-                            extend = ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                            extend = ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
                         }
                         else
                         {
-                            extend = ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                            extend = ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
                         }
 
                     }
                     else if (message.notify == 1)
                     {
-                        extend = ("<span style='color:red'>[Thông báo]:</span>" + "<span style='color:white'>" + message.message + "</span>");
+                        extend = ("<span style='color:red'>[Thông báo]:</span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
                     }
                     if (extend != "")
                     {
@@ -139,11 +160,11 @@ namespace AoeNetwork
                     {
                         if (message.user_id == StaticValue.user_id)
                         {
-                            extend = ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                            extend = ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
                         }
                         else
                         {
-                            extend = ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                            extend = ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
                         }
 
                     }
@@ -162,62 +183,64 @@ namespace AoeNetwork
         public void SetAdsInfo(string url, string image, int type)
         {
             Dispatcher.Invoke(new Action(() => {
-                //if (type == 0) // banner
-                //{
-                //    this.bannerAd.ImageLocation = image;
+                if (type == 0) // banner
+                {
+                    this.bannerAds.Source = SystemUtils.getImageUrl(image);
 
-                //}
-                //else if (type == 1)
-                //{
-                //    this.adImage1.ImageLocation = image;
-                //}
-                //else if (type == 2)
-                //{
-                //    this.adImage2.ImageLocation = image;
-                //}
+                }
+                else if (type == 1)
+                {
+                    this.adsPic1.Source = SystemUtils.getImageUrl(image);
+                }
+                else if (type == 2)
+                {
+                    this.adsPic2.Source = SystemUtils.getImageUrl(image);
+                }
             }));
         }
 
         public void SetTreeRoom(DataTable dataTable)
         {
             Dispatcher.Invoke(new Action(() => {
-                //treeAddNodes(null, dataTable);
-                //this.gameTreeView.ExpandAll();
+                treeAddNodes(null, dataTable);
             }));
         }
 
-        //private void treeAddNodes(TreeNode parent, DataTable dataTable)
-        //{
-        //    foreach (DataRow row in dataTable.Rows)
-        //    {
-        //        Room room = new Room();
-        //        room.room_id = int.Parse(row["room_id"].ToString());
-        //        room.room_name = row["name"].ToString();
-        //        room.server_id = row["server_id"].ToString();
-        //        room.parent_id = int.Parse(row["parent_id"].ToString());
-        //        room.host = row["host"].ToString();
-        //        room.port = row["port"].ToString();
-        //        room.hub = row["hub"].ToString();
+        private void treeAddNodes(TreeViewItem parent, DataTable dataTable)
+        {
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Room room = new Room();
+                room.room_id = int.Parse(row["room_id"].ToString());
+                room.room_name = row["name"].ToString();
+                room.server_id = row["server_id"].ToString();
+                room.parent_id = int.Parse(row["parent_id"].ToString());
+                room.host = row["host"].ToString();
+                room.port = row["port"].ToString();
+                room.hub = row["hub"].ToString();
 
-        //        TreeNode node = new TreeNode(room.room_name);
-        //        node.Tag = room;
-        //        if (parent != null)
-        //        {
-        //            parent.Nodes.Add(node);
-        //        }
-        //        else
-        //        {
-        //            this.gameTreeView.Nodes.Add(node);
-        //        }
+                TreeViewItem node = new TreeViewItem();
+                node.IsExpanded = true;
+                node.Header = room.room_name;
+                node.Tag = room;
+                node.MouseDoubleClick += this.GameTreeItemMouseDoubleClick;
+                if (parent != null)
+                {
+                    parent.Items.Add(node);
+                }
+                else
+                {
+                    this.GameTreeView.Items.Add(node);
+                }
 
-        //        if (row.Table.Columns.Contains("child") && row["child"] is DataTable)
-        //        {
-        //            DataTable child = (DataTable)row["child"];
+                if (row.Table.Columns.Contains("child") && row["child"] is DataTable)
+                {
+                    DataTable child = (DataTable)row["child"];
 
-        //            treeAddNodes(node, child);
-        //        }
-        //    }
-        //}
+                    treeAddNodes(node, child);
+                }
+            }
+        }
 
         private bool isRoomSet = false;
         public void SuccessJoinRoom(Room room)
@@ -226,7 +249,7 @@ namespace AoeNetwork
                 isRoomSet = true;
                 roomNameLbl.Content = room.room_name;
                 tabRoom_Click(null, null);
-                //this.loadingselect.Height = 0;
+                DisplayLoadingGame(false);
 
                 roomController.LoadUsers();
             }));
@@ -239,7 +262,7 @@ namespace AoeNetwork
                 IList base_items = new ArrayList();
                 foreach (UserCache user in dataSource)
                 {
-                    //this.tableListUser.addUser(user);
+                    this.userList.addUser(user);
                 }
             }));
 
@@ -249,7 +272,16 @@ namespace AoeNetwork
         #region Events handle
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Start");
+            Properties.Settings.Default.Reload();
+            var url = Properties.Settings.Default["RUN_URL"].ToString();
+            if (url == "")
+            {
+                buttonSettting_Click(null, null);
+            }
+            else
+            {
+                SystemUtils.OpenGame(url);
+            }
         }
 
         private void buttonEnter_Click(object sender, RoutedEventArgs e)
@@ -267,16 +299,23 @@ namespace AoeNetwork
 
         private void buttonSettting_Click(object sender, RoutedEventArgs e)
         {
-
+            selectRunWindow = new SelectRunWindow();
+            selectRunWindow.ShowDialog();
         }
 
         private void tabHome_Click(object sender, RoutedEventArgs e)
         {
             this.windowAllContentGrid.ColumnDefinitions[1].Width = new GridLength(0);//init 240
+            this.tabGameContent.Visibility = Visibility.Hidden;
+            this.tabHomeContent.Visibility = Visibility.Visible;
+            this.tabRoomContent.Visibility = Visibility.Hidden;
         }
 
         private void tabGame_Click(object sender, RoutedEventArgs e)
         {
+            this.tabGameContent.Visibility = Visibility.Visible;
+            this.tabHomeContent.Visibility = Visibility.Hidden;
+            this.tabRoomContent.Visibility = Visibility.Hidden;
             this.windowAllContentGrid.ColumnDefinitions[1].Width = new GridLength(0);//init 240
         }
 
@@ -287,6 +326,9 @@ namespace AoeNetwork
                 MessageBox.Show("Bạn chưa tham gia phòng nào!");
                 return;
             }
+            this.tabGameContent.Visibility = Visibility.Hidden;
+            this.tabHomeContent.Visibility = Visibility.Hidden;
+            this.tabRoomContent.Visibility = Visibility.Visible;
             this.windowAllContentGrid.ColumnDefinitions[1].Width = new GridLength(240);//init 240
         }
 
@@ -301,6 +343,50 @@ namespace AoeNetwork
 
         private void searchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                if (this.userList == null) return;
+                this.userList.ResetSearch();
+                if (!string.IsNullOrEmpty(this.searchBox.Text))
+                {
+                    this.userList.SearchByString(this.searchBox.Text);
+                }
+            }));
+        }
+
+        private void GameTreeItemMouseDoubleClick(object sender, MouseButtonEventArgs args)
+        {
+            if (sender is TreeViewItem)
+            {
+                if (!((TreeViewItem)sender).IsSelected)
+                {
+                    return;
+                }
+            }
+            DisplayLoadingGame(true);
+            //
+            // Get the selected node.
+            //
+            TreeViewItem node = (TreeViewItem)sender;
+            Room room = (Room)node.Tag;
+            if (room.server_id != "0")
+            {
+                // Join room and Access VPN here
+                string requestError = SystemUtils.CallVPNConnection(room);
+                if (requestError == null)
+                {
+                    roomController.JoinRoom(room);
+                }
+                else
+                {
+                    DisplayLoadingGame(false);
+                    MessageBox.Show("Kết nối VPN không thành công.");
+                }
+            }
+            else
+            {
+                DisplayLoadingGame(false);
+            }
 
         }
         #endregion

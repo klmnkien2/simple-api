@@ -28,13 +28,18 @@ namespace AoeNetwork
             chatController = new ChatController(this);
             chatController.LoadView();
 
-            //privateController = new PrivateController(view);
-            //privateController.LoadView();
+            privateController = new PrivateController(this);
+            privateController.LoadView();
 
             initFriendLists();
         }
 
         #region action for extend MainWindow (title bar, border, ...)
+        private void coolform_titletext_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
         private void coolform_close_btn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Logout();
@@ -48,7 +53,7 @@ namespace AoeNetwork
 
         #region controller and their callback
         ChatController chatController;
-        //PrivateController privateController = null;
+        PrivateController privateController = null;
         RoomController roomController = null;
 
         RoomWindow roomView = null;
@@ -174,6 +179,114 @@ namespace AoeNetwork
             loginView.ResetForm();
         }
 
+        public void AddPrivateMessage(APIMessage message)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                PrivateWindow privateView;
+                int user_id;
+                string user_name;
+                user_id = message.receive_id;
+                user_name = message.receive_name;
+                if (privateViews.TryGetValue(user_id, out privateView))
+                {
+                    privateView.Show();
+                    privateView.RenderMessage(message);
+                }
+
+            }));
+
+        }
+
+        public void AfterUpdateFriend()
+        {
+            chatController.LoadFriends();
+        }
+        public void RenderPrivateMessage(bool first_time, IList messages)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                lock (this.mapFriend)
+                {
+                    for (int i = messages.Count - 1; i >= 0; i--)
+                    {
+                        APIMessage message = (APIMessage)messages[i];
+                        PrivateWindow privateView;
+                        int user_id;
+                        string user_name;
+                        if (message.receive_id == StaticValue.user_id)
+                        {
+                            user_id = message.user_id;
+                            user_name = message.user_name;
+                        }
+                        else
+                        {
+                            user_id = message.receive_id;
+                            user_name = message.receive_name;
+                        }
+                        if (!privateViews.TryGetValue(user_id, out privateView))
+                        {
+                            privateView = new PrivateWindow();
+                            privateView.SetController(this.privateController);
+                            privateView.SetChatView(this);
+
+                            Friend friend = null;
+                            if (!mapFriend.TryGetValue(user_id, out friend))
+                            {
+                                friend = new Friend();
+                                friend.user_id = user_id;
+                                friend.user_name = user_name;
+                            }
+                            privateView.SetFriendInfo(friend);
+                            if (first_time)
+                            {
+                                // add to recent list
+                                this.recentList.addUser(friend);
+                            }
+                            privateViews.Add(user_id, privateView);
+                        }
+                        privateView.RenderMessage(message);
+                        if (first_time)
+                        {
+                            // add to recent list
+                        }
+                        else
+                        {
+                            privateView.Show();
+                        }
+                    }
+                }
+            }));
+
+        }
+
+        public void RenderOldPrivate(int receive_id, IList messages)
+        {
+            Dispatcher.Invoke(new Action(() => {
+                PrivateWindow privateView;
+                if (privateViews.TryGetValue(receive_id, out privateView))
+                {
+
+                    for (int i = 0; i <= messages.Count - 1; i++)
+                    {
+                        APIMessage message = (APIMessage)messages[i];
+                        int user_id;
+                        string user_name;
+                        if (message.receive_id == StaticValue.user_id)
+                        {
+                            user_id = message.user_id;
+                            user_name = message.user_name;
+                        }
+                        else
+                        {
+                            user_id = message.receive_id;
+                            user_name = message.receive_name;
+                        }
+                        privateView.Show();
+                        privateView.RenderOldMessage(message);
+                    }
+                }
+            }));
+
+        }
 
         #endregion
 
@@ -189,6 +302,7 @@ namespace AoeNetwork
         }
         #endregion
 
+        #region handle events
         private void userSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Dispatcher.Invoke(new Action(() => {
@@ -214,10 +328,38 @@ namespace AoeNetwork
                 roomView = new RoomWindow();
                 roomView.SetChatView(this);
                 roomView.Show();
+                //roomView.WindowState = System.Windows.WindowState.Normal;
                 roomView.Focus();
                 roomController = new RoomController(roomView);
                 roomController.LoadView();
+
+                this.WindowState = System.Windows.WindowState.Minimized;
             }));
+        }
+        #endregion
+
+        private void tabrecentText_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("gan day");
+            this.gridListContainer.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
+            this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
+            this.gridListContainer.RowDefinitions[5].Height = new GridLength(0);
+        }
+
+        private void tabfriendText_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("ban be");
+            this.gridListContainer.RowDefinitions[3].Height = new GridLength(100, GridUnitType.Star);
+            this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
+            this.gridListContainer.RowDefinitions[5].Height = new GridLength(0);
+        }
+
+        private void tabIgnoretext_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("ds chan");
+            this.gridListContainer.RowDefinitions[5].Height = new GridLength(100, GridUnitType.Star);
+            this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
+            this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
         }
     }
 }
