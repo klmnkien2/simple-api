@@ -95,7 +95,8 @@ namespace AoeNetwork
             {
                 this.btnAcceptFriend.Width = 90;
                 this.btnDenyFriend.Width = 90;
-                this.btnIgnore.Width = 0;
+                this.btnIgnore.Width = 90;
+                this.btnRemoveIgnore.Width = 0;
             }
             else if (friend.type == -1)
             {

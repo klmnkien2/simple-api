@@ -17,7 +17,6 @@ namespace AoeNetwork
         IList _rooms;
         IList _friends;
         IList _messages;
-        int _lastMessagesId = 0;
 
         public ChatController(ChatWindow view)
         {
@@ -172,6 +171,8 @@ namespace AoeNetwork
         public void UpdateStatus(int state, string status)
         {
             if (StaticValue.user_id == 0 || StaticValue.username == "") return;
+            if (state == null) state = StaticValue.state;
+            if (status == null) status = StaticValue.status;
 
             var client = new RestClient(Properties.Resources.API_URL);
 

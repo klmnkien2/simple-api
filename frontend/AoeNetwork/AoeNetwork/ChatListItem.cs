@@ -55,23 +55,23 @@ namespace AoeNetwork
             contextMenu = new ContextMenu();
 
             acceptFriendMenu = new MenuItem();
-            acceptFriendMenu.Header = "Dong y ket ban";
+            acceptFriendMenu.Header = "Đồng ý kết bạn";
             acceptFriendMenu.Click += acceptFriendItem_Click;
 
             denyFriendMenu = new MenuItem();
-            denyFriendMenu.Header = "Tu choi ket ban";
+            denyFriendMenu.Header = "Từ chối kết bạn";
             denyFriendMenu.Click += denyFriendItem_Click;
 
             removeFriendMenu = new MenuItem();
-            removeFriendMenu.Header = "Huy ket ban";
+            removeFriendMenu.Header = "Hủy kết bạn";
             removeFriendMenu.Click += removeFriendItem_Click;
 
             ignoreFriendMenu = new MenuItem();
-            ignoreFriendMenu.Header = "Chan nguoi nay";
+            ignoreFriendMenu.Header = "Chặn người này";
             ignoreFriendMenu.Click += ignoreFriendItem_Click;
 
             noIgonreFriendMenu = new MenuItem();
-            noIgonreFriendMenu.Header = "Bo chan nguoi nay";
+            noIgonreFriendMenu.Header = "Bỏ chặn";
             noIgonreFriendMenu.Click += removeIgnoreItem_Click;
 
             contextMenu.Items.Add(acceptFriendMenu);
@@ -144,13 +144,20 @@ namespace AoeNetwork
                 return; // da ton tai thi next luon
             }
 
+            Image saparateLine = new Image();
+            saparateLine.Stretch = Stretch.Fill;
+            saparateLine.StretchDirection = StretchDirection.Both;
+            saparateLine.Source = SystemUtils.getResource("line");
+            Grid.SetRow(saparateLine, 0);
+            Grid.SetColumnSpan(saparateLine, 3);
+
             Label name = new Label();
             name.Foreground = Brushes.White;
             name.VerticalContentAlignment = VerticalAlignment.Bottom;
             name.FontWeight = FontWeights.Bold;
             name.Tag = user.user_id;
             name.Content = user.user_name;
-            Grid.SetRow(name, 0);
+            Grid.SetRow(name, 1);
             Grid.SetColumn(name, 1);
 
             Label status = new Label();
@@ -159,14 +166,14 @@ namespace AoeNetwork
             status.FontSize = status.FontSize - 2;
             status.Tag = user.user_id;
             status.Content = user.status;
-            Grid.SetRow(status, 1);
+            Grid.SetRow(status, 2);
             Grid.SetColumn(status, 1);
 
             Image state = new Image();
             state.StretchDirection = StretchDirection.Both;
             state.Width = 12;
             state.Height = 12;
-            Grid.SetRow(state, 0);
+            Grid.SetRow(state, 1);
             Grid.SetColumn(state, 2);
             Grid.SetRowSpan(state, 2);
             if (user.state == 1)
@@ -179,8 +186,9 @@ namespace AoeNetwork
             }
 
             Image avatar = new Image();
+            avatar.Margin = new Thickness(6, 6, 6, 6);
             avatar.Source = getResource("user");
-            Grid.SetRow(avatar, 0);
+            Grid.SetRow(avatar, 1);
             Grid.SetColumn(avatar, 0);
             Grid.SetRowSpan(avatar, 2);
 
@@ -191,16 +199,20 @@ namespace AoeNetwork
             itemPanel.Children.Clear();
 
             // Adding Rows and Colums to Grid.
-            RowDefinition[] rows = new RowDefinition[2];
+            RowDefinition[] rows = new RowDefinition[3];
             ColumnDefinition[] columns = new ColumnDefinition[3];
             // Draw Rows.
             rows[0] = new RowDefinition();
-            rows[0].Height = new GridLength(25);
+            rows[0].Height = new GridLength(2);
             itemPanel.RowDefinitions.Add(rows[0]);
 
             rows[1] = new RowDefinition();
             rows[1].Height = new GridLength(25);
             itemPanel.RowDefinitions.Add(rows[1]);
+
+            rows[2] = new RowDefinition();
+            rows[2].Height = new GridLength(25);
+            itemPanel.RowDefinitions.Add(rows[2]);
 
             // Draw Columns.
             columns[0] = new ColumnDefinition();
@@ -218,6 +230,10 @@ namespace AoeNetwork
             itemPanel.Width = this.parentList.Width;
             itemPanel.Height = 50;
 
+            if (this.IDs.Count > 0)
+            {
+                itemPanel.Children.Add(saparateLine);
+            }
             itemPanel.Children.Add(avatar);
             itemPanel.Children.Add(name);
             itemPanel.Children.Add(status);
@@ -247,9 +263,33 @@ namespace AoeNetwork
             }
         }
 
+        private Friend selectContextItem = null;
         void itemPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             //context menu stuff
+            Grid container = sender as Grid;
+            selectContextItem = container.Tag as Friend;
+
+            // CHeck button showing
+            contextMenu.Items.Clear();
+            if (selectContextItem.type == 1)
+            {
+                contextMenu.Items.Add(removeFriendMenu);
+                contextMenu.Items.Add(ignoreFriendMenu);
+            }
+            else if (selectContextItem.type == 0)
+            {
+                contextMenu.Items.Add(acceptFriendMenu);
+                contextMenu.Items.Add(denyFriendMenu);
+                contextMenu.Items.Add(ignoreFriendMenu);
+            }
+            else if (selectContextItem.type == -1)
+            {
+                contextMenu.Items.Add(noIgonreFriendMenu);
+            }
+
+            contextMenu.PlacementTarget = container;            
+            contextMenu.IsOpen = true;
         }
 
         public void SearchByString(string searchKey)
@@ -286,7 +326,7 @@ namespace AoeNetwork
         #region contextmenu action
         private void acceptFriendItem_Click(object sender, EventArgs e)
         {
-            Friend friend = (sender as Grid).Tag as Friend;
+            Friend friend = this.selectContextItem;
             if (friend != null)
             {
                 parentWindow.getPrivateController().UpdateFriendStatus(friend, 1, 0);
@@ -295,7 +335,7 @@ namespace AoeNetwork
 
         private void denyFriendItem_Click(object sender, EventArgs e)
         {
-            Friend friend = (sender as Grid).Tag as Friend;
+            Friend friend = this.selectContextItem;
             if (friend != null)
             {
                 parentWindow.getPrivateController().UpdateFriendStatus(friend, -2, 0);
@@ -304,7 +344,7 @@ namespace AoeNetwork
 
         private void removeFriendItem_Click(object sender, EventArgs e)
         {
-            Friend friend = (sender as Grid).Tag as Friend;
+            Friend friend = this.selectContextItem;
             if (friend != null)
             {
                 parentWindow.getPrivateController().UpdateFriendStatus(friend, -2, 0);
@@ -313,7 +353,7 @@ namespace AoeNetwork
 
         private void ignoreFriendItem_Click(object sender, EventArgs e)
         {
-            Friend friend = (sender as Grid).Tag as Friend;
+            Friend friend = this.selectContextItem;
             if (friend != null)
             {
                 parentWindow.getPrivateController().UpdateFriendStatus(friend, -1, -2);
@@ -322,7 +362,7 @@ namespace AoeNetwork
 
         private void removeIgnoreItem_Click(object sender, EventArgs e)
         {
-            Friend friend = (sender as Grid).Tag as Friend;
+            Friend friend = this.selectContextItem;
             if (friend != null)
             {
                 parentWindow.getPrivateController().UpdateFriendStatus(friend, 0, -2);

@@ -3,6 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         Title="PrivateWindow" Height="500" Width="700" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White"  ResizeMode="NoResize" AllowsTransparency="True" Top="3">
+    <Window.Resources>
+        <Style x:Key="buttonNoBg" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                            BorderThickness="0"
+                            Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
@@ -64,22 +85,22 @@
                     <Image x:Name="friendState" Source="Images/state_avail.png" Stretch="Fill" Margin="5,0,0,0" Height="15" Width="15" HorizontalAlignment="Left" />
                     <Label x:Name="friendStatus" Foreground="White" FontSize="14" VerticalContentAlignment="Center" Content="Available" Margin="25,0,0,0" />
                     <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,10,0">
-                        <Button x:Name="btnAcceptFriend" Content="Accept Friend" FontSize="11" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnAcceptFriend_Click">
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="btnAcceptFriend" Content="Accept Friend" FontSize="11" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnAcceptFriend_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btnDenyFriend" Content="Deny Friend" FontSize="11" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnDenyFriend_Click">
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="btnDenyFriend" Content="Deny Friend" FontSize="11" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnDenyFriend_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btnIgnore" Content="Ignore Friend" Width="90" FontSize="11" BorderThickness="0" Foreground="White" Height="30" Margin="0" Click="btnIgnore_Click">
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="btnIgnore" Content="Ignore Friend" Width="90" FontSize="11" BorderThickness="0" Foreground="White" Height="30" Margin="0" Click="btnIgnore_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btnRemoveIgnore" FontSize="11" Content="Remove Ignore" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0" Click="btnRemoveIgnore_Click">
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="btnRemoveIgnore" FontSize="11" Content="Remove Ignore" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0" Click="btnRemoveIgnore_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="Images/friend_tab.png"/>
                             </Button.Background>
@@ -104,7 +125,7 @@
                         <ImageBrush ImageSource="Images/border.png"/>
                     </TextBox.BorderBrush>
                 </TextBox>
-                <Button x:Name="buttonEnter" Grid.Column="1" Grid.Row="2" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,0,10,10" Click="buttonEnter_Click"  >
+                <Button Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Grid.Column="1" Grid.Row="2" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,0,10,10" Click="buttonEnter_Click"  >
                     <Button.Background>
                         <ImageBrush ImageSource="Images/room_enter.png"/>
                     </Button.Background>

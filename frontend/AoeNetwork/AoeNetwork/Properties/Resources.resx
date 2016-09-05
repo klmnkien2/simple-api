@@ -293,7 +293,7 @@
     <value>..\Images\username.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="API_URL" xml:space="preserve">
-    <value>http://kiendv.local:8080/v1</value>
+    <value>http://aoevpn.vn/v1/index.php</value>
   </data>
   <data name="API_URL_REAL" xml:space="preserve">
     <value>http://103.56.157.252:8080/v1</value>

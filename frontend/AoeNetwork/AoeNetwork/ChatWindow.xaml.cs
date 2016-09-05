@@ -126,9 +126,9 @@ namespace AoeNetwork
 
         public void SetUserInfo(string username, string status, string avatar, string level, string diamond, int state)
         {
-            this.userStatus.Text = status;
+            this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
             this.userLevel.Content = "Level " + level;
-            this.userDiamond.Content = "" + level;
+            this.userDiamond.Content = "" + diamond;
             if (avatar != "")
             {
                 //load image avatar
@@ -142,11 +142,11 @@ namespace AoeNetwork
             this.userName.Content = username;
             if (state == 0)
             {
-                userState.Source = (ImageSource)Resources["state_invi"];
+                userState.Source = SystemUtils.getResource("state_invi");
             }
             else
             {
-                userState.Source = (ImageSource)Resources["state_avail"];
+                userState.Source = SystemUtils.getResource("state_avail");
             }
         }
 
@@ -208,6 +208,7 @@ namespace AoeNetwork
 
                 if (focus)
                 {
+                    privateView.Topmost = true;
                     privateView.Focus();
                 }
             }));
@@ -393,5 +394,70 @@ namespace AoeNetwork
             this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
             this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
         }
+
+
+        #region CHange state of user menu
+        private void WrapPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu cm = this.FindResource("cmStateChanging") as ContextMenu;
+            cm.PlacementTarget = sender as WrapPanel;
+            cm.IsOpen = true;
+        }
+
+        private void availStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (StaticValue.state == 1) return;
+            StaticValue.state = 1;
+            this.userState.Source = SystemUtils.getResource("state_avail");
+            chatController.UpdateStatus(1, null);
+        }
+
+        private void inviStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (StaticValue.state == 0) return;
+            StaticValue.state = 0;
+            this.userState.Source = SystemUtils.getResource("state_invi");
+            chatController.UpdateStatus(0, null);
+        }
+
+        private void logoutStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Logout();
+        }
+
+        private void exitStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Windows.Forms.Application.MessageLoop)
+            {
+                // WinForms app
+                System.Windows.Forms.Application.Exit();
+            }
+            else
+            {
+                // Console app
+                System.Environment.Exit(1);
+            }
+        }
+        #endregion
+
+        private void userStatus_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                chatController.UpdateStatus(1, this.userStatus.Text);
+                StaticValue.status = this.userStatus.Text;
+                Keyboard.ClearFocus();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            addFriendView = new AddFriendWindow();
+            addFriendView.SetController(chatController);
+
+            addFriendView.ShowDialog();
+        }
+
     }
 }

@@ -49,12 +49,12 @@ namespace AoeNetwork
 
         private void formObject_KeyDown(KeyEventArgs e)
         {
-            if (this.username.Text.Trim() == "")
-            {
-                MessageBox.Show("User name must be entered.");
-            }
             if (e.Key == Key.Enter)
             {
+                if (this.username.Text.Trim() == "")
+                {
+                    MessageBox.Show("User name must be entered.");
+                }
                 controller.AddFriend(this.username.Text, this.message.Text);
             }
         }

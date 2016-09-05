@@ -143,12 +143,12 @@ namespace AoeNetwork
             if (this.state == 1)
             {
                 this.state = 0;
-                this.stateButton.Source = (ImageSource)Resources["invisible"];
+                this.stateButton.Source = SystemUtils.getResource("invisible");
             }
             else
             {
                 this.state = 1;
-                this.stateButton.Source = (ImageSource)Resources["available"];
+                this.stateButton.Source = SystemUtils.getResource("available");
             }
         }
 

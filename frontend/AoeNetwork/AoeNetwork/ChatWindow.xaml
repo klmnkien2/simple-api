@@ -3,6 +3,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:AoeNetwork;assembly=AoeNetwork"
         Title="ChatWindow" Height="750" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="480" MinHeight="720" ResizeMode="NoResize" AllowsTransparency="True" Top="3">
+    <Window.Resources>
+        <Style x:Key="buttonNoBg" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="0"
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <ContextMenu x:Key="cmStateChanging">
+            <MenuItem Header="Available" Click="availStripMenuItem_Click" />
+            <MenuItem Header="Invisible" Click="inviStripMenuItem_Click" />
+            <Separator />
+            <MenuItem Header="Đăng xuất" Click="logoutStripMenuItem_Click" />
+            <Separator />
+            <MenuItem Header="Thoát" Click="exitStripMenuItem_Click" />
+        </ContextMenu>
+    </Window.Resources>
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
@@ -64,7 +94,7 @@
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <Image x:Name="userAvatar" Source="Images/user.png" Stretch="Fill" Grid.RowSpan="2" Margin="5" />
-                    <WrapPanel Grid.Column="1" Grid.Row="0" Margin="5">
+                    <WrapPanel Grid.Column="1" Grid.Row="0" Margin="5" MouseLeftButtonDown="WrapPanel_MouseLeftButtonDown">
                         <Label x:Name="userName" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,0,5,0" />
                         <Image x:Name="userState" Source="Images/state_avail.png" Stretch="None"  />
                     </WrapPanel>
@@ -73,7 +103,7 @@
                         <Image Source="Images/diamond.png"  Stretch="None"  />
                         <Label x:Name="userDiamond" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="99" Grid.Row="1" />
                     </WrapPanel>
-                    <TextBox x:Name="userStatus" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="11" Text="status..." Margin="5" CaretBrush="White" />
+                    <TextBox x:Name="userStatus" Grid.Column="1" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="11" Text="status..." Margin="5" CaretBrush="White" KeyDown="userStatus_KeyDown" />
                 </Grid>
                 <Grid Grid.Row="1" Margin="10,5,5,5">
                     <Grid.ColumnDefinitions>
@@ -86,13 +116,13 @@
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
                     <Image Grid.Column="0" Source="Images/search_left.png" Stretch="Fill"/>
-                    <TextBox x:Name="userSearchBox" Grid.Column="1" BorderThickness="0" Foreground="White" FontSize="12" Text="" Padding="5,0,0,0" VerticalContentAlignment="Center" CaretBrush="White" TextChanged="userSearchBox_TextChanged"  >
+                    <TextBox x:Name="userSearchBox" Grid.Column="1" BorderThickness="0" Foreground="White" FontSize="12" Text="" Padding="5,0,0,0" VerticalContentAlignment="Center" CaretBrush="White" TextChanged="userSearchBox_TextChanged" >
                         <TextBox.Background>
                             <ImageBrush TileMode="Tile" ImageSource="Images/search_center.png"/>
                         </TextBox.Background>
                     </TextBox>
                     <Image Grid.Column="2" Source="Images/search_right.png" Stretch="Fill"/>
-                    <Button Foreground="White" Content="" BorderBrush="{x:Null}" BorderThickness="0" Height="32" Width="32" Grid.Column="3"  >
+                    <Button Style="{StaticResource buttonNoBg}" Foreground="White" Content="" BorderBrush="{x:Null}" BorderThickness="0" Height="32" Width="32" Grid.Column="3" Click="Button_Click"  >
                         <Button.Background>
                             <ImageBrush ImageSource="Images/addfriend.png"/>
                         </Button.Background>
@@ -111,88 +141,92 @@
                         </Button.Background>
                     </Button>
                 </Border>
-                <Grid x:Name="gridListContainer" Grid.Row="3" Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="30"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="100*"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="100*"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-                    <Border x:Name="tabrecentText" BorderThickness="1,1,0,1" Grid.Row="0" Margin="0" MouseDown="tabrecentText_MouseDown">
-                        <Border.Background>
-                            <ImageBrush TileMode="Tile" ImageSource="Images/label_tab.png"/>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-                        </Border.BorderBrush>
-                        <Label Content="Gần đây" Grid.Column="1" Margin="10,0,0,0" Grid.ColumnSpan="2" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                    </Border>
-                    <Button Content="" BorderThickness="0,1,1,1" Height="25" Width="25" Grid.Row="0"  Grid.Column="1">
-                        <Button.BorderBrush>
-                            <ImageBrush ImageSource="Images/border.png"/>
-                        </Button.BorderBrush>
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/row.png"/>
-                        </Button.Background>
 
-                    </Button>
+                <Border BorderThickness="0,1,0,0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10,15,10,5">
+                    <Border.BorderBrush>
+                        <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                    </Border.BorderBrush>
+                    <Grid x:Name="gridListContainer" Grid.Row="3" Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="tabrecentText" BorderThickness="1,0,1,1" Grid.Row="0" Grid.ColumnSpan="2" Margin="0" MouseDown="tabrecentText_MouseDown">
+                            <Border.Background>
+                                <ImageBrush TileMode="Tile" ImageSource="Images/label_tab.png"/>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                            </Border.BorderBrush>
+                            <DockPanel>
+                                <Image Source="Images/row.png" DockPanel.Dock="Right" />
+                                <Label Content="Gần đây" Grid.Column="1" Margin="10,0,0,0" Grid.ColumnSpan="2" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            </DockPanel>
+                        </Border>
 
-                    <Border x:Name="tabfriendText" BorderThickness="1,1,0,1" Grid.Row="2" Margin="0" MouseDown="tabfriendText_MouseDown">
-                        <Border.Background>
-                            <ImageBrush TileMode="Tile" ImageSource="Images/label_tab.png"/>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-                        </Border.BorderBrush>
-                        <Label Content="Bạn của tôi" Grid.Column="1" Margin="10,0,0,0" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                    </Border>
-                    <Button Content="" BorderThickness="0,1,1,1" Height="25" Width="25" Grid.Row="2"  Grid.Column="1">
-                        <Button.BorderBrush>
-                            <ImageBrush ImageSource="Images/border.png"/>
-                        </Button.BorderBrush>
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/row.png"/>
-                        </Button.Background>
 
-                    </Button>
+                        <Border x:Name="tabfriendText" BorderThickness="1,0,1,1" Grid.Row="2" Grid.ColumnSpan="2" Margin="0" MouseDown="tabfriendText_MouseDown">
+                            <Border.Background>
+                                <ImageBrush TileMode="Tile" ImageSource="Images/label_tab.png"/>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                            </Border.BorderBrush>
+                            <DockPanel>
+                                <Image Source="Images/row.png" DockPanel.Dock="Right" />
+                                <Label Content="Bạn của tôi" Grid.Column="1" Margin="10,0,0,0" Grid.ColumnSpan="2" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            </DockPanel>
+                        </Border>
 
-                    <Border x:Name="tabIgnoretext" BorderThickness="1,1,0,1" Grid.Row="4" Margin="0" MouseDown="tabIgnoretext_MouseDown">
-                        <Border.Background>
-                            <ImageBrush TileMode="Tile" ImageSource="Images/label_tab.png"/>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-                        </Border.BorderBrush>
-                        <Label Content="Danh sách chặn" Grid.Column="1" Margin="10,0,0,0" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                    </Border>
-                        
-                    <Button Content="" BorderThickness="0,1,1,1" Height="25" Width="25" Grid.Row="4"  Grid.Column="1">
-                        <Button.BorderBrush>
-                            <ImageBrush ImageSource="Images/border.png"/>
-                        </Button.BorderBrush>
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/row.png"/>
-                        </Button.Background>
+                        <Border x:Name="tabIgnoretext" BorderThickness="1,0,1,1" Grid.Row="4" Grid.ColumnSpan="2" Margin="0" MouseDown="tabIgnoretext_MouseDown">
+                            <Border.Background>
+                                <ImageBrush TileMode="Tile" ImageSource="Images/label_tab.png"/>
+                            </Border.Background>
+                            <Border.BorderBrush>
+                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                            </Border.BorderBrush>
+                            <DockPanel>
+                                <Image Source="Images/row.png" DockPanel.Dock="Right" />
+                                <Label Content="Danh sách chặn" Grid.Column="1" Margin="10,0,0,0" Grid.ColumnSpan="2" Foreground="White" ForceCursor="True" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                            </DockPanel>
+                        </Border>
 
-                    </Button>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="1" MinHeight="100">
-                        <StackPanel x:Name="recentListControl"  />
-                    </ScrollViewer>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="3" MinHeight="100">
-                        <StackPanel x:Name="friendListControl" />
-                    </ScrollViewer>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="5" MinHeight="100">
-                        <StackPanel x:Name="ignoreListControl" />
-                    </ScrollViewer>
+                        <Border BorderThickness="1,0,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0">
+                            <Border.BorderBrush>
+                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                            </Border.BorderBrush>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MinHeight="100">
+                                <StackPanel x:Name="recentListControl"  />
+                            </ScrollViewer>
+                        </Border>
+                        <Border BorderThickness="1,0,1,1" Grid.Row="3" Grid.ColumnSpan="2" Margin="0">
+                            <Border.BorderBrush>
+                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                            </Border.BorderBrush>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MinHeight="100">
+                                <StackPanel x:Name="friendListControl" />
+                            </ScrollViewer>
+                        </Border>
+                        <Border BorderThickness="1,0,1,1" Grid.Row="5" Grid.ColumnSpan="2" Margin="0">
+                            <Border.BorderBrush>
+                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
+                            </Border.BorderBrush>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MinHeight="100">
+                                <StackPanel x:Name="ignoreListControl" />
+                            </ScrollViewer>
+                        </Border>
 
-                </Grid>
-                <Button x:Name="aoeGameButton" Content="" BorderBrush="{x:Null}" BorderThickness="0" Height="90" Width="100" Grid.Row="4" Click="aoeGameButton_Click"  >
+                    </Grid>
+                </Border>
+                <Button Style="{StaticResource buttonNoBg}" x:Name="aoeGameButton" Content="" BorderBrush="{x:Null}" BorderThickness="0" Height="90" Width="100" Grid.Row="4" Click="aoeGameButton_Click"  >
                     <Button.Background>
                         <ImageBrush ImageSource="Images/aoe.png"/>
                     </Button.Background>
