@@ -62,6 +62,7 @@ $app->addRoutes(array(
         }
     )),
 	'/user/show/' => 'User:show',
+	'/user/payment/' => 'User:payment',
 	'/user/room/' => 'User:room',
 	'/user/history/' => 'User:history',
 	'/user/status/' => array('post' => array('User:status', function() {

@@ -81,7 +81,7 @@ namespace AoeNetwork.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://aoevpn.vn/v1/index.php.
+        ///   Looks up a localized string similar to http://103.56.157.252:8080/v1.
         /// </summary>
         public static string API_URL {
             get {

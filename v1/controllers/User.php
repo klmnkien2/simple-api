@@ -66,6 +66,54 @@ class User extends \SlimController\SlimController
             $this->echorespnse(400, array("error" => "Can't not connect to API."));
         }
     }
+    
+    public function payment()
+    {
+//         http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&card_type=92&card_seri=xxxx&card_code=yyyyy
+//         + Card_seri
+//         + Card_code
+//         + Card_type
+//         92 = Mobi
+//         93 = Vina
+//         107 = Viettel
+        try {
+            // reads multiple params only if they are POST
+            $username = $this->param('username', 'post');
+            $card_seri = $this->param('card_seri', 'post');
+            $card_code = $this->param('card_code', 'post');
+            $card_type = $this->param('card_type', 'post');
+    
+            $api_url = "http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&card_type=$card_type&card_seri=$card_seri&card_code=$card_code";
+            // Call API
+            $postdata = http_build_query(
+                array(
+                    'username' => $username
+                )
+            );
+
+            $opts = array('http' =>
+                array(
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => $postdata
+                )
+            );
+            $context  = stream_context_create($opts);
+            $result = file_get_contents($api_url, false, $context);
+            $result = json_decode($result, true);
+            $response = array();
+    
+            if($result['status'] != 1) {
+                $response['error'] = $result['error'];
+                $this->echorespnse(400, $response);
+            } else {
+                $response['error'] = '';
+                $this->echorespnse(200, $response);
+            }
+        } catch(\Exception $ex) {
+            $this->echorespnse(400, array("error" => "Can't not connect to API."));
+        }
+    }
 	
 	public function logoutAction()
     {

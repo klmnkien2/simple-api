@@ -108,5 +108,43 @@ namespace AoeNetwork
                 MessageBox.Show("Du lieu API tra ve chua khop.");
             }  
         }
+
+        public void Payment(PaymentWindow window)
+        {
+            window.setNotifyLabel("Loading...");
+            var client = new RestClient(AoeNetwork.Properties.Resources.API_URL);
+            // client.Authenticator = new HttpBasicAuthenticator(username, password);
+
+            var request = new RestRequest("user/payment/", Method.POST);
+            request.AddParameter("username", _view.UserName);
+            request.AddParameter("card_seri", window.getCardSeri());
+            request.AddParameter("card_code", window.getCardCode());
+            request.AddParameter("card_type", window.getCardType());     
+
+            // easily add HTTP Headers
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            //request.Timeout = 10000;
+
+            var asyncHandler = client.ExecuteAsync(request, r =>
+            {
+                if (r.ResponseStatus == ResponseStatus.Completed)
+                {
+                    if (r.StatusCode == HttpStatusCode.OK)
+                    {
+                        window.setNotifyLabel("Gia hạn thành công, vui lòng đăng nhập lại.");
+                    }
+                    else
+                    {
+                        window.setNotifyLabel("Gia hạn không thành công, vui lòng thử lại.");
+                    }
+                }
+                else
+                {
+                    window.setNotifyLabel("Gia hạn không thành công, vui lòng thử lại.");
+                }
+
+            });
+
+        }
     }
 }

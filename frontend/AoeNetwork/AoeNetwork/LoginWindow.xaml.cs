@@ -83,8 +83,10 @@ namespace AoeNetwork
         public void NeedPay()
         {
             Dispatcher.Invoke(new Action(() => {
-                WebWindow browser = new WebWindow();
-                browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+                PaymentWindow pay = new PaymentWindow();
+                pay.SetController(this._controller);
+                pay.setNotifyLabel("Tài khoản đã hết hạn, vui lòng gia hạn !");
+                pay.ShowDialog();
             }));
         }
 
@@ -193,6 +195,13 @@ namespace AoeNetwork
         }
 
         #endregion
+
+        private void paymentLbl_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            PaymentWindow pay = new PaymentWindow();
+            pay.SetController(this._controller);
+            pay.ShowDialog();
+        }
 
     }
 }
