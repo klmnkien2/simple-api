@@ -74,7 +74,7 @@
                         <ImageBrush ImageSource="Images/btn_grey.png"/>
                     </Button.Background>
                 </Button>
-                <Label Content="Gia hạn tài khoản !" Canvas.Left="99" Canvas.Top="628" Foreground="#FFF0AD4D" MouseUp="paymentLbl_MouseUp" Width="277" HorizontalContentAlignment="Center"/>
+                <!--<Label Content="Gia hạn tài khoản !" Canvas.Left="99" Canvas.Top="628" Foreground="#FFF0AD4D" MouseUp="paymentLbl_MouseUp" Width="277" HorizontalContentAlignment="Center"/>-->
                 <Label Content="Nhớ mật khẩu" Canvas.Left="130" Canvas.Top="250" Foreground="White"/>
                 <Label x:Name="forgotPassLink" Content="Quên mật khẩu?" Canvas.Left="279" Canvas.Top="250" Foreground="White" MouseDown="forgotPassLink_MouseDown"/>
                 <Label Content="Chế độ:" Canvas.Left="114" Canvas.Top="296" Foreground="White"/>

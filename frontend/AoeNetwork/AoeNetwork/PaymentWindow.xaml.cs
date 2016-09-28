@@ -46,10 +46,29 @@ namespace AoeNetwork
             this.notifyLabel.Content = text;
         }
 
+        public void AfterPay(string message)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                setNotifyLabel(message);
+            }));
+        }
+
         AuthenController controller;
         public void SetController(AuthenController controller)
         {
             this.controller = controller;
+        }
+
+        private int user_id;
+        public int getUserId()
+        {
+            return this.user_id;
+        }
+
+        public void setUserId(int user_id)
+        {
+            this.user_id = user_id;
         }
 
         public string getCardSeri()

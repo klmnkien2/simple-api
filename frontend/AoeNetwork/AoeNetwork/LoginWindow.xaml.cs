@@ -80,10 +80,11 @@ namespace AoeNetwork
         #endregion
 
         #region callback function after controller
-        public void NeedPay()
+        public void NeedPay(int user_id)
         {
             Dispatcher.Invoke(new Action(() => {
                 PaymentWindow pay = new PaymentWindow();
+                pay.setUserId(user_id);
                 pay.SetController(this._controller);
                 pay.setNotifyLabel("Tài khoản đã hết hạn, vui lòng gia hạn !");
                 pay.ShowDialog();

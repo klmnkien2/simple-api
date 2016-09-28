@@ -65,11 +65,13 @@ namespace AoeNetwork
             try
             {
                 Dictionary<string, string> data = JsonConvert.DeserializeObject<Dictionary<string, string>>(content.ToString());
+                
                 if (data["needpay"] != "0")
                 {
-                    _view.NeedPay();
+                    _view.NeedPay(int.Parse(data["user_id"]));
                     return;
                 }
+
                 StaticValue.user_id = int.Parse(data["user_id"]);
                 StaticValue.username = data["username"];
                 StaticValue.avatar = data["avatar"];
@@ -116,7 +118,7 @@ namespace AoeNetwork
             // client.Authenticator = new HttpBasicAuthenticator(username, password);
 
             var request = new RestRequest("user/payment/", Method.POST);
-            request.AddParameter("username", _view.UserName);
+            request.AddParameter("user_id", window.getUserId());
             request.AddParameter("card_seri", window.getCardSeri());
             request.AddParameter("card_code", window.getCardCode());
             request.AddParameter("card_type", window.getCardType());     
@@ -131,16 +133,16 @@ namespace AoeNetwork
                 {
                     if (r.StatusCode == HttpStatusCode.OK)
                     {
-                        window.setNotifyLabel("Gia hạn thành công, vui lòng đăng nhập lại.");
+                        window.AfterPay("Gia hạn thành công, vui lòng đăng nhập lại.");
                     }
                     else
                     {
-                        window.setNotifyLabel("Gia hạn không thành công, vui lòng thử lại.");
+                        window.AfterPay("Gia hạn không thành công, vui lòng thử lại.");
                     }
                 }
                 else
                 {
-                    window.setNotifyLabel("Gia hạn không thành công, vui lòng thử lại.");
+                    window.AfterPay("Gia hạn không thành công, vui lòng thử lại.");
                 }
 
             });

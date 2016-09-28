@@ -59,6 +59,7 @@ class User extends \SlimController\SlimController
 				//var_dump($response);die;
     		    $this->model->syncUserInfo($response);
 				$response['password'] = '';//unset not to response
+				$response['needpay'] = "1";
     		    $this->echorespnse(200, $response);
     		}
         } catch(\Exception $ex) {
@@ -67,7 +68,7 @@ class User extends \SlimController\SlimController
         }
     }
     
-    public function payment()
+    public function paymentAction()
     {
 //         http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&card_type=92&card_seri=xxxx&card_code=yyyyy
 //         + Card_seri
@@ -78,24 +79,16 @@ class User extends \SlimController\SlimController
 //         107 = Viettel
         try {
             // reads multiple params only if they are POST
-            $username = $this->param('username', 'post');
+            $user_id = $this->param('user_id', 'post');
             $card_seri = $this->param('card_seri', 'post');
             $card_code = $this->param('card_code', 'post');
             $card_type = $this->param('card_type', 'post');
     
-            $api_url = "http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&card_type=$card_type&card_seri=$card_seri&card_code=$card_code";
-            // Call API
-            $postdata = http_build_query(
-                array(
-                    'username' => $username
-                )
-            );
+            $api_url = "http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&user_id=$user_id&card_type=$card_type&card_seri=$card_seri&card_code=$card_code";
 
             $opts = array('http' =>
                 array(
-                    'method'  => 'POST',
-                    'header'  => 'Content-type: application/x-www-form-urlencoded',
-                    'content' => $postdata
+                    'method'  => 'GET'
                 )
             );
             $context  = stream_context_create($opts);
