@@ -1,3 +1,7 @@
 /client/WinFormMVC/*
 frontend/AoeNetwork/AoeNetwork/bin/*
 frontend/AoeNetwork/AoeNetwork/obj/*
+/frontend/AoeNetwork/AoeNetwork.v11.suo
+/.settings/*
+/.buildpath
+/.project

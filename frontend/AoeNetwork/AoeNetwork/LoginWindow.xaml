@@ -1,8 +1,14 @@
 ﻿<Window x:Class="AoeNetwork.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="LoginWindow" Height="720" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="480" MinHeight="720" ResizeMode="NoResize" AllowsTransparency="True" Loaded="Window_Loaded">
+        Title="LoginWindow" Height="640" Width="450" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="450" MinHeight="640" ResizeMode="NoResize" AllowsTransparency="True" Loaded="Window_Loaded">
     <Window.Resources>
+        
+        <ContextMenu x:Key="cmStateChanging" Style="{StaticResource customContextMenu}">
+            <MenuItem Header="Online" Style="{StaticResource customContextMenuItem}" />
+            <MenuItem Header="Busy" Style="{StaticResource customContextMenuItem}" />
+            <MenuItem Header="Offline" Style="{StaticResource customContextMenuItem}" />
+        </ContextMenu>
         <Style x:Key="buttonNoBg" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Template">
@@ -25,84 +31,74 @@
     </Window.Resources>
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="8"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_left.png" Stretch="Fill"/>
 
-        <Image Grid.Column="2" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_right.png" Stretch="Fill"/>
-        <Grid Grid.Column="1" Grid.RowSpan="1" Grid.Row="0">
-            <Grid.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Images/titlebar_center.png" TileMode="FlipX"/>
-            </Grid.Background>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="100*"/>
-                <ColumnDefinition Width="24"/>
-                <ColumnDefinition Width="24"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
-            <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-            <Image x:Name="coolform_mini_btn" Grid.Column="2" RenderTransformOrigin="0.533,1.674" Source="Images/btn_minimum.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_mini_btn_MouseDown"/>
-            <Image x:Name="coolform_close_btn" Grid.Column="3" RenderTransformOrigin="0.533,1.674" Source="pack://application:,,,/Images/btn_close.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_close_btn_MouseDown"/>
-        </Grid>
-
-        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1">
-            <Border.Background>
-                <ImageBrush TileMode="Tile" ImageSource="Images/round_repeat.png"/>
-            </Border.Background>
-            <Border.BorderBrush>
-                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-            </Border.BorderBrush>
-            <Canvas  HorizontalAlignment="Stretch" Margin="0" Height="669" Width="478" >
-                <Image Height="100" Width="200" Source="Images/biglogo.png" Canvas.Top="38" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="132" />
-                <Button Style="{StaticResource buttonNoBg}" x:Name="loginButton" Foreground="White" Content="Đăng nhập" Canvas.Left="99" Canvas.Top="349" BorderBrush="{x:Null}" BorderThickness="0" Height="39" Width="277" Click="loginButton_Click" >
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/btn_orange.png"/>
-                    </Button.Background>
-                </Button>
-                <Button Style="{StaticResource buttonNoBg}" x:Name="registerButton" Foreground="White" Content="Đăng ký" Canvas.Left="99" Canvas.Top="584" BorderBrush="{x:Null}" BorderThickness="0" Height="39" Width="277" Click="registerButton_Click" >
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/btn_grey.png"/>
-                    </Button.Background>
-                </Button>
-                <!--<Label Content="Gia hạn tài khoản !" Canvas.Left="99" Canvas.Top="628" Foreground="#FFF0AD4D" MouseUp="paymentLbl_MouseUp" Width="277" HorizontalContentAlignment="Center"/>-->
-                <Label Content="Nhớ mật khẩu" Canvas.Left="130" Canvas.Top="250" Foreground="White"/>
-                <Label x:Name="forgotPassLink" Content="Quên mật khẩu?" Canvas.Left="279" Canvas.Top="250" Foreground="White" MouseDown="forgotPassLink_MouseDown"/>
-                <Label Content="Chế độ:" Canvas.Left="114" Canvas.Top="296" Foreground="White"/>
-                <Label Content="Online" Canvas.Left="201" Canvas.Top="296" Foreground="White"/>
-                <Label Content="Offline" Canvas.Left="326" Canvas.Top="296" Foreground="White"/>
-                <Image x:Name="stateButton" Height="20" Canvas.Left="240" Canvas.Top="300" Width="81" Source="Images/available.png" Stretch="None" MouseDown="stateButton_MouseDown"/>
-                <CheckBox x:Name="rememberPassChk" Content="" Canvas.Left="114" Canvas.Top="255" />
-                <Grid Height="82" Canvas.Left="99" Canvas.Top="163" Width="277">
-                    <Grid.Background>
-                        <ImageBrush ImageSource="Images/login_border.png"/>
-                    </Grid.Background>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="35"/>
-                        <ColumnDefinition Width="100*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="2"/>
-                        <RowDefinition Height="50*"/>
-                    </Grid.RowDefinitions>
-                    <Image Source="Images/username.png" Stretch="None" />
-                    <Image Source="Images/password.png" Stretch="None" Grid.Row="3" />
-                    <Image Source="Images/line.png" Stretch="None" Grid.Row="1" Grid.ColumnSpan="2" />
-                    <TextBox x:Name="usernameTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" VerticalContentAlignment="Center" CaretBrush="White" KeyDown="usernameTextbox_KeyDown" />
-                    <PasswordBox  x:Name="passwordTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" Grid.Row="2" VerticalContentAlignment="Center" PasswordChar="*" CaretBrush="White" KeyDown="passwordTextbox_KeyDown" />
-                </Grid>
-            </Canvas>
+        <Border BorderThickness="1" Grid.Column="0" Grid.RowSpan="1" Grid.Row="0" Background="#FF011013" BorderBrush="#FF283437" Padding="8,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="24"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
+                <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                <Image x:Name="coolform_mini_btn" Grid.Column="2" RenderTransformOrigin="0.533,1.674" Source="Images/btn_minimum.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_mini_btn_MouseDown"/>
+                <Image x:Name="coolform_close_btn" Grid.Column="3" RenderTransformOrigin="0.533,1.674" Source="pack://application:,,,/Images/btn_close.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_close_btn_MouseDown"/>
+            </Grid>
         </Border>
 
+        <Border BorderThickness="1,0,1,1" Grid.Row="1" Background="#FF0B1A25" BorderBrush="Black" AllowDrop="True" >
+            <Border BorderThickness="1,0,1,1" Grid.Row="1" Background="Transparent" BorderBrush="#FF283437">
+                <Canvas  HorizontalAlignment="Stretch" Margin="0" Height="669" Width="478" >
+                    <Image Height="120" Width="99" Source="Images/gametv_logo.png" Canvas.Top="46" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="163" />
+                    <Button x:Name="loginButton" Foreground="White" Content="Đăng nhập" Canvas.Left="75" Canvas.Top="382" BorderBrush="#FF704E3C" BorderThickness="1" Height="39" Width="301" Click="loginButton_Click" Background="#FFFF8742" FontSize="13" FontWeight="Bold" />
+
+                    <Label x:Name="registerButton" Content="Đăng ký tài khoản" Canvas.Left="163" Canvas.Top="475" Foreground="#FFFF8541" MouseDown="registerButton_Click" FontSize="13" FontWeight="Medium"/>
+                    <!--<Label Content="Gia hạn tài khoản !" Canvas.Left="99" Canvas.Top="628" Foreground="#FFF0AD4D" MouseUp="paymentLbl_MouseUp" Width="277" HorizontalContentAlignment="Center"/>-->
+                    <Label Content="Nhớ mật khẩu" Canvas.Left="92" Canvas.Top="318" Foreground="#FF7D7D7D" FontSize="13"/>
+                    <Label x:Name="forgotPassLink" Content="Quên mật khẩu?" Canvas.Left="169" Canvas.Top="513" Foreground="#FFFF8541" MouseDown="forgotPassLink_MouseDown" FontSize="13" FontWeight="Medium"/>
+                    <CheckBox x:Name="rememberPassChk" Content="" Canvas.Left="76" Canvas.Top="324" />
+                    <Border Height="44" Canvas.Left="75" Canvas.Top="212" Width="301" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="35"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <Image Source="Images/username.png" Stretch="None" />
+                            <TextBox x:Name="usernameTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" VerticalContentAlignment="Center" CaretBrush="White" KeyDown="usernameTextbox_KeyDown" />
+                        </Grid>
+                    </Border>
+                    <Border Height="44" Canvas.Left="75" Canvas.Top="265" Width="301" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="35"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <Image Source="Images/password.png" Stretch="None" />
+                            <PasswordBox  x:Name="passwordTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" Grid.Row="2" VerticalContentAlignment="Center" PasswordChar="*" CaretBrush="White" KeyDown="passwordTextbox_KeyDown" />
+                        </Grid>
+                    </Border>
+                    <Border Height="22" Canvas.Left="354" Canvas.Top="321" Width="22" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">
+                        <Image Source="Images/login_setting.png" Stretch="Fill" Margin="2" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+                    </Border>
+                    <Label x:Name="statusLabel" Content="Online" Canvas.Left="284" Canvas.Top="318" Foreground="#FF7D7D7D" FontSize="13" Width="67" HorizontalContentAlignment="Right"/>
+                </Canvas>
+            </Border>
+        </Border>
     </Grid>
 </Window>

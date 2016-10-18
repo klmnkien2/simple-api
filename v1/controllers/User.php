@@ -59,7 +59,7 @@ class User extends \SlimController\SlimController
 				//var_dump($response);die;
     		    $this->model->syncUserInfo($response);
 				$response['password'] = '';//unset not to response
-				$response['needpay'] = "1";
+
     		    $this->echorespnse(200, $response);
     		}
         } catch(\Exception $ex) {
@@ -70,7 +70,7 @@ class User extends \SlimController\SlimController
     
     public function paymentAction()
     {
-//         http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&card_type=92&card_seri=xxxx&card_code=yyyyy
+//         http://trading.gametv.vn/api_platform/mobile_card/?ajax=ajax&user_id=1card_type=92&card_seri=xxxx&card_code=yyyyy
 //         + Card_seri
 //         + Card_code
 //         + Card_type
@@ -84,7 +84,7 @@ class User extends \SlimController\SlimController
             $card_code = $this->param('card_code', 'post');
             $card_type = $this->param('card_type', 'post');
     
-            $api_url = "http://trading.gametv.vn/payment/mobile_card/?ajax=ajax&user_id=$user_id&card_type=$card_type&card_seri=$card_seri&card_code=$card_code";
+            $api_url = "http://trading.gametv.vn/api_platform/mobile_card/?ajax=ajax&user_id=100001599&card_type=$card_type&card_seri=$card_seri&card_code=$card_code";
 
             $opts = array('http' =>
                 array(
@@ -94,14 +94,15 @@ class User extends \SlimController\SlimController
             $context  = stream_context_create($opts);
             $result = file_get_contents($api_url, false, $context);
             $result = json_decode($result, true);
+
             $response = array();
     
-            if($result['status'] != 1) {
-                $response['error'] = $result['error'];
-                $this->echorespnse(400, $response);
-            } else {
+            if(empty($result['error']) || !$result['error']) {
                 $response['error'] = '';
                 $this->echorespnse(200, $response);
+            } else {
+                $response['error'] = $result['error'];
+                $this->echorespnse(400, $response);
             }
         } catch(\Exception $ex) {
             $this->echorespnse(400, array("error" => "Can't not connect to API."));

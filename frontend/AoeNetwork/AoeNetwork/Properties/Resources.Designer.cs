@@ -81,7 +81,7 @@ namespace AoeNetwork.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://aoevpn.vn/v1/index.php.
+        ///   Looks up a localized string similar to http://103.56.157.252:8080/v1.
         /// </summary>
         public static string API_URL {
             get {
@@ -251,6 +251,16 @@ namespace AoeNetwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap gametv_logo {
+            get {
+                object obj = ResourceManager.GetObject("gametv_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap invisible {
             get {
                 object obj = ResourceManager.GetObject("invisible", resourceCulture);
@@ -291,9 +301,49 @@ namespace AoeNetwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap login_avail {
+            get {
+                object obj = ResourceManager.GetObject("login_avail", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap login_border {
             get {
                 object obj = ResourceManager.GetObject("login_border", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap login_busy {
+            get {
+                object obj = ResourceManager.GetObject("login_busy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap login_offline {
+            get {
+                object obj = ResourceManager.GetObject("login_offline", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap login_setting {
+            get {
+                object obj = ResourceManager.GetObject("login_setting", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -554,6 +604,16 @@ namespace AoeNetwork.Properties {
         public static System.Drawing.Bitmap search_right {
             get {
                 object obj = ResourceManager.GetObject("search_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap setting_anchor {
+            get {
+                object obj = ResourceManager.GetObject("setting_anchor", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

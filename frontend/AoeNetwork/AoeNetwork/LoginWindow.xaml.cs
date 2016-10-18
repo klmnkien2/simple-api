@@ -146,12 +146,12 @@ namespace AoeNetwork
             if (this.state == 1)
             {
                 this.state = 0;
-                this.stateButton.Source = SystemUtils.getResource("invisible");
+                //this.stateButton.Source = SystemUtils.getResource("invisible");
             }
             else
             {
                 this.state = 1;
-                this.stateButton.Source = SystemUtils.getResource("available");
+                //this.stateButton.Source = SystemUtils.getResource("available");
             }
         }
 
@@ -202,6 +202,13 @@ namespace AoeNetwork
             PaymentWindow pay = new PaymentWindow();
             pay.SetController(this._controller);
             pay.ShowDialog();
+        }
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu cm = this.FindResource("cmStateChanging") as ContextMenu;
+            cm.PlacementTarget = sender as Image;
+            cm.IsOpen = true;
         }
 
     }
