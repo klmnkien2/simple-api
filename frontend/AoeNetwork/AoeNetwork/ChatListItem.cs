@@ -27,7 +27,7 @@ namespace AoeNetwork
             public Image state;
             public Image avatar;
             public Label status;
-            public Grid container;
+            public Border container;
             public Friend user;
         }
 
@@ -144,11 +144,11 @@ namespace AoeNetwork
                 return; // da ton tai thi next luon
             }
 
-            Image saparateLine = new Image();
-            saparateLine.Stretch = Stretch.Fill;
-            saparateLine.StretchDirection = StretchDirection.Both;
-            saparateLine.Source = SystemUtils.getResource("line");
-            Grid.SetRow(saparateLine, 0);
+            Label saparateLine = new Label();
+            saparateLine.HorizontalAlignment = HorizontalAlignment.Stretch;
+            saparateLine.VerticalAlignment = VerticalAlignment.Stretch;
+            saparateLine.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#122937"));
+            Grid.SetRow(saparateLine, 2);
             Grid.SetColumnSpan(saparateLine, 3);
 
             Label name = new Label();
@@ -157,7 +157,7 @@ namespace AoeNetwork
             name.FontWeight = FontWeights.Bold;
             name.Tag = user.user_id;
             name.Content = user.user_name;
-            Grid.SetRow(name, 1);
+            Grid.SetRow(name, 0);
             Grid.SetColumn(name, 1);
 
             Label status = new Label();
@@ -166,14 +166,14 @@ namespace AoeNetwork
             status.FontSize = status.FontSize - 2;
             status.Tag = user.user_id;
             status.Content = user.status;
-            Grid.SetRow(status, 2);
+            Grid.SetRow(status, 1);
             Grid.SetColumn(status, 1);
 
             Image state = new Image();
             state.StretchDirection = StretchDirection.Both;
             state.Width = 12;
             state.Height = 12;
-            Grid.SetRow(state, 1);
+            Grid.SetRow(state, 0);
             Grid.SetColumn(state, 2);
             Grid.SetRowSpan(state, 2);
             if (user.state == 1)
@@ -188,12 +188,11 @@ namespace AoeNetwork
             Image avatar = new Image();
             avatar.Margin = new Thickness(6, 6, 6, 6);
             avatar.Source = getResource("user");
-            Grid.SetRow(avatar, 1);
+            Grid.SetRow(avatar, 0);
             Grid.SetColumn(avatar, 0);
             Grid.SetRowSpan(avatar, 2);
 
             Grid itemPanel = new Grid();
-            itemPanel.Tag = user;
             itemPanel.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
             itemPanel.MouseRightButtonDown += itemPanel_MouseRightButtonDown;
             itemPanel.Children.Clear();
@@ -202,21 +201,22 @@ namespace AoeNetwork
             RowDefinition[] rows = new RowDefinition[3];
             ColumnDefinition[] columns = new ColumnDefinition[3];
             // Draw Rows.
+
             rows[0] = new RowDefinition();
-            rows[0].Height = new GridLength(2);
+            rows[0].Height = new GridLength(30);
             itemPanel.RowDefinitions.Add(rows[0]);
 
             rows[1] = new RowDefinition();
-            rows[1].Height = new GridLength(25);
+            rows[1].Height = new GridLength(30);
             itemPanel.RowDefinitions.Add(rows[1]);
 
             rows[2] = new RowDefinition();
-            rows[2].Height = new GridLength(25);
+            rows[2].Height = new GridLength(1);
             itemPanel.RowDefinitions.Add(rows[2]);
 
             // Draw Columns.
             columns[0] = new ColumnDefinition();
-            columns[0].Width = new GridLength(50);
+            columns[0].Width = new GridLength(60);
             itemPanel.ColumnDefinitions.Add(columns[0]);
 
             columns[1] = new ColumnDefinition();
@@ -228,27 +228,31 @@ namespace AoeNetwork
             itemPanel.ColumnDefinitions.Add(columns[2]);
 
             itemPanel.Width = this.parentList.Width;
-            itemPanel.Height = 50;
-
-            if (this.IDs.Count > 0)
-            {
-                itemPanel.Children.Add(saparateLine);
-            }
+            itemPanel.Height = 61;
+                       
             itemPanel.Children.Add(avatar);
             itemPanel.Children.Add(name);
             itemPanel.Children.Add(status);
             itemPanel.Children.Add(state);
+            itemPanel.Children.Add(saparateLine);
+
+            Border itemBorder = new Border();
+            itemBorder.BorderThickness = new Thickness(1,1,1,0);
+            itemBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0e1e28"));
+            itemBorder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#010202"));
+            itemBorder.Child = itemPanel;
+            itemBorder.Tag = user;
 
             DataItem dataItem = new DataItem();
             dataItem.state = state;
             dataItem.avatar = avatar;
             dataItem.status = status;
             dataItem.user = user;
-            dataItem.container = itemPanel;
+            dataItem.container = itemBorder;
 
             this.dataItems.Add(user.user_id, dataItem);
             this.IDs.Add(user.user_id);
-            this.parentList.Children.Add(itemPanel);
+            this.parentList.Children.Add(itemBorder);
         }
 
         void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -267,7 +271,7 @@ namespace AoeNetwork
         void itemPanel_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             //context menu stuff
-            Grid container = sender as Grid;
+            Border container = sender as Border;
             selectContextItem = container.Tag as Friend;
 
             // CHeck button showing

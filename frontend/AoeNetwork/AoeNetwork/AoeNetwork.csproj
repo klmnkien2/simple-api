@@ -202,6 +202,8 @@
     <Content Include="Images\aoe.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\arrow_pink.png" />
+    <None Include="Images\arrow_down.png" />
     <Content Include="Images\available.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -232,7 +234,19 @@
     <Content Include="Images\btn_orange.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\chat_addFriend.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\close.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\coin_add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\coin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\close.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\cross.png">
@@ -244,10 +258,24 @@
     <Content Include="Images\divider.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\expander.png" />
+    <None Include="Images\dsdaily.png" />
     <Content Include="Images\friend_tab.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\gametv_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\icon_vaogame.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\icon_dschan.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\icon_banbe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\hotrokh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\invisible.png">
@@ -280,6 +308,9 @@
     <Content Include="Images\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\minimize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\panel1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -295,6 +326,7 @@
     <Content Include="Images\room.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\room_aoelogo.png" />
     <Content Include="Images\room_bg_dark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -343,6 +375,8 @@
     <Content Include="Images\row.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\scroll_end.png" />
+    <None Include="Images\scroll_start.png" />
     <Content Include="Images\search.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

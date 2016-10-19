@@ -32,7 +32,6 @@ namespace AoeNetwork
             privateController.LoadView();
 
             initFriendLists();
-            tabfriendText_MouseDown(null, null);//select tab friend;
         }
 
         #region action for extend MainWindow (title bar, border, ...)
@@ -353,7 +352,7 @@ namespace AoeNetwork
             }));
         }
 
-        private void aoeGameButton_Click(object sender, RoutedEventArgs e)
+        private void aoeGameButton_Click(object sender, MouseButtonEventArgs e)
         {
             Dispatcher.Invoke(new Action(() => {
                 if (roomView != null)
@@ -374,25 +373,31 @@ namespace AoeNetwork
         }
         #endregion
 
+        private int showList = 1; //1=friend, 2=ignore, 3=recent
         private void tabrecentText_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.gridListContainer.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
-            this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
-            this.gridListContainer.RowDefinitions[5].Height = new GridLength(0);
+            this.gridListContainer.RowDefinitions[0].Height = new GridLength(100, GridUnitType.Star);
+            this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
+            this.gridListContainer.RowDefinitions[2].Height = new GridLength(0);
+            showList = 3;
         }
 
-        private void tabfriendText_MouseDown(object sender, MouseButtonEventArgs e)
+        private void iconIgnoreList_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.gridListContainer.RowDefinitions[3].Height = new GridLength(100, GridUnitType.Star);
-            this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
-            this.gridListContainer.RowDefinitions[5].Height = new GridLength(0);
-        }
-
-        private void tabIgnoretext_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.gridListContainer.RowDefinitions[5].Height = new GridLength(100, GridUnitType.Star);
-            this.gridListContainer.RowDefinitions[3].Height = new GridLength(0);
-            this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
+            if (showList == 1 || showList == 3)
+            {
+                this.gridListContainer.RowDefinitions[0].Height = new GridLength(0);
+                this.gridListContainer.RowDefinitions[1].Height = new GridLength(0);
+                this.gridListContainer.RowDefinitions[2].Height = new GridLength(100, GridUnitType.Star);
+                showList = 2;
+            }
+            else if (showList == 2)
+            {
+                this.gridListContainer.RowDefinitions[0].Height = new GridLength(0);
+                this.gridListContainer.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
+                this.gridListContainer.RowDefinitions[2].Height = new GridLength(0);
+                showList = 1;
+            }
         }
 
 

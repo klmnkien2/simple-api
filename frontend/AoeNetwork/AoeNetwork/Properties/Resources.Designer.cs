@@ -81,7 +81,7 @@ namespace AoeNetwork.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://103.56.157.252:8080/v1.
+        ///   Looks up a localized string similar to http://aoevpn.vn/v1/index.php.
         /// </summary>
         public static string API_URL {
             get {
@@ -95,6 +95,26 @@ namespace AoeNetwork.Properties {
         public static string API_URL_REAL {
             get {
                 return ResourceManager.GetString("API_URL_REAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap arrow_down {
+            get {
+                object obj = ResourceManager.GetObject("arrow_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap arrow_pink {
+            get {
+                object obj = ResourceManager.GetObject("arrow_pink", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -201,9 +221,49 @@ namespace AoeNetwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap chat_addFriend {
+            get {
+                object obj = ResourceManager.GetObject("chat_addFriend", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap close {
             get {
                 object obj = ResourceManager.GetObject("close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap close1 {
+            get {
+                object obj = ResourceManager.GetObject("close1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap coin {
+            get {
+                object obj = ResourceManager.GetObject("coin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap coin_add {
+            get {
+                object obj = ResourceManager.GetObject("coin_add", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -241,6 +301,26 @@ namespace AoeNetwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap dsdaily {
+            get {
+                object obj = ResourceManager.GetObject("dsdaily", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap expander {
+            get {
+                object obj = ResourceManager.GetObject("expander", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap friend_tab {
             get {
                 object obj = ResourceManager.GetObject("friend_tab", resourceCulture);
@@ -254,6 +334,46 @@ namespace AoeNetwork.Properties {
         public static System.Drawing.Bitmap gametv_logo {
             get {
                 object obj = ResourceManager.GetObject("gametv_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap hotrokh {
+            get {
+                object obj = ResourceManager.GetObject("hotrokh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap icon_banbe {
+            get {
+                object obj = ResourceManager.GetObject("icon_banbe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap icon_dschan {
+            get {
+                object obj = ResourceManager.GetObject("icon_dschan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap icon_vaogame {
+            get {
+                object obj = ResourceManager.GetObject("icon_vaogame", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -361,6 +481,16 @@ namespace AoeNetwork.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap minimize {
+            get {
+                object obj = ResourceManager.GetObject("minimize", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap panel1 {
             get {
                 object obj = ResourceManager.GetObject("panel1", resourceCulture);
@@ -404,6 +534,16 @@ namespace AoeNetwork.Properties {
         public static System.Drawing.Bitmap room {
             get {
                 object obj = ResourceManager.GetObject("room", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap room_aoelogo {
+            get {
+                object obj = ResourceManager.GetObject("room_aoelogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -564,6 +704,26 @@ namespace AoeNetwork.Properties {
         public static System.Drawing.Bitmap row {
             get {
                 object obj = ResourceManager.GetObject("row", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap scroll_end {
+            get {
+                object obj = ResourceManager.GetObject("scroll_end", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap scroll_start {
+            get {
+                object obj = ResourceManager.GetObject("scroll_start", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
