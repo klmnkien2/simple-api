@@ -5,9 +5,9 @@
     <Window.Resources>
         
         <ContextMenu x:Key="cmStateChanging" Style="{StaticResource customContextMenu}">
-            <MenuItem Header="Online" Style="{StaticResource customContextMenuItem}" />
-            <MenuItem Header="Busy" Style="{StaticResource customContextMenuItem}" />
-            <MenuItem Header="Offline" Style="{StaticResource customContextMenuItem}" />
+            <MenuItem Header="Online" Style="{StaticResource customContextMenuItem}" Tag="Images/login_avail.png" />
+            <MenuItem Header="Busy" Style="{StaticResource customContextMenuItem}" Tag="Images/login_busy.png" />
+            <MenuItem Header="Offline" Style="{StaticResource customContextMenuItem}" Tag="Images/login_offline.png" />
         </ContextMenu>
     </Window.Resources>
     <Grid Background="Transparent">

@@ -16,7 +16,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContextMenu}">
-                        <Border x:Name="Border" Background="#FF0b1a25" BorderThickness="1">
+                        <Border x:Name="Border" Background="#FF0b1a25" BorderThickness="2">
                             <Border.BorderBrush>
                                 <SolidColorBrush Color="#FF1e2b31" />
                             </Border.BorderBrush>
@@ -34,17 +34,18 @@
         </Style>
 
         <Style TargetType="{x:Type MenuItem}" x:Key="customContextMenuItem">
+            <Setter Property="Height" Value="30" />
             <Setter Property="MenuItem.Template">
                 <Setter.Value>
                     <ControlTemplate>
                         <Border HorizontalAlignment="Stretch" x:Name="Root">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="26"></ColumnDefinition>
+                                    <ColumnDefinition Width="28"></ColumnDefinition>
                                     <ColumnDefinition Width="130"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ImageWrapper" Background="#FF0b1a25"  Grid.Column="0">
-                                    <Image Width="24" Height="24" Margin="0" x:Name="ImageIcon">
+                                    <Image Width="15" Height="15" Margin="0" x:Name="ImageIcon" Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}">
                                     </Image>
                                 </Border>
                                 <Border Grid.Column="1" x:Name="NameWrapper"  HorizontalAlignment="Stretch" Background="#FF0b1a25">

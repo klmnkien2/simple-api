@@ -4,74 +4,47 @@
         xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         Title="PrivateWindow" Height="500" Width="700" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White"  ResizeMode="NoResize" AllowsTransparency="True" Top="3">
     <Window.Resources>
-        <Style x:Key="buttonNoBg" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                            BorderThickness="0"
-                            Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-    <Grid Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="8"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="100*"/>
-        </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_left.png" Stretch="Fill"/>
 
-        <Image Grid.Column="2" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_right.png" Stretch="Fill"/>
-        <Grid Grid.Column="1" Grid.RowSpan="1" Grid.Row="0">
-            <Grid.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Images/titlebar_center.png" TileMode="FlipX"/>
-            </Grid.Background>
+    </Window.Resources>
+
+    <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
+
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100*"/>
-                <ColumnDefinition Width="24"/>
-                <ColumnDefinition Width="24"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
-            <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-            <Image x:Name="coolform_mini_btn" Grid.Column="2" Source="Images/btn_minimum.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_mini_btn_MouseDown"/>
-            <Image x:Name="coolform_close_btn" Grid.Column="3" Source="pack://application:,,,/Images/btn_close.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_close_btn_MouseDown"/>
-        </Grid>
 
-        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1">
-            <Border.Background>
-                <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_light.png"/>
-            </Border.Background>
-            <Border.BorderBrush>
-                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-            </Border.BorderBrush>
-            <Grid x:Name="windowAllContentGrid" >
+            <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="24"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                    <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                    <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
+                </Grid>
+            </Border>
+
+            <Grid x:Name="windowAllContentGrid" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100*"/>
-                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="0"/>
                     <RowDefinition Height="100*"/>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="110"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Grid.ColumnSpan="2">
@@ -82,7 +55,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="friendState" Source="Images/state_avail.png" Stretch="Fill" Margin="5,0,0,0" Height="15" Width="15" HorizontalAlignment="Left" />
+                    
                     <Label x:Name="friendStatus" Foreground="White" FontSize="14" VerticalContentAlignment="Center" Content="Available" Margin="25,0,0,0" />
                     <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0,0,10,0">
                         <Button Style="{StaticResource buttonNoBg}" x:Name="btnAcceptFriend" Content="Accept Friend" FontSize="11" Width="90" BorderThickness="0" Foreground="White" Height="30" Margin="0,0,5,0" Click="btnAcceptFriend_Click">
@@ -107,30 +80,35 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
-                    <Border.Background>
-                        <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_dark.png"/>
-                    </Border.Background>
-                    <Border.BorderBrush>
-                        <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-                    </Border.BorderBrush>
-                    <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent" Padding="0,20,0,0"/>
+                <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" BorderBrush="#FF3c444a" Background="Transparent" Margin="10,10,10,0">                    
+                    <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent" Padding="0"/>
                 </Border>
-                <Label x:Name="loadMoreLbl" Content="Load more messages" Grid.Row="1" Grid.ColumnSpan="2" Foreground="White" VerticalAlignment="Top" VerticalContentAlignment="Center" Padding="5" Margin="0,10,0,0" HorizontalContentAlignment="Center" MouseDown="loadMoreLbl_MouseDown" />
-                <TextBox x:Name="messageBox" Grid.Row="2" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" Margin="10,0,5,10" >
-                    <TextBox.Background>
-                        <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_dark.png"/>
-                    </TextBox.Background>
-                    <TextBox.BorderBrush>
-                        <ImageBrush ImageSource="Images/border.png"/>
-                    </TextBox.BorderBrush>
-                </TextBox>
-                <Button Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Grid.Column="1" Grid.Row="2" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,0,10,10" Click="buttonEnter_Click"  >
-                    <Button.Background>
-                        <ImageBrush ImageSource="Images/room_enter.png"/>
-                    </Button.Background>
-                </Button>
+                
+                <Border BorderThickness="1,0,1,0" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="10,0,10,0">
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="loadMoreLbl" Content="Nhật ký" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,0,10,0" HorizontalAlignment="Right" Click="loadMoreLbl_MouseDown"  >
+                        </Button>
+                        <Image DockPanel.Dock="Right" Source="Images/nhatky.png" Width="18" Height="16" MouseLeftButtonDown="loadMoreLbl_MouseDown"/>
+                        <Label Content="" />
+                    </DockPanel>
+                </Border>
+                <Border BorderThickness="1,1,1,1" Grid.Row="3" BorderBrush="#FF3c444a" Background="Transparent" Margin="10,0,10,10" Padding="5">
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0" Width="20" Height="15" VerticalAlignment="Bottom" Click="buttonEnter_Click"  >
+                            <Button.Background>
+                                <ImageBrush ImageSource="Images/room_enter.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBox x:Name="messageBox" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" Margin="0" Background="Transparent" BorderThickness="0"/>
+                    </DockPanel>
+                </Border>
+
+                <Image x:Name="friendAvatar" Source="Images/user.png" Stretch="Uniform" VerticalAlignment="Top" Margin="10,10,20,10" Grid.Column="1" Grid.Row="1"/>
+                <Image x:Name="friendState" Source="Images/login_avail.png" Stretch="Uniform" Margin="0,15,25,0" Height="15" Width="15" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="1" />
+                <Image x:Name="myAvatar" Source="Images/user.png" Stretch="Uniform" Margin="10,0,20,10" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3"/>
+                <Image x:Name="myState" Source="Images/login_avail.png" Stretch="Uniform" Margin="0,10,25,0" Height="15" Width="15" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3" />
             </Grid>
-        </Border>
-    </Grid>
+        </Grid>
+
+    </Border>
 </Window>

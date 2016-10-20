@@ -202,8 +202,12 @@
     <Content Include="Images\aoe.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Images\arrow_pink.png" />
-    <None Include="Images\arrow_down.png" />
+    <Content Include="Images\arrow_pink.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\arrow_down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\available.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

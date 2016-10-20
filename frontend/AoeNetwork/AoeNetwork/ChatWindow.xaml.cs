@@ -464,5 +464,13 @@ namespace AoeNetwork
             addFriendView.ShowDialog();
         }
 
+        private void coinBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //open context
+            ContextMenu cm = this.FindResource("contextCoin") as ContextMenu;
+            cm.PlacementTarget = sender as Image;
+            cm.IsOpen = true;
+        }
+
     }
 }

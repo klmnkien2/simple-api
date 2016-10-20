@@ -193,8 +193,6 @@ namespace AoeNetwork
             Grid.SetRowSpan(avatar, 2);
 
             Grid itemPanel = new Grid();
-            itemPanel.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
-            itemPanel.MouseRightButtonDown += itemPanel_MouseRightButtonDown;
             itemPanel.Children.Clear();
 
             // Adding Rows and Colums to Grid.
@@ -242,6 +240,8 @@ namespace AoeNetwork
             itemBorder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#010202"));
             itemBorder.Child = itemPanel;
             itemBorder.Tag = user;
+            itemBorder.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
+            itemBorder.MouseRightButtonDown += itemPanel_MouseRightButtonDown;
 
             DataItem dataItem = new DataItem();
             dataItem.state = state;
