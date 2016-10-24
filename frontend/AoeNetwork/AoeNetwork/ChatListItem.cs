@@ -259,7 +259,7 @@ namespace AoeNetwork
         {
             if (e.ClickCount == 2)
             {
-                Friend user = (sender as Grid).Tag as Friend;
+                Friend user = (sender as Border).Tag as Friend;
                 if (user != null)
                 {
                     parentWindow.OpenPrivate(user, true);

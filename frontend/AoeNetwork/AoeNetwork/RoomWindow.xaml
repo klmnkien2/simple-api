@@ -2,240 +2,216 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
-        Title="RoomWindow" Height="720" Width="1000" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="900" MinHeight="600" ResizeMode="NoResize" AllowsTransparency="True" Top="3">
+        Title="RoomWindow" Height="650" Width="1000" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="900" MinHeight="600" ResizeMode="NoResize" AllowsTransparency="True" Top="3">
     <Window.Resources>
-        <Style x:Key="buttonNoBg" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                            BorderThickness="0"
-                            Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
     </Window.Resources>
-    <Grid Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="8"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="100*"/>
-        </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_left.png" Stretch="Fill"/>
-
-        <Image Grid.Column="2" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_right.png" Stretch="Fill"/>
-        <Grid Grid.Column="1" Grid.RowSpan="1" Grid.Row="0">
-            <Grid.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Images/titlebar_center.png" TileMode="FlipX"/>
-            </Grid.Background>
+    <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100*"/>
-                <ColumnDefinition Width="24"/>
-                <ColumnDefinition Width="24"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
-            <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-            <Image x:Name="coolform_mini_btn" Grid.Column="2" RenderTransformOrigin="0.533,1.674" Source="Images/btn_minimum.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_mini_btn_MouseDown"/>
-            <Image x:Name="coolform_close_btn" Grid.Column="3" RenderTransformOrigin="0.533,1.674" Source="pack://application:,,,/Images/btn_close.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_close_btn_MouseDown"/>
-        </Grid>
-
-        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1">
-            <Border.Background>
-                <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_dark.png"/>
-            </Border.Background>
-            <Border.BorderBrush>
-                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-            </Border.BorderBrush>
-            <Grid x:Name="windowAllContentGrid" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100*"/>
-                    <ColumnDefinition Width="240"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="100*"/>
-                </Grid.RowDefinitions>
-                <Image x:Name="bannerAds" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" Source="pack://application:,,,/Images/aoe.png"/>
-                <Grid Grid.Row="1" Margin="0">
-                    <Grid.Background>
-                        <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_panel.png"/>
-                    </Grid.Background>
+            <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="24"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
-                    <Button Style="{StaticResource buttonNoBg}" x:Name="tabHome" Foreground="Black" Content="HOME" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Margin="10,5,0,5" FontWeight="Bold" Click="tabHome_Click" >
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/room_bg_tab.png"/>
-                        </Button.Background>
-                    </Button>
-                    <Button Style="{StaticResource buttonNoBg}" x:Name="tabGame" Grid.Column="1" Foreground="Black" Content="GAME" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Margin="0,5,0,5" FontWeight="Bold" Click="tabGame_Click" >
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/room_bg_tab.png"/>
-                        </Button.Background>
-                    </Button>
-                    <Button Style="{StaticResource buttonNoBg}" x:Name="tabRoom" Grid.Column="2" Foreground="Black" Content="ROOM" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Margin="0,5,10,5" FontWeight="Bold" Click="tabRoom_Click" >
-                        <Button.Background>
-                            <ImageBrush ImageSource="Images/room_bg_tab.png"/>
-                        </Button.Background>
-                    </Button>
-                </Grid>
 
-                <Border x:Name="tabRoomContent" BorderThickness="1,1,1,1" Grid.Row="2" Margin="0" Padding="10">
-                    <Border.Background>
-                        <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_light.png"/>
-                    </Border.Background>
-                    <!--<Border.BorderBrush>
-                        <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-                    </Border.BorderBrush>-->
-                    <Grid>
+                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                    <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                    <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
+                </Grid>
+            </Border>
+
+            <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1">
+                <Grid x:Name="windowAllContentGrid" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="100*"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel Grid.Column="1" LastChildFill="False">
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="tabHome" Foreground="Black" Content="TRANG CHỦ" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Margin="10,5,0,5" FontWeight="Bold" Click="tabHome_Click" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="Images/room_bg_tab.png"/>
+                            </Button.Background>
+                        </Button>
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="tabGame" Grid.Column="1" Foreground="Black" Content="KÊNH" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Margin="0,5,0,5" FontWeight="Bold" Click="tabGame_Click" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="Images/room_bg_tab.png"/>
+                            </Button.Background>
+                        </Button>
+                        <Button Style="{StaticResource buttonNoBg}" x:Name="tabRoom" Grid.Column="2" Foreground="Black" Content="PHÒNG TÁN GẪU" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Margin="0,5,10,5" FontWeight="Bold" Click="tabRoom_Click" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="Images/room_bg_tab.png"/>
+                            </Button.Background>
+                        </Button>
+                    </DockPanel>
+                    <DockPanel Grid.Column="0" LastChildFill="True">
+                        <Image Source="Images/arrow_pink.png" DockPanel.Dock="Right" Width="14" Height="16" Margin="0,0,3,0"/>
+                        <Image Margin="3" Source="Images/room_aoelogo.png"/>
+                    </DockPanel>
+                    <Grid Grid.Column="2" Margin="5,0,5,0">
+                        <Grid.Background>
+                            <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_panel.png"/>
+                        </Grid.Background>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
+
+                        <WrapPanel Margin="0" MouseLeftButtonDown="WrapPanel_MouseLeftButtonDown">
+                            <Label x:Name="userName" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,5,0,0" IsEnabled="False" FontWeight="SemiBold" />
+                            <Image x:Name="userState" Source="Images/state_avail.png" Stretch="Fill" Width="12" Height="12" Margin="2,8,0,0" />
+                            <Image x:Name="userStateArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,8,0,0" />
+                        </WrapPanel>
+                        <TextBox x:Name="userStatus" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="13" Text="status..." Margin="0,5,10,0" CaretBrush="White" KeyDown="userStatus_KeyDown" />
+                        
+                        <WrapPanel Grid.Column="1" x:Name="coinBlock" MouseLeftButtonDown="coinBlock_MouseLeftButtonDown">
+                            <Image Source="Images/coin.png"  Stretch="Fill" Width="18" Height="18" />
+                            <Label x:Name="userDiamond" Grid.Column="2" Foreground="#FFBDA422" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="000.000.000" Grid.Row="1" />
+                            <Image x:Name="userCoinArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,2,0,0" />
+                        </WrapPanel>
+                        <WrapPanel Grid.Column="1" Grid.Row="1">
+                            <Label x:Name="userLevel" Foreground="White" VerticalContentAlignment="Center" Content="LV" Margin="0" />
+                        </WrapPanel>
+                        
+                    </Grid>
+
+                    <Border x:Name="tabRoomContent" BorderThickness="1,1,1,1" BorderBrush="#FF3c444a" Grid.Column="1" Grid.Row="2" Margin="10" >
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="100*"/>
+                                <RowDefinition Height="70"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="roomNameLbl" Grid.ColumnSpan="2" Content="ROOM CHAT: " FontSize="16" BorderBrush="#FF3c444a" Foreground="#FFFFFFFF" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" />
+                            
+                            <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                                <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent"/>
+                            </Border>
+
+                            <Border BorderThickness="1,1,1,1" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="0,0,10,0" Padding="5">
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0" Width="20" Height="15" VerticalAlignment="Bottom" Click="buttonEnter_Click"  >
+                                        <Button.Background>
+                                            <ImageBrush ImageSource="Images/room_enter.png"/>
+                                        </Button.Background>
+                                    </Button>
+                                    <TextBox x:Name="messageBox" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" Margin="0" Background="Transparent" BorderThickness="0"/>
+                                </DockPanel>
+                            </Border>
+                            
+                            <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True">
+                                <DockPanel LastChildFill="True" DockPanel.Dock="Top">
+                                    <Button DockPanel.Dock="Right" Width="16" Height="16" Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
+                                        <Button.Background>
+                                            <ImageBrush ImageSource="Images/room_setting.png"/>
+                                        </Button.Background>
+                                    </Button>
+                                    <Label Content="Đường dẫn Game" Foreground="#FFFFFFFF" />
+                                </DockPanel>
+                                <Button x:Name="buttonStart" Foreground="White" BorderBrush="#FF704E3C" Content="KHỞI ĐỘNG" BorderThickness="1"  Click="loginButton_Click" Background="#FF0093d7" FontSize="15" FontWeight="Bold" />
+                                
+                            </DockPanel>
+                        </Grid>
+                    </Border>
+
+                    <Grid x:Name="tabHomeContent" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Margin="0">
+                        <WebBrowser x:Name="homePageBrowser" Visibility="Hidden" />
+                    </Grid>
+
+                    <Grid x:Name="tabGameContent" Grid.Column="1" Grid.Row="2" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="100*"/>
                             <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
-                        <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,5">
-                            <Border.Background>
-                                <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_dark.png"/>
-                            </Border.Background>
-                            <Border.BorderBrush>
-                                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-                            </Border.BorderBrush>
-                            <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent"/>
-                        </Border>
-                        <Button Style="{StaticResource buttonNoBg}" x:Name="buttonStart" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonStart_Click" >
-                            <Button.Background>
-                                <ImageBrush ImageSource="Images/room_start.png"/>
-                            </Button.Background>
-                        </Button>
-                        <Button Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Grid.Column="1" Grid.Row="3" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2,0,2,2" Click="buttonEnter_Click" Height="26" VerticalAlignment="Bottom" >
-                            <Button.Background>
-                                <ImageBrush ImageSource="Images/room_enter.png"/>
-                            </Button.Background>
-                        </Button>
-                        <Button Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Grid.Column="1" Grid.Row="2" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
-                            <Button.Background>
-                                <ImageBrush ImageSource="Images/room_setting.png"/>
-                            </Button.Background>
-                        </Button>
-                        <TextBox x:Name="messageBox" Grid.Row="1" Grid.RowSpan="3" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" >
-                            <TextBox.Background>
-                                <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_dark.png"/>
-                            </TextBox.Background>
-                            <TextBox.BorderBrush>
-                                <ImageBrush ImageSource="Images/border.png"/>
-                            </TextBox.BorderBrush>
-                        </TextBox>
+                        <TreeView x:Name="GameTreeView" FontSize="16" Background="AliceBlue" Foreground="White">
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <EventSetter Event="MouseDoubleClick" Handler="GameTreeItemMouseDoubleClick" />
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                        <Label Content="Loading...Please wait..." FontSize="16" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
+                        <Image Source="Images/progress_bar.gif" Margin="0" Grid.Row="2" />
                     </Grid>
-                </Border>
 
-                <Grid x:Name="tabHomeContent" Grid.Row="2" Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="100*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-                    <Image x:Name="adsPic1" Source="Images/aoe.png" Margin="10,10,5,10" />
-                    <Image x:Name="adsPic2" Source="Images/aoe.png" Grid.Column="1" Margin="5,10,10,10"/>
-                </Grid>
 
-                <Grid x:Name="tabGameContent" Grid.Row="2" Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <TreeView x:Name="GameTreeView" FontSize="16" Background="AliceBlue" Foreground="White">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}">
-                                <EventSetter Event="MouseDoubleClick" Handler="GameTreeItemMouseDoubleClick" />
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                    </TreeView>
-                    <Label Content="Loading...Please wait..." FontSize="16" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
-                    <Image Source="Images/progress_bar.gif" Margin="0" Grid.Row="2" />
-                </Grid>
+                    <Grid x:Name="tabRoomContent_extend" Grid.Row="2" Grid.Column="2" Margin="0">
+                        <Grid.Background>
+                            <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_light.png"/>
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="100*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="No." Foreground="#FFEE874D" VerticalContentAlignment="Center" HorizontalAlignment="Left" />
+                        <Label Grid.Column="1" Content="Name" Foreground="#FFEE874D" VerticalContentAlignment="Center" HorizontalAlignment="Left" />
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="1" MinHeight="100">
+                            <StackPanel x:Name="userListControl"  />
+                        </ScrollViewer>
+                        <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <Image Source="Images/room_search_left.png" Margin="0" Stretch="Fill"/>
+                            <TextBox x:Name="searchBox" Grid.Column="1" Foreground="White" CaretBrush="White" BorderThickness="0" VerticalContentAlignment="Center" Padding="5,0" TextChanged="searchBox_TextChanged" >
+                                <TextBox.Background>
+                                    <ImageBrush TileMode="Tile" ImageSource="Images/room_search_center.png"/>
+                                </TextBox.Background>
+                            </TextBox>
+                            <Image Source="Images/search.png" Grid.Column="1" HorizontalAlignment="Right" Width="20" Margin="0,0,5,0" />
+                            <Image Source="Images/room_search_right.png" Grid.Column="2" Stretch="Fill" />
+                        </Grid>
+                    </Grid>
 
-                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                    <StackPanel.Background>
-                        <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_panel.png"/>
-                    </StackPanel.Background>
-                    <Image Source="Images/simple_logo.png" Width="25" HorizontalAlignment="Left" Margin="5"/>
-                    <Label x:Name="roomNameLbl" Content="ROOM" FontSize="18" Foreground="#FFEE874D" VerticalContentAlignment="Center" HorizontalAlignment="Left" />
-                </StackPanel>
+                    <Grid x:Name="tabGameContent_extend" Grid.Row="2" Grid.Column="2" Margin="0">
+                        <WebBrowser x:Name="channelTabBrowser" Visibility="Hidden" />
+                    </Grid>
 
-                <Grid Grid.Row="2" Grid.Column="2" Margin="0">
-                    <Grid.Background>
-                        <ImageBrush TileMode="Tile" ImageSource="Images/room_bg_light.png"/>
-                    </Grid.Background>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="100*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="100*"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="No." Foreground="#FFEE874D" VerticalContentAlignment="Center" HorizontalAlignment="Left" />
-                    <Label Grid.Column="1" Content="Name" Foreground="#FFEE874D" VerticalContentAlignment="Center" HorizontalAlignment="Left" />
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2" Grid.Row="1" MinHeight="100">
-                        <StackPanel x:Name="userListControl"  />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Grid.Column="0" Grid.Row="1" MinHeight="100">
+                        <StackPanel x:Name="channelListControl"  />
                     </ScrollViewer>
-                    <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="100*"/>
-                            <ColumnDefinition Width="10"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="100*"/>
-                        </Grid.RowDefinitions>
-                        <Image Source="Images/room_search_left.png" Margin="0" Stretch="Fill"/>
-                        <TextBox x:Name="searchBox" Grid.Column="1" Foreground="White" CaretBrush="White" BorderThickness="0" VerticalContentAlignment="Center" Padding="5,0" TextChanged="searchBox_TextChanged" >
-                            <TextBox.Background>
-                                <ImageBrush TileMode="Tile" ImageSource="Images/room_search_center.png"/>
-                            </TextBox.Background>
-                        </TextBox>
-                        <Image Source="Images/search.png" Grid.Column="1" HorizontalAlignment="Right" Width="20" Margin="0,0,5,0" />
-                        <Image Source="Images/room_search_right.png" Grid.Column="2" Stretch="Fill" />
-                    </Grid>
                 </Grid>
-            </Grid>
-        </Border>
+            </Border>
 
-    </Grid>
+        </Grid>
+    </Border>
 </Window>

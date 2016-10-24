@@ -79,6 +79,47 @@ class Room extends \SlimController\SlimController
         }
     }
 
+    public function channelAction()
+    {
+        // BY API
+        try {
+            $channel_id = $this->param('channel_id');
+            if (!$channel_id) {
+                $channel = array (
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                );
+                $this->echoRespnse(200, array('channel' => $channel));
+            } else {
+                $room = array (
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                    array('name' => "", "image" => ""),
+                );
+                $this->echoRespnse(200, array('room' => $room));
+            }
+
+        } catch(\Exception $ex) {
+            //var_dump($ex);die;
+            $this->echorespnse(400, array("error" => "Can't not connect to API."));
+        }
+    }
+
     public function adsAction()
     {
         try {

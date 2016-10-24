@@ -53,6 +53,7 @@ namespace AoeNetwork
         private SelectRunWindow selectRunWindow;
         private RoomController roomController;
         private RoomListItem userList;
+        private ChannelListItem channelList;
         public void SetRoomController(RoomController roomController)
         {
             this.roomController = roomController;

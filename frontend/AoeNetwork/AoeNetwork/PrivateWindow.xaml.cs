@@ -215,5 +215,10 @@ namespace AoeNetwork
         }
 
         #endregion
+
+        private void loadMoreLbl_Click(object sender, RoutedEventArgs e)
+        {
+            privateController.HistoryMessage(this.friend.user_id, this.last_view_id);
+        }
     }
 }

@@ -29,7 +29,7 @@
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
 
-                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
                     <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
                     <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
                 </Grid>
@@ -86,7 +86,7 @@
                 
                 <Border BorderThickness="1,0,1,0" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="10,0,10,0">
                     <DockPanel LastChildFill="True">
-                        <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="loadMoreLbl" Content="Nhật ký" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,0,10,0" HorizontalAlignment="Right" Click="loadMoreLbl_MouseDown"  >
+                        <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="loadMoreLbl" Content="Nhật ký" BorderBrush="{x:Null}" BorderThickness="0" Margin="0,0,10,0" HorizontalAlignment="Right" Click="loadMoreLbl_Click">
                         </Button>
                         <Image DockPanel.Dock="Right" Source="Images/nhatky.png" Width="18" Height="16" MouseLeftButtonDown="loadMoreLbl_MouseDown"/>
                         <Label Content="" />

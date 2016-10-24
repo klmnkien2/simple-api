@@ -91,6 +91,8 @@
     </ApplicationDefinition>
     <Compile Include="Controller\PrivateController.cs" />
     <Compile Include="Controller\RoomController.cs" />
+    <Compile Include="ChannelListItem.cs" />
+    <Compile Include="Model\Channel.cs" />
     <Compile Include="PaymentWindow.xaml.cs">
       <DependentUpon>PaymentWindow.xaml</DependentUpon>
     </Compile>
@@ -263,7 +265,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Images\expander.png" />
-    <None Include="Images\dsdaily.png" />
+    <Content Include="Images\dsdaily.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\friend_tab.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -315,6 +319,9 @@
     <Content Include="Images\minimize.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\nhatky.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\panel1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -330,7 +337,9 @@
     <Content Include="Images\room.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Images\room_aoelogo.png" />
+    <Content Include="Images\room_aoelogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\room_bg_dark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
