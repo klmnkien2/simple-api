@@ -3,72 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PaymentWindow" Height="300" Width="480" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" ResizeMode="NoResize" AllowsTransparency="True" Top="3" WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style x:Key="buttonNoBg" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                            BorderThickness="0"
-                            Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
     </Window.Resources>
-    <Grid Background="Transparent">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="8"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="100*"/>
-        </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.ColumnSpan="1" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_left.png" Stretch="Fill"/>
-
-        <Image Grid.Column="2" Grid.RowSpan="1" Source="pack://application:,,,/Images/titlebar_right.png" Stretch="Fill"/>
-        <Grid Grid.Column="1" Grid.RowSpan="1" Grid.Row="0">
-            <Grid.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Images/titlebar_center.png" TileMode="FlipX"/>
-            </Grid.Background>
+    <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100*"/>
-                <ColumnDefinition Width="24"/>
-                <ColumnDefinition Width="24"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
-            <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
-            <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-            <Image x:Name="coolform_mini_btn" Grid.Column="2" RenderTransformOrigin="0.533,1.674" Source="Images/btn_minimum.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_mini_btn_MouseDown"/>
-            <Image x:Name="coolform_close_btn" Grid.Column="3" RenderTransformOrigin="0.533,1.674" Source="pack://application:,,,/Images/btn_close.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_close_btn_MouseDown"/>
-        </Grid>
+            <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="24"/>
+                        <ColumnDefinition Width="24"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100*"/>
+                    </Grid.RowDefinitions>
 
-        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1">
-            <Border.Background>
-                <ImageBrush TileMode="Tile" ImageSource="Images/round_repeat.png"/>
-            </Border.Background>
-            <Border.BorderBrush>
-                <ImageBrush ImageSource="Images/border.png" TileMode="Tile"/>
-            </Border.BorderBrush>
-            <Grid>
+                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                    <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                    <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
+                </Grid>
+            </Border>
+
+
+            <Grid Grid.Row="1">
                 <Label Content="Card Seri" HorizontalAlignment="Left" Margin="48,10,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <TextBox x:Name="cardSeri" HorizontalAlignment="Left" Height="23" Margin="48,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" />
+                <TextBox x:Name="cardSeri" Foreground="White" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="23" Margin="48,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" />
                 <Label Content="Card Code" HorizontalAlignment="Left" Margin="49,62,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <TextBox x:Name="cardCode" HorizontalAlignment="Left" Height="23" Margin="48,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" />
+                <TextBox x:Name="cardCode" Foreground="White" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="23" Margin="48,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" />
                 <Label Content="Nhà mạng" HorizontalAlignment="Left" Margin="50,114,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <ComboBox x:Name="cardType" HorizontalAlignment="Left" Height="23" Margin="48,138,0,0" VerticalAlignment="Top" Width="389" SelectedIndex="0" >
+                <ComboBox x:Name="cardType" BorderBrush="#FF102833" BorderThickness="1" HorizontalAlignment="Left" Height="23" Margin="48,138,0,0" VerticalAlignment="Top" Width="389" SelectedIndex="0" >
                     <ComboBoxItem Uid="92">Mobile</ComboBoxItem>
                     <ComboBoxItem Uid="93">Vinaphone</ComboBoxItem>
                     <ComboBoxItem Uid="107">Viettel</ComboBoxItem>
@@ -80,6 +50,7 @@
                 </Button>
                 <Label x:Name="notifyLabel" Content="" HorizontalAlignment="Left" Margin="48,216,0,0" VerticalAlignment="Top" Foreground="#FFFFDF8A" Width="389" HorizontalContentAlignment="Center"/>
             </Grid>
-        </Border>
-    </Grid>
+
+        </Grid>
+    </Border>
 </Window>
