@@ -118,11 +118,15 @@ namespace AoeNetwork
                         existedUser.state = user.state;
                         if (user.state == 1)
                         {
-                            existedItem.state.Source = (ImageSource)Resources["state_avail"]; 
+                            existedItem.state.Source = SystemUtils.getResource("login_avail");
+                        }
+                        else if (user.state == 2)
+                        {
+                            existedItem.state.Source = SystemUtils.getResource("login_busy");
                         }
                         else
                         {
-                            existedItem.state.Source = (ImageSource)Resources["state_invi"];
+                            existedItem.state.Source = SystemUtils.getResource("login_offline");
                         }
                     }
 
@@ -166,11 +170,15 @@ namespace AoeNetwork
             Grid.SetRowSpan(state, 2);
             if (user.state == 1)
             {
-                state.Source = (ImageSource)Resources["state_avail"];
+                state.Source = SystemUtils.getResource("login_avail");
+            }
+            else if (user.state == 2)
+            {
+                state.Source = SystemUtils.getResource("login_busy");
             }
             else
             {
-                state.Source = (ImageSource)Resources["state_invi"];
+                state.Source = SystemUtils.getResource("login_offline");
             }
 
             Image avatar = new Image();

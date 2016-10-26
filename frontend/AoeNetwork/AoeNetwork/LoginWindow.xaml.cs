@@ -49,6 +49,11 @@ namespace AoeNetwork
         private int state = 1;
         AuthenController _controller;
 
+        public AuthenController GetController()
+        {
+            return this._controller;
+        }
+
         public void ClearForm()
         {
             this.usernameTextbox.Clear();
@@ -135,32 +140,6 @@ namespace AoeNetwork
             }
         }
 
-        private void registerButton_Click(object sender, RoutedEventArgs e)
-        {
-            WebWindow browser = new WebWindow();
-            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
-        }
-
-        private void stateButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.state == 1)
-            {
-                this.state = 0;
-                //this.stateButton.Source = SystemUtils.getResource("invisible");
-            }
-            else
-            {
-                this.state = 1;
-                //this.stateButton.Source = SystemUtils.getResource("available");
-            }
-        }
-
-        private void forgotPassLink_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            WebWindow browser = new WebWindow();
-            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
-        }
-
         private void usernameTextbox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -209,6 +188,30 @@ namespace AoeNetwork
             ContextMenu cm = this.FindResource("cmStateChanging") as ContextMenu;
             cm.PlacementTarget = sender as Image;
             cm.IsOpen = true;
+        }
+
+        private void State_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+
+            if (menu.Uid != this.state.ToString())
+            {
+                this.state = int.Parse(menu.Uid);
+                this.statusLabel.Content = menu.Header as string;
+            }
+        }
+
+        private void registerButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            WebWindow browser = new WebWindow();
+            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+        }
+
+        private void forgotPassLink_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("1");
+            WebWindow browser = new WebWindow();
+            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
         }
 
     }

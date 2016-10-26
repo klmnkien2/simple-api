@@ -64,10 +64,18 @@ namespace AoeNetwork
 
             if (friend.state == 1)
             {
-                this.friendState.Source = SystemUtils.getResource("state_avail");
+                this.friendState.Source = SystemUtils.getResource("login_avail");
                 if (friend.status == null || friend.status == "")
                 {
                     friend.status = "Available";
+                }
+            }
+            else if (friend.state == 2)
+            {
+                this.friendState.Source = SystemUtils.getResource("login_busy");
+                if (friend.status == null || friend.status == "")
+                {
+                    friend.status = "Busy";
                 }
             }
             else
@@ -78,7 +86,7 @@ namespace AoeNetwork
                 }
                 if (friend.state == 0)
                 {
-                    this.friendState.Source = SystemUtils.getResource("state_invi");
+                    this.friendState.Source = SystemUtils.getResource("login_offline");
                 }
             }
             this.friendStatus.Content = friend.status;

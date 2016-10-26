@@ -30,6 +30,9 @@ namespace AoeNetwork
             InitTabView();
             InitUserList();
             DisplayLoadingGame(false);
+
+            //home browser
+            this.homePageBrowser.Navigate("http://www.google.com");
         }
 
         #region action for extend MainWindow (title bar, border, ...)
@@ -186,16 +189,16 @@ namespace AoeNetwork
             Dispatcher.Invoke(new Action(() => {
                 if (type == 0) // banner
                 {
-                    this.bannerAds.Source = SystemUtils.getImageUrl(image);
+                    //this.bannerAds.Source = SystemUtils.getImageUrl(image);
 
                 }
                 else if (type == 1)
                 {
-                    this.adsPic1.Source = SystemUtils.getImageUrl(image);
+                    //this.adsPic1.Source = SystemUtils.getImageUrl(image);
                 }
                 else if (type == 2)
                 {
-                    this.adsPic2.Source = SystemUtils.getImageUrl(image);
+                    //this.adsPic2.Source = SystemUtils.getImageUrl(image);
                 }
             }));
         }
@@ -306,10 +309,11 @@ namespace AoeNetwork
 
         private void tabHome_Click(object sender, RoutedEventArgs e)
         {
-            this.windowAllContentGrid.ColumnDefinitions[1].Width = new GridLength(0);//init 240
             this.tabGameContent.Visibility = Visibility.Hidden;
             this.tabHomeContent.Visibility = Visibility.Visible;
             this.tabRoomContent.Visibility = Visibility.Hidden;
+            this.tabRoomContent_extend.Visibility = Visibility.Hidden;
+            this.tabGameContent_extend.Visibility = Visibility.Hidden;            
         }
 
         private void tabGame_Click(object sender, RoutedEventArgs e)
@@ -317,7 +321,8 @@ namespace AoeNetwork
             this.tabGameContent.Visibility = Visibility.Visible;
             this.tabHomeContent.Visibility = Visibility.Hidden;
             this.tabRoomContent.Visibility = Visibility.Hidden;
-            this.windowAllContentGrid.ColumnDefinitions[1].Width = new GridLength(0);//init 240
+            this.tabRoomContent_extend.Visibility = Visibility.Hidden;
+            this.tabGameContent_extend.Visibility = Visibility.Visible;      
         }
 
         private void tabRoom_Click(object sender, RoutedEventArgs e)
@@ -330,7 +335,8 @@ namespace AoeNetwork
             this.tabGameContent.Visibility = Visibility.Hidden;
             this.tabHomeContent.Visibility = Visibility.Hidden;
             this.tabRoomContent.Visibility = Visibility.Visible;
-            this.windowAllContentGrid.ColumnDefinitions[1].Width = new GridLength(240);//init 240
+            this.tabRoomContent_extend.Visibility = Visibility.Visible;
+            this.tabGameContent_extend.Visibility = Visibility.Hidden;      
         }
 
         private void messageBox_KeyDown(object sender, KeyEventArgs e)
@@ -391,5 +397,30 @@ namespace AoeNetwork
 
         }
         #endregion
+
+        private void userStatus_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                //roomController.UpdateStatus(1, this.userStatus.Text);
+                StaticValue.status = this.userStatus.Text;
+                Keyboard.ClearFocus();
+            }
+        }
+
+        private void coinBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //open context
+            ContextMenu cm = this.FindResource("contextCoin") as ContextMenu;
+            cm.PlacementTarget = sender as WrapPanel;
+            cm.IsOpen = true;
+        }
+
+        private void homePageBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            this.homePageBrowserLabel.Visibility = Visibility.Hidden;
+            this.homePageBrowser.Visibility = Visibility.Visible;
+        }
     }
 }

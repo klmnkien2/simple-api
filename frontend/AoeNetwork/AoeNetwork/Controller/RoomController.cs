@@ -40,7 +40,8 @@ namespace AoeNetwork
 
         public void LoadView()
         {
-            LoadAds();
+            //LoadAds();
+            LoadChannel(null);
             LoadTreeRoom();
         }
 
@@ -66,6 +67,52 @@ namespace AoeNetwork
 
             var client = new RestClient(Properties.Resources.API_URL);
             var request = new RestRequest("room/ads/", Method.GET);
+
+            // easily add HTTP Headers
+            request.Timeout = 10000;
+
+            var asyncHandler = client.ExecuteAsync(request, r =>
+            {
+                if (r.ResponseStatus == ResponseStatus.Completed)
+                {
+                    if (r.StatusCode == HttpStatusCode.OK)
+                    {
+                        // LOAD Ads to area
+                        DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(r.Content);
+
+                        DataTable dataTable = dataSet.Tables["ads"];
+
+                        lock (flag_conn)
+                        {
+                            foreach (DataRow row in dataTable.Rows)
+                            {
+                                string url = row["url"].ToString();
+                                string image = row["image"].ToString();
+                                int type = int.Parse(row["type"].ToString());
+
+                                _view.SetAdsInfo(url, image, type);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        // LOG ERROR SENT
+                    }
+                }
+                else
+                {
+                    // LOG ERROR SENT REASON NETWORK CONNECTION
+                }
+            });
+        }
+
+        public void LoadChannel(string channel_id)
+        {
+            if (StaticValue.user_id == 0 || StaticValue.username == "") return;
+            
+            var client = new RestClient(Properties.Resources.API_URL);
+            var request = new RestRequest("room/channel/" + (channel_id != null ? ("?channel_id=" + channel_id) : ""), Method.GET);
 
             // easily add HTTP Headers
             request.Timeout = 10000;

@@ -24,6 +24,23 @@ namespace AoeNetwork
             InitializeComponent();
         }
 
+        #region action for extend MainWindow (title bar, border, ...)
+        private void coolform_titletext_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+        private void coolform_close_btn_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void coolform_mini_btn_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Minimized;
+        }
+        #endregion
+
         public void OpenLink(string link)
         {
             if (link != "")

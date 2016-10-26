@@ -139,13 +139,17 @@ namespace AoeNetwork
                 userAvatar.Source = bitmap;
             }
             this.userName.Content = username;
-            if (state == 0)
+            if (state == 2)
             {
-                userState.Source = SystemUtils.getResource("state_invi");
+                userState.Source = SystemUtils.getResource("login_busy");
+            }
+            else if (state == 1)
+            {
+                userState.Source = SystemUtils.getResource("login_offline");
             }
             else
             {
-                userState.Source = SystemUtils.getResource("state_avail");
+                userState.Source = SystemUtils.getResource("login_avail");
             }
         }
 
@@ -352,25 +356,6 @@ namespace AoeNetwork
             }));
         }
 
-        private void aoeGameButton_Click(object sender, MouseButtonEventArgs e)
-        {
-            Dispatcher.Invoke(new Action(() => {
-                if (roomView != null)
-                {
-                    roomView.Hide();
-                }
-
-                roomView = new RoomWindow();
-                roomView.SetChatView(this);
-                roomView.Show();
-                //roomView.WindowState = System.Windows.WindowState.Normal;
-                roomView.Focus();
-                roomController = new RoomController(roomView);
-                roomController.LoadView();
-
-                this.WindowState = System.Windows.WindowState.Minimized;
-            }));
-        }
         #endregion
 
         private int showList = 1; //1=friend, 2=ignore, 3=recent
@@ -402,29 +387,7 @@ namespace AoeNetwork
 
 
         #region CHange state of user menu
-        private void WrapPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ContextMenu cm = this.FindResource("cmStateChanging") as ContextMenu;
-            cm.PlacementTarget = sender as WrapPanel;
-            cm.IsOpen = true;
-        }
-
-        private void availStripMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (StaticValue.state == 1) return;
-            StaticValue.state = 1;
-            this.userState.Source = SystemUtils.getResource("state_avail");
-            chatController.UpdateStatus(1, null);
-        }
-
-        private void inviStripMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (StaticValue.state == 0) return;
-            StaticValue.state = 0;
-            this.userState.Source = SystemUtils.getResource("state_invi");
-            chatController.UpdateStatus(0, null);
-        }
-
+        
         private void logoutStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.Logout();
@@ -466,10 +429,84 @@ namespace AoeNetwork
 
         private void coinBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //open context
             ContextMenu cm = this.FindResource("contextCoin") as ContextMenu;
-            cm.PlacementTarget = sender as Image;
+            cm.PlacementTarget = sender as WrapPanel;
             cm.IsOpen = true;
+        }
+
+        private void Coin_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            if (menu.Uid == "1")
+            {
+                PaymentWindow pay = new PaymentWindow();
+                pay.setUserId(StaticValue.user_id);
+                pay.SetController(this.loginView.GetController());
+                //pay.setNotifyLabel("Tài khoản đã hết hạn, vui lòng gia hạn !");
+                pay.ShowDialog();
+            }
+            else if (menu.Uid == "2")
+            {
+                //Link web trang danh sach cua hang
+                WebWindow browser = new WebWindow();
+                browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+            }
+            else if (menu.Uid == "3")
+            {
+                //Link web trang cham soc khach hang
+                WebWindow browser = new WebWindow();
+                browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+            }
+        }
+
+        private void State_Menu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu cm = this.FindResource("cmStateChanging") as ContextMenu;
+            cm.PlacementTarget = sender as WrapPanel;
+            cm.IsOpen = true;
+        }
+
+        private void State_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menu = sender as MenuItem;
+            StaticValue.state = int.Parse(menu.Uid);
+
+            if (StaticValue.state == 0)
+            {
+                this.userState.Source = SystemUtils.getResource("login_offline");
+            }
+            else if (StaticValue.state == 1)
+            {
+                this.userState.Source = SystemUtils.getResource("login_avail");
+            }
+            else if (StaticValue.state == 2)
+            {
+                this.userState.Source = SystemUtils.getResource("login_busy");
+            }
+
+            //Requeset
+            chatController.UpdateStatus(StaticValue.state, null);
+        }
+
+        private void aoeGameButton_Click(object sender, MouseButtonEventArgs e)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                if (roomView != null)
+                {
+                    roomView.Hide();
+                }
+
+                roomView = new RoomWindow();
+                roomView.SetChatView(this);
+                roomView.Show();
+                //roomView.WindowState = System.Windows.WindowState.Normal;
+                roomView.Focus();
+                roomController = new RoomController(roomView);
+                roomController.LoadView();
+
+                this.WindowState = System.Windows.WindowState.Minimized;
+            }));
         }
 
     }

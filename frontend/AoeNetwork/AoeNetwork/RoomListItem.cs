@@ -111,11 +111,15 @@ namespace AoeNetwork
                         existedUser.state = user.state;
                         if (user.state == 1)
                         {
-                            existedItem.state.Source = getResource("state_avail"); ;
+                            existedItem.state.Source = SystemUtils.getResource("login_avail");
+                        }
+                        else if (user.state == 2)
+                        {
+                            existedItem.state.Source = SystemUtils.getResource("login_busy");
                         }
                         else
                         {
-                            existedItem.state.Source = getResource("state_invi");
+                            existedItem.state.Source = SystemUtils.getResource("login_offline");
                         }
                     }
                 }
@@ -148,11 +152,15 @@ namespace AoeNetwork
             Grid.SetColumn(state, 2);
             if (user.state == 1)
             {
-                state.Source = getResource("state_avail");
+                state.Source = SystemUtils.getResource("login_avail");
+            }
+            else if (user.state == 2)
+            {
+                state.Source = SystemUtils.getResource("login_busy");
             }
             else
             {
-                state.Source = getResource("state_invi");
+                state.Source = SystemUtils.getResource("login_offline");
             }
 
             Grid itemPanel = new Grid();

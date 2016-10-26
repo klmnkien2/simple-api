@@ -52,25 +52,39 @@ namespace AoeNetwork
         MenuItem noIgonreFriendMenu;
         private void InitContextMenu()
         {
+            Style styleMenu = parentWindow.FindResource("customContextMenu") as Style;
+            Style styleMenuItem = parentWindow.FindResource("customContextMenuItem") as Style;
+
             contextMenu = new ContextMenu();
+            contextMenu.Style = styleMenu;
 
             acceptFriendMenu = new MenuItem();
+            acceptFriendMenu.Style = styleMenuItem;
+            acceptFriendMenu.Tag = "Images/arrow_right.png";
             acceptFriendMenu.Header = "Đồng ý kết bạn";
             acceptFriendMenu.Click += acceptFriendItem_Click;
 
             denyFriendMenu = new MenuItem();
+            denyFriendMenu.Style = styleMenuItem;
+            denyFriendMenu.Tag = "Images/arrow_right.png";
             denyFriendMenu.Header = "Từ chối kết bạn";
             denyFriendMenu.Click += denyFriendItem_Click;
 
             removeFriendMenu = new MenuItem();
+            removeFriendMenu.Style = styleMenuItem;
+            removeFriendMenu.Tag = "Images/arrow_right.png";
             removeFriendMenu.Header = "Hủy kết bạn";
             removeFriendMenu.Click += removeFriendItem_Click;
 
             ignoreFriendMenu = new MenuItem();
+            ignoreFriendMenu.Style = styleMenuItem;
+            ignoreFriendMenu.Tag = "Images/arrow_right.png";
             ignoreFriendMenu.Header = "Chặn người này";
             ignoreFriendMenu.Click += ignoreFriendItem_Click;
 
             noIgonreFriendMenu = new MenuItem();
+            noIgonreFriendMenu.Style = styleMenuItem;
+            noIgonreFriendMenu.Tag = "Images/arrow_right.png";
             noIgonreFriendMenu.Header = "Bỏ chặn";
             noIgonreFriendMenu.Click += removeIgnoreItem_Click;
 
@@ -114,11 +128,15 @@ namespace AoeNetwork
                         existedUser.state = user.state;
                         if (user.state == 1)
                         {
-                            existedItem.state.Source = getResource("state_avail"); ;
+                            existedItem.state.Source = getResource("login_avail"); ;
+                        }
+                        if (user.state == 2)
+                        {
+                            existedItem.state.Source = getResource("login_busy"); ;
                         }
                         else
                         {
-                            existedItem.state.Source = getResource("state_invi");
+                            existedItem.state.Source = getResource("login_offline");
                         }
                     }
 
@@ -178,11 +196,15 @@ namespace AoeNetwork
             Grid.SetRowSpan(state, 2);
             if (user.state == 1)
             {
-                state.Source = getResource("state_avail");
+                state.Source = getResource("login_avail");
+            }
+            else if (user.state == 2)
+            {
+                state.Source = getResource("login_busy");
             }
             else
             {
-                state.Source = getResource("state_invi");
+                state.Source = getResource("login_offline");
             }
 
             Image avatar = new Image();

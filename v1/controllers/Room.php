@@ -82,20 +82,21 @@ class Room extends \SlimController\SlimController
     public function channelAction()
     {
         // BY API
+        //ALTER TABLE `rooms` ADD `image` VARCHAR(1000) NULL ;
         try {
             $channel_id = $this->param('channel_id');
             if (!$channel_id) {
                 $channel = array (
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
+                    array('id' => "1",'name' => "Hanoi", "image" => ""),
+                    array('id' => "2",'name' => "GameTV", "image" => ""),
+                    array('id' => "3",'name' => "Thai Binh FC", "image" => ""),
+                    array('id' => "4",'name' => "Toi di tim toi", "image" => ""),
+                    array('id' => "5",'name' => "Test1", "image" => ""),
+                    array('id' => "6",'name' => "Ho Chi Minh City", "image" => ""),
+                    array('id' => "7",'name' => "Test2", "image" => ""),
+                    array('id' => "8",'name' => "Khong ten", "image" => ""),
+                    array('id' => "9",'name' => "Test3", "image" => ""),
+                    array('id' => "10",'name' => "Hai phong VN", "image" => ""),
                 );
                 $this->echoRespnse(200, array('channel' => $channel));
             } else {
@@ -113,6 +114,20 @@ class Room extends \SlimController\SlimController
                 );
                 $this->echoRespnse(200, array('room' => $room));
             }
+
+            foreach ($list as &$room) {
+                $child = $room['child'];
+                if (!empty($child)) {
+                    $room['child'] = $this->syncRoomList($child);
+                    $room['has_child'] = 1;
+                } else {
+                    unset($room['child']);
+                    $room['has_child'] = 0;
+                }
+                $this->model->syncRoom($room);
+            }
+
+            return $list;
 
         } catch(\Exception $ex) {
             //var_dump($ex);die;

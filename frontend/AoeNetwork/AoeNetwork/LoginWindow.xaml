@@ -5,9 +5,9 @@
     <Window.Resources>
         
         <ContextMenu x:Key="cmStateChanging" Style="{StaticResource customContextMenu}">
-            <MenuItem Header="Online" Style="{StaticResource customContextMenuItem}" Tag="Images/login_avail.png" />
-            <MenuItem Header="Busy" Style="{StaticResource customContextMenuItem}" Tag="Images/login_busy.png" />
-            <MenuItem Header="Offline" Style="{StaticResource customContextMenuItem}" Tag="Images/login_offline.png" />
+            <MenuItem Header="Online" Style="{StaticResource customContextMenuItem}" Tag="Images/login_avail.png" Uid="1" Click="State_MenuItem_Click" />
+            <MenuItem Header="Busy" Style="{StaticResource customContextMenuItem}" Tag="Images/login_busy.png" Uid="2" Click="State_MenuItem_Click" />
+            <MenuItem Header="Offline" Style="{StaticResource customContextMenuItem}" Tag="Images/login_offline.png" Uid="0" Click="State_MenuItem_Click" />
         </ContextMenu>
     </Window.Resources>
     <Grid Background="Transparent">
@@ -41,12 +41,12 @@
             <Border BorderThickness="1,0,1,1" Grid.Row="1" Background="Transparent" BorderBrush="#FF283437">
                 <Canvas  HorizontalAlignment="Stretch" Margin="0" Height="669" Width="478" >
                     <Image Height="120" Width="99" Source="Images/gametv_logo.png" Canvas.Top="46" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="163" />
-                    <Button x:Name="loginButton" Foreground="White" Content="Đăng nhập" Canvas.Left="75" Canvas.Top="382" BorderBrush="#FF704E3C" BorderThickness="1" Height="39" Width="301" Click="loginButton_Click" Background="#FFFF8742" FontSize="13" FontWeight="Bold" />
+                    <Button  Cursor="Hand" x:Name="loginButton" Foreground="White" Content="Đăng nhập" Canvas.Left="75" Canvas.Top="382" BorderBrush="#FF704E3C" BorderThickness="1" Height="39" Width="301" Click="loginButton_Click" Background="#FFFF8742" FontSize="13" FontWeight="Bold" />
 
-                    <Label x:Name="registerButton" Content="Đăng ký tài khoản" Canvas.Left="163" Canvas.Top="475" Foreground="#FFFF8541" MouseDown="registerButton_Click" FontSize="13" FontWeight="Medium"/>
+                    <Label Cursor="Hand" x:Name="registerButton" Content="Đăng ký tài khoản" Canvas.Left="163" Canvas.Top="475" Foreground="#FFFF8541" FontSize="13" FontWeight="Medium" MouseLeftButtonDown="registerButton_MouseLeftButtonDown"/>
                     <!--<Label Content="Gia hạn tài khoản !" Canvas.Left="99" Canvas.Top="628" Foreground="#FFF0AD4D" MouseUp="paymentLbl_MouseUp" Width="277" HorizontalContentAlignment="Center"/>-->
                     <Label Content="Nhớ mật khẩu" Canvas.Left="92" Canvas.Top="318" Foreground="#FF7D7D7D" FontSize="13"/>
-                    <Label x:Name="forgotPassLink" Content="Quên mật khẩu?" Canvas.Left="169" Canvas.Top="513" Foreground="#FFFF8541" MouseDown="forgotPassLink_MouseDown" FontSize="13" FontWeight="Medium"/>
+                    <Label Cursor="Hand" x:Name="forgotPassLink" Content="Quên mật khẩu?" Canvas.Left="169" Canvas.Top="513" Foreground="#FFFF8541" FontSize="13" FontWeight="Medium" MouseLeftButtonDown="forgotPassLink_MouseLeftButtonDown"/>
                     <CheckBox x:Name="rememberPassChk" Content="" Canvas.Left="76" Canvas.Top="324" />
                     <Border Height="44" Canvas.Left="75" Canvas.Top="212" Width="301" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">
                         <Grid>
@@ -75,7 +75,7 @@
                         </Grid>
                     </Border>
                     <Border Height="22" Canvas.Left="354" Canvas.Top="321" Width="22" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">
-                        <Image Source="Images/login_setting.png" Stretch="Fill" Margin="2" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+                        <Image  Cursor="Hand" Source="Images/login_setting.png" Stretch="Fill" Margin="2" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
                     </Border>
                     <Label x:Name="statusLabel" Content="Online" Canvas.Left="284" Canvas.Top="318" Foreground="#FF7D7D7D" FontSize="13" Width="67" HorizontalContentAlignment="Right"/>
                 </Canvas>

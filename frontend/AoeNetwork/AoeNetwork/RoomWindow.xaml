@@ -4,7 +4,19 @@
         xmlns:wpf="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         Title="RoomWindow" Height="650" Width="1000" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White" MinWidth="900" MinHeight="600" ResizeMode="NoResize" AllowsTransparency="True" Top="3">
     <Window.Resources>
-        
+        <ContextMenu x:Key="contextCoin" Style="{StaticResource customContextMenu}">
+            <MenuItem Header="Nạp Gcoin" Style="{StaticResource customContextMenuItem}" Tag="Images/coin_add.png"  Uid="1" Click="Coin_Menu_Click"/>
+            <MenuItem Header="Danh sách Đại lý" Style="{StaticResource customContextMenuItem}" Tag="Images/dsdaily.png" Uid="2" Click="Coin_Menu_Click"/>
+            <MenuItem Header="Hỗ trợ khách hàng" Style="{StaticResource customContextMenuItem}" Tag="Images/hotrokh.png" Uid="3" Click="Coin_Menu_Click"  />
+        </ContextMenu>
+
+        <ContextMenu x:Key="cmStateChanging" Style="{StaticResource customContextMenu}">
+            <MenuItem Header="Online" Click="State_MenuItem_Click" Style="{StaticResource customContextMenuItem}" Uid="1" Tag="Images/login_avail.png" />
+            <MenuItem Header="Busy" Click="State_MenuItem_Click" Style="{StaticResource customContextMenuItem}"  Uid="2" Tag="Images/login_busy.png" />
+            <MenuItem Header="Offline" Click="State_MenuItem_Click" Style="{StaticResource customContextMenuItem}" Uid="0" Tag="Images/login_offline.png" />
+            <MenuItem Header="Đăng xuất" Click="logoutStripMenuItem_Click" Style="{StaticResource customContextMenuItem}" Uid="3" Tag="Images/dsdaily.png" />
+            <MenuItem Header="Thoát" Click="exitStripMenuItem_Click" Style="{StaticResource customContextMenuItem}" Uid="4" Tag="Images/cross.png" />
+        </ContextMenu>
     </Window.Resources>
     <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
         <Grid Background="Transparent">
@@ -77,9 +89,9 @@
                             <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
 
-                        <WrapPanel Margin="0" MouseLeftButtonDown="WrapPanel_MouseLeftButtonDown">
+                        <WrapPanel Margin="0">
                             <Label x:Name="userName" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,5,0,0" IsEnabled="False" FontWeight="SemiBold" />
-                            <Image x:Name="userState" Source="Images/state_avail.png" Stretch="Fill" Width="12" Height="12" Margin="2,8,0,0" />
+                            <Image x:Name="userState" Source="Images/login_avail.png" Stretch="Fill" Width="12" Height="12" Margin="2,8,0,0" />
                             <Image x:Name="userStateArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,8,0,0" />
                         </WrapPanel>
                         <TextBox x:Name="userStatus" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="13" Text="status..." Margin="0,5,10,0" CaretBrush="White" KeyDown="userStatus_KeyDown" />
@@ -133,14 +145,15 @@
                                     </Button>
                                     <Label Content="Đường dẫn Game" Foreground="#FFFFFFFF" />
                                 </DockPanel>
-                                <Button x:Name="buttonStart" Foreground="White" BorderBrush="#FF704E3C" Content="KHỞI ĐỘNG" BorderThickness="1"  Click="loginButton_Click" Background="#FF0093d7" FontSize="15" FontWeight="Bold" />
+                                <Button x:Name="buttonStart" Foreground="White" BorderBrush="#FF704E3C" Content="KHỞI ĐỘNG" BorderThickness="1"  Click="buttonStart_Click" Background="#FF0093d7" FontSize="15" FontWeight="Bold" />
                                 
                             </DockPanel>
                         </Grid>
                     </Border>
 
                     <Grid x:Name="tabHomeContent" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Margin="0">
-                        <WebBrowser x:Name="homePageBrowser" Visibility="Hidden" />
+                        <Label x:Name="homePageBrowserLabel" Content="ĐANG TẢI..." VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="15" FontWeight="Bold" />
+                        <WebBrowser  x:Name="homePageBrowser" Visibility="Hidden" Navigated="homePageBrowser_Navigated" />
                     </Grid>
 
                     <Grid x:Name="tabGameContent" Grid.Column="1" Grid.Row="2" Margin="10">
