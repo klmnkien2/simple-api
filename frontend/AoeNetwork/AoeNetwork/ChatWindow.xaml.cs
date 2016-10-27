@@ -388,12 +388,12 @@ namespace AoeNetwork
 
         #region CHange state of user menu
         
-        private void logoutStripMenuItem_Click(object sender, RoutedEventArgs e)
+        public void logoutStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.Logout();
         }
 
-        private void exitStripMenuItem_Click(object sender, RoutedEventArgs e)
+        public void exitStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.Forms.Application.MessageLoop)
             {
@@ -434,7 +434,7 @@ namespace AoeNetwork
             cm.IsOpen = true;
         }
 
-        private void Coin_Menu_Click(object sender, RoutedEventArgs e)
+        public void Coin_Menu_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
             if (menu.Uid == "1")
@@ -466,7 +466,7 @@ namespace AoeNetwork
             cm.IsOpen = true;
         }
 
-        private void State_MenuItem_Click(object sender, RoutedEventArgs e)
+        public void State_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menu = sender as MenuItem;
             StaticValue.state = int.Parse(menu.Uid);

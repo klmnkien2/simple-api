@@ -113,13 +113,17 @@ namespace AoeNetwork
             itemPanel.Children.Add(name);
             dataItem.name = name;
 
+            itemPanel.Cursor = Cursors.Hand;
+
+
             Border itemBorder = new Border();
-            itemBorder.BorderThickness = new Thickness(1,1,1,0);
+            itemBorder.BorderThickness = new Thickness(1,1,1,1);
             itemBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0e1e28"));
-            itemBorder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#010202"));
+            itemBorder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
             itemBorder.Child = itemPanel;
             itemBorder.Tag = itemObj;
             itemBorder.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
+            itemBorder.MouseRightButtonDown += itemPanel_MouseLeftButtonDown;
             dataItem.container = itemBorder;
 
             this.dataItems.Add(itemObj.id, dataItem);
@@ -129,12 +133,15 @@ namespace AoeNetwork
 
         void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            MessageBox.Show("0");
             if (e.ClickCount == 2)
             {
-                Friend user = (sender as Border).Tag as Friend;
-                if (user != null)
+                MessageBox.Show("1");
+                Channel channel = (sender as Border).Tag as Channel;
+                MessageBox.Show(channel.ToString());
+                if (channel != null)
                 {
-                    //parentWindow.OpenPrivate(user, true);
+                    parentWindow.LoadRoomInChannel(channel);
                 }
             }
         }

@@ -33,8 +33,8 @@ class Room {
         $r = array();
     
         $sql = "SELECT r.*, s.host, s.port, s.hub
-        	FROM rooms r
-			LEFT JOIN servers s ON s.server_id = r.server_id
+            FROM rooms r
+            LEFT JOIN servers s ON s.server_id = r.server_id
             WHERE parent_id=?";
         $stmt = $this->core->dbh->prepare($sql);
     
@@ -50,8 +50,8 @@ class Room {
         $r = array();
 
         $sql = "SELECT r.*, s.host, s.port, s.hub
-        	FROM rooms r
-			LEFT JOIN servers s ON s.server_id = r.server_id";
+            FROM rooms r
+            LEFT JOIN servers s ON s.server_id = r.server_id";
         $stmt = $this->core->dbh->prepare($sql);
 
         if ($stmt->execute()) {
@@ -89,9 +89,9 @@ class Room {
         $r = null;
 
         $sql = "SELECT r.room_id, r.room_name, r.create_user, r.host_ip, s.server_id, s.hub
-        	FROM rooms r
-			LEFT JOIN servers s ON r.server_id = s.server_id
-        	WHERE s.is_active = 1 AND r.is_active = 1 AND r.room_id=:room_id";
+            FROM rooms r
+            LEFT JOIN servers s ON r.server_id = s.server_id
+            WHERE s.is_active = 1 AND r.is_active = 1 AND r.room_id=:room_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 
@@ -104,12 +104,12 @@ class Room {
 
         return $r;
     }
-	
-	public function syncRoom(&$data) {
 
-        $sql = "SELECT r.room_id, r.room_name, r.server_id, s.host, s.port, s.hub
+    public function syncRoom(&$data) {
+
+        $sql = "SELECT r.room_id, r.room_name, r.image, r.server_id, s.host, s.port, s.hub
             FROM rooms r
-			LEFT JOIN servers s ON s.server_id = r.server_id
+            LEFT JOIN servers s ON s.server_id = r.server_id
             WHERE r.room_id=:room_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':room_id', $data['id'], PDO::PARAM_INT);
@@ -121,37 +121,39 @@ class Room {
         if (!empty($r)) {
             $r = $r[0];
             $data['room_id'] = $r['room_id'];
-			$data['room_name'] = $r['room_id'];
+            $data['room_name'] = $r['room_id'];
+            $data['image'] = $r['image'];
             $data['server_id'] = $r['server_id'];
             $data['host'] = $r['host'];
             $data['port'] = $r['port'];
             $data['hub'] = $r['hub'];
         } else {
-            //Insert		
-			$data['room_id'] = $data['id'];
-			$data['room_name'] = $data['name'];
-			if ($data['has_child'] == 0) {
-			    $server = $this->getFreeServer();
-				$data['server_id'] = $server['server_id'];
-				$data['host'] = $server['host'];
-				$data['port'] = $server['port'];
-				$data['hub'] = $server['hub'];
-			} else {
-				$data['server_id'] = -1;
-			}
-			
-            $stmt = $this->core->dbh->prepare("INSERT INTO rooms (room_id, room_name, parent_id, has_child, server_id) " .
-                "VALUES (:room_id, :room_name, :parent_id, :has_child, :server_id)");
+            //Insert        
+            $data['room_id'] = $data['id'];
+            $data['room_name'] = $data['name'];
+            if ($data['has_child'] == 0) {
+                $server = $this->getFreeServer();
+                $data['server_id'] = $server['server_id'];
+                $data['host'] = $server['host'];
+                $data['port'] = $server['port'];
+                $data['hub'] = $server['hub'];
+            } else {
+                $data['server_id'] = -1;
+            }
+            
+            $stmt = $this->core->dbh->prepare("INSERT INTO rooms (room_id, room_name, image, parent_id, has_child, server_id) " .
+                "VALUES (:room_id, :room_name, :image, :parent_id, :has_child, :server_id)");
             $stmt->bindParam(':room_id', $data['room_id'], PDO::PARAM_INT);
-			$stmt->bindParam(':room_name', $data['room_name'], PDO::PARAM_STR);
+            $stmt->bindParam(':room_name', $data['room_name'], PDO::PARAM_STR);
+            $stmt->bindParam(':image', $data['image'], PDO::PARAM_STR);
             $stmt->bindParam(':parent_id', $data['parent_id'], PDO::PARAM_INT);
             $stmt->bindParam(':has_child', $data['has_child'], PDO::PARAM_INT);
             $stmt->bindParam(':server_id', $data['server_id'], PDO::PARAM_INT);
             $stmt->execute();
         }
     }
-	
-	public function getFreeServer() {
+    
+    public function getFreeServer() {
         $r = array();
 
         $sql = "SELECT server_id, host, port, hub
@@ -162,12 +164,12 @@ class Room {
         if ($stmt->execute()) {
             $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
-		
-        if(!empty($r)) {	
-			return $r[0];
+        
+        if(!empty($r)) {    
+            return $r[0];
         } else {
-			return null;
-		}
+            return null;
+        }
     }
 
     //=========================

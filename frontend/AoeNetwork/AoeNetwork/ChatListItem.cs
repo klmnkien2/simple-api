@@ -128,15 +128,15 @@ namespace AoeNetwork
                         existedUser.state = user.state;
                         if (user.state == 1)
                         {
-                            existedItem.state.Source = getResource("login_avail"); ;
+                            existedItem.state.Source = SystemUtils.getResource("login_avail"); ;
                         }
                         if (user.state == 2)
                         {
-                            existedItem.state.Source = getResource("login_busy"); ;
+                            existedItem.state.Source = SystemUtils.getResource("login_busy"); ;
                         }
                         else
                         {
-                            existedItem.state.Source = getResource("login_offline");
+                            existedItem.state.Source = SystemUtils.getResource("login_offline");
                         }
                     }
 
@@ -196,20 +196,20 @@ namespace AoeNetwork
             Grid.SetRowSpan(state, 2);
             if (user.state == 1)
             {
-                state.Source = getResource("login_avail");
+                state.Source = SystemUtils.getResource("login_avail");
             }
             else if (user.state == 2)
             {
-                state.Source = getResource("login_busy");
+                state.Source = SystemUtils.getResource("login_busy");
             }
             else
             {
-                state.Source = getResource("login_offline");
+                state.Source = SystemUtils.getResource("login_offline");
             }
 
             Image avatar = new Image();
             avatar.Margin = new Thickness(6, 6, 6, 6);
-            avatar.Source = getResource("user");
+            avatar.Source = SystemUtils.getResource("user");
             Grid.SetRow(avatar, 0);
             Grid.SetColumn(avatar, 0);
             Grid.SetRowSpan(avatar, 2);
@@ -337,16 +337,6 @@ namespace AoeNetwork
                 DataItem item = entry.Value;
                 item.container.Height = 50;
             }
-        }
-
-        private BitmapImage getResource(string name)
-        {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri("pack://application:,,,/Images/" + name + ".png");
-            bitmap.EndInit();
-
-            return bitmap;
         }
 
         #region contextmenu action

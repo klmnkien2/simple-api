@@ -126,17 +126,20 @@ namespace AoeNetwork
                         // LOAD Ads to area
                         DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(r.Content);
 
-                        DataTable dataTable = dataSet.Tables["ads"];
-
                         lock (flag_conn)
                         {
-                            foreach (DataRow row in dataTable.Rows)
+                            if (channel_id == null)
                             {
-                                string url = row["url"].ToString();
-                                string image = row["image"].ToString();
-                                int type = int.Parse(row["type"].ToString());
+                                DataTable dataTable = dataSet.Tables["channel"];
 
-                                _view.SetAdsInfo(url, image, type);
+                                _view.SetChannel(dataTable);
+                                
+                            }
+                            else
+                            {
+                                DataTable dataTable = dataSet.Tables["room"];
+
+                                _view.SetRoomOfChannel(dataTable);
                             }
 
                         }

@@ -84,6 +84,7 @@ namespace AoeNetwork
         private void InitUserList()
         {
             this.userList = new RoomListItem(this, this.userListControl);
+            this.channelList = new ChannelListItem(this, this.channelListControl);
         }
 
         private void DisplayLoadingGame(bool loading)
@@ -203,10 +204,51 @@ namespace AoeNetwork
             }));
         }
 
+        public void SetChannel(DataTable dataTable)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    Channel channel = new Channel();
+                    channel.id = int.Parse(row["room_id"].ToString());
+                    channel.name = row["name"].ToString();
+                    channel.image = row["image"].ToString();
+
+                    this.channelList.addItem(channel);
+                }
+            }));
+        }
+
+        public void LoadRoomInChannel(Channel channel)
+        {
+            roomController.LoadChannel(channel.id.ToString());
+        }
+
+        public void SetRoomOfChannel(DataTable dataTable)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    Room room = new Room();
+                    room.room_id = int.Parse(row["room_id"].ToString());
+                    room.room_name = row["name"].ToString();
+                    room.server_id = row["server_id"].ToString();
+                    room.parent_id = int.Parse(row["parent_id"].ToString());
+                    room.host = row["host"].ToString();
+                    room.port = row["port"].ToString();
+                    room.hub = row["hub"].ToString();
+
+                    MessageBox.Show(room.room_name);
+                }
+            }));
+        }
+
         public void SetTreeRoom(DataTable dataTable)
         {
             Dispatcher.Invoke(new Action(() => {
-                treeAddNodes(null, dataTable);
+                treeAddNodes(null, dataTable); 
             }));
         }
 
@@ -320,7 +362,8 @@ namespace AoeNetwork
         {
             this.tabGameContent.Visibility = Visibility.Visible;
             this.tabHomeContent.Visibility = Visibility.Hidden;
-            this.tabRoomContent.Visibility = Visibility.Hidden;
+            this.tabHomeContent.IsHitTestVisible = false;
+            this.tabRoomContent.Visibility = Visibility.Hidden;            
             this.tabRoomContent_extend.Visibility = Visibility.Hidden;
             this.tabGameContent_extend.Visibility = Visibility.Visible;      
         }
@@ -421,6 +464,26 @@ namespace AoeNetwork
         {
             this.homePageBrowserLabel.Visibility = Visibility.Hidden;
             this.homePageBrowser.Visibility = Visibility.Visible;
+        }
+
+        private void Coin_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            chatView.Coin_Menu_Click(sender, e);
+        }
+
+        private void State_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            chatView.State_MenuItem_Click(sender, e);
+        }
+
+        private void logoutStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            chatView.logoutStripMenuItem_Click(null, null);
+        }
+
+        private void exitStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            chatView.exitStripMenuItem_Click(null, null);
         }
     }
 }

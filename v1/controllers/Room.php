@@ -37,9 +37,9 @@ class Room extends \SlimController\SlimController
         );
 
         $result = $this->model->createRoom($room);
-        if ($result) {			
-			$room['room_id'] = $result;
-			$room['hub'] = $server_info['hub'];
+        if ($result) {            
+            $room['room_id'] = $result;
+            $room['hub'] = $server_info['hub'];
             $this->echoRespnse(200, array('room' => $room));
         } else {
             $this->echoRespnse(400, array('room' => $room));
@@ -60,17 +60,17 @@ class Room extends \SlimController\SlimController
 
     public function listAction()
     {
-		// BY DATABASE DATA NOT USE NOW
+        // BY DATABASE DATA NOT USE NOW
         //$rooms = $this->model->getAllTree(0);
         //$this->echoRespnse(200, array('rooms' => $rooms));
-		
-		// BY API
-		try {
+        
+        // BY API
+        try {
             $result = file_get_contents('http://trading.gametv.vn/api_platform/rooms');
             $result = json_decode($result, true);
             $rooms = array();
             if($result['status'] == true) {
-				$rooms = $this->syncRoomList($result['data']);
+                $rooms = $this->syncRoomList($result['data']);
             }
             $this->echoRespnse(200, array('rooms' => $rooms));
         } catch(\Exception $ex) {
@@ -85,8 +85,9 @@ class Room extends \SlimController\SlimController
         //ALTER TABLE `rooms` ADD `image` VARCHAR(1000) NULL ;
         try {
             $channel_id = $this->param('channel_id');
+            $list = array();
             if (!$channel_id) {
-                $channel = array (
+                $list = array (
                     array('id' => "1",'name' => "Hanoi", "image" => ""),
                     array('id' => "2",'name' => "GameTV", "image" => ""),
                     array('id' => "3",'name' => "Thai Binh FC", "image" => ""),
@@ -98,39 +99,40 @@ class Room extends \SlimController\SlimController
                     array('id' => "9",'name' => "Test3", "image" => ""),
                     array('id' => "10",'name' => "Hai phong VN", "image" => ""),
                 );
-                $this->echoRespnse(200, array('channel' => $channel));
             } else {
-                $room = array (
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
-                    array('name' => "", "image" => ""),
+                $list = array (
+                    array('id' => "111",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "122",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "133",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "144",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "155",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "166",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "177",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "188",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "199",'name' => "Hanoi test1", "image" => ""),
+                    array('id' => "100",'name' => "Hanoi test1", "image" => ""),
                 );
-                $this->echoRespnse(200, array('room' => $room));
             }
 
             foreach ($list as &$room) {
-                $child = $room['child'];
-                if (!empty($child)) {
-                    $room['child'] = $this->syncRoomList($child);
+                if (!$channel_id) {
+                    $room['parent_id'] = 0;
                     $room['has_child'] = 1;
                 } else {
-                    unset($room['child']);
+                    $room['parent_id'] = $channel_id;
                     $room['has_child'] = 0;
                 }
                 $this->model->syncRoom($room);
             }
 
-            return $list;
+            if (!$channel_id) {
+                $this->echoRespnse(200, array('channel' => $list));
+            } else {
+                $this->echoRespnse(200, array('room' => $list));
+            }
 
         } catch(\Exception $ex) {
-            //var_dump($ex);die;
+            var_dump($ex);die;
             $this->echorespnse(400, array("error" => "Can't not connect to API."));
         }
     }
@@ -188,23 +190,23 @@ class Room extends \SlimController\SlimController
             $this->echoRespnse(400, array('room' => false));
         }
     }
-	
-	private function syncRoomList($list) 
-	{
-		foreach ($list as &$room) {
-			$child = $room['child'];
-			if (!empty($child)) {
-				$room['child'] = $this->syncRoomList($child);
-				$room['has_child'] = 1;
-			} else {
-			    unset($room['child']);
-				$room['has_child'] = 0;
-			}			
-			$this->model->syncRoom($room);
-		}
-		
-		return $list;
-	}
+    
+    private function syncRoomList($list) 
+    {
+        foreach ($list as &$room) {
+            $child = $room['child'];
+            if (!empty($child)) {
+                $room['child'] = $this->syncRoomList($child);
+                $room['has_child'] = 1;
+            } else {
+                unset($room['child']);
+                $room['has_child'] = 0;
+            }            
+            $this->model->syncRoom($room);
+        }
+        
+        return $list;
+    }
 
     /**
      * @param room_id Required. ID or name of the room.
@@ -225,8 +227,8 @@ class Room extends \SlimController\SlimController
                 'room_id' => 0,
                 'user_id' => 0,
                 'user_name' => '',
-				'receive_id' => 0,
-				'receive_name' => '',
+                'receive_id' => 0,
+                'receive_name' => '',
                 'message' => '',
                 'notify' => 0
             )
@@ -250,15 +252,15 @@ class Room extends \SlimController\SlimController
         $params = $this->params(array('room_id', 'read_ids', 'last_view_id', 'old'), 'get', array(
             'room_id' => 0, // default
             'read_ids' => "", // must be string
-			'last_view_id' => 0,
+            'last_view_id' => 0,
             'old' => 0
         ));
         $message_list = array();
-		if (!$params['old']) {
-			$message_list = $this->model->receiveNewMessage($params['room_id'], $params['read_ids']);
-		} else {
-			$message_list = $this->model->historyMessage($params['room_id'], $params['last_view_id'], 20);
-		}
+        if (!$params['old']) {
+            $message_list = $this->model->receiveNewMessage($params['room_id'], $params['read_ids']);
+        } else {
+            $message_list = $this->model->historyMessage($params['room_id'], $params['last_view_id'], 20);
+        }
 
         $this->echoRespnse(200, array('history' => $message_list));
     }
@@ -279,8 +281,8 @@ class Room extends \SlimController\SlimController
                 'room_id' => 0,
                 'user_id' => $user_id,
                 'user_name' => $user_name,
-				'receive_id' => $id,
-				'receive_name' => '',
+                'receive_id' => $id,
+                'receive_name' => '',
                 'message' => "room_invitation:$room_id",
                 'notify' => 1,
                 'message_format' => 'text'
