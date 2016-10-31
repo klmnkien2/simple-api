@@ -42,7 +42,7 @@ namespace AoeNetwork
         {
             //LoadAds();
             LoadChannel(null);
-            LoadTreeRoom();
+            //LoadTreeRoom();
         }
 
         private void ScheduleWork()
@@ -166,6 +166,7 @@ namespace AoeNetwork
             request.AddParameter("room_id", _room.room_id);
             request.AddParameter("user_id", StaticValue.user_id);
             request.AddParameter("ip", SystemUtils.getVPNLanIp());
+            request.AddParameter("ping", SystemUtils.getVPNPing());
 
             // easily add HTTP Headers
             request.Timeout = 10000;
@@ -191,6 +192,8 @@ namespace AoeNetwork
                                     user.user_name = row["user_name"].ToString();
                                     user.avatar = row["avatar"].ToString();
                                     user.ip = row["ip"].ToString();
+                                    user.ping = row["ping"].ToString();
+                                    user.level = row["level"].ToString();
                                     user.state = int.Parse(row["state"].ToString());
 
                                     Users.Add(user);
@@ -232,7 +235,7 @@ namespace AoeNetwork
                         DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(r.Content);
                         DataTable dataTable = dataSet.Tables["rooms"];
 
-                        _view.SetTreeRoom(dataTable);
+                        //_view.SetTreeRoom(dataTable);
                     }
                     else
                     {

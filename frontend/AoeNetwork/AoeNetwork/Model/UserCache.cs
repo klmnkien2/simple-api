@@ -11,6 +11,9 @@ namespace AoeNetwork
         public int state { get; set; }
         public string status { get; set; }
         public string avatar { get; set; }
+        public string coin { get; set; }
+        public string level { get; set; }
+        public string ping { get; set; }
     } 
 
 }

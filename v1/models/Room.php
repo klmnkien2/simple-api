@@ -107,7 +107,7 @@ class Room {
 
     public function syncRoom(&$data) {
 
-        $sql = "SELECT r.room_id, r.room_name, r.image, r.server_id, s.host, s.port, s.hub
+        $sql = "SELECT r.room_id, r.room_name, r.image, r.members, r.maximum, r.server_id, s.host, s.port, s.hub
             FROM rooms r
             LEFT JOIN servers s ON s.server_id = r.server_id
             WHERE r.room_id=:room_id";
@@ -123,14 +123,19 @@ class Room {
             $data['room_id'] = $r['room_id'];
             $data['room_name'] = $r['room_id'];
             $data['image'] = $r['image'];
+            $data['members'] = $r['members'];
+            $data['maximum'] = $r['maximum'];
             $data['server_id'] = $r['server_id'];
             $data['host'] = $r['host'];
             $data['port'] = $r['port'];
             $data['hub'] = $r['hub'];
         } else {
-            //Insert        
+            //Insert
             $data['room_id'] = $data['id'];
             $data['room_name'] = $data['name'];
+            $data['image'] = !empty($data['image']) ? $data['image'] : "";
+            $data['members'] = 0;
+            $data['maximum'] = 0;
             if ($data['has_child'] == 0) {
                 $server = $this->getFreeServer();
                 $data['server_id'] = $server['server_id'];
@@ -141,14 +146,16 @@ class Room {
                 $data['server_id'] = -1;
             }
             
-            $stmt = $this->core->dbh->prepare("INSERT INTO rooms (room_id, room_name, image, parent_id, has_child, server_id) " .
-                "VALUES (:room_id, :room_name, :image, :parent_id, :has_child, :server_id)");
+            $stmt = $this->core->dbh->prepare("INSERT INTO rooms (room_id, room_name, image, members, maximum, parent_id, has_child, server_id) " .
+                "VALUES (:room_id, :room_name, :image, :members, :maximum, :parent_id, :has_child, :server_id)");
             $stmt->bindParam(':room_id', $data['room_id'], PDO::PARAM_INT);
             $stmt->bindParam(':room_name', $data['room_name'], PDO::PARAM_STR);
             $stmt->bindParam(':image', $data['image'], PDO::PARAM_STR);
             $stmt->bindParam(':parent_id', $data['parent_id'], PDO::PARAM_INT);
             $stmt->bindParam(':has_child', $data['has_child'], PDO::PARAM_INT);
             $stmt->bindParam(':server_id', $data['server_id'], PDO::PARAM_INT);
+            $stmt->bindParam(':members', $data['members'], PDO::PARAM_INT);
+            $stmt->bindParam(':maximum', $data['maximum'], PDO::PARAM_INT);
             $stmt->execute();
         }
     }

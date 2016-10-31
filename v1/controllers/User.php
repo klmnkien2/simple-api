@@ -228,8 +228,10 @@ class User extends \SlimController\SlimController
 		$room_id = $this->param('room_id');
 		$user_id = $this->param('user_id');
 		$ip = $this->param('ip');
-		
-		$this->model->updateUserRoom($room_id, $user_id, $ip);
+		$ping = $this->param('ping');
+		//ALTER TABLE `room_users` CHANGE `ping` `ping` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+		$this->model->updateUserRoom($room_id, $user_id, $ip, $ping);
         $users = $this->model->getUserInRoom($room_id);
         $users = $this->filterInactiveMember($users);
         $this->echoRespnse(200, array('users' => $users));

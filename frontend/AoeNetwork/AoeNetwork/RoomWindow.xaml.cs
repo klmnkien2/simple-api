@@ -57,6 +57,7 @@ namespace AoeNetwork
         private RoomController roomController;
         private RoomListItem userList;
         private ChannelListItem channelList;
+        private RoomInChannelList roomInChannelList;
         public void SetRoomController(RoomController roomController)
         {
             this.roomController = roomController;
@@ -85,19 +86,20 @@ namespace AoeNetwork
         {
             this.userList = new RoomListItem(this, this.userListControl);
             this.channelList = new ChannelListItem(this, this.channelListControl);
+            this.roomInChannelList = new RoomInChannelList(this, this.roomInChannelListControl);
         }
 
         private void DisplayLoadingGame(bool loading)
         {
             if (loading)
             {
-                this.tabGameContent.RowDefinitions[1].Height = new GridLength(30);
-                this.tabGameContent.RowDefinitions[2].Height = new GridLength(40);
+                this.tabGameGrid.RowDefinitions[1].Height = new GridLength(30);
+                this.tabGameGrid.RowDefinitions[2].Height = new GridLength(40);
             }
             else
             {
-                this.tabGameContent.RowDefinitions[1].Height = new GridLength(0);
-                this.tabGameContent.RowDefinitions[2].Height = new GridLength(0);
+                this.tabGameGrid.RowDefinitions[1].Height = new GridLength(0);
+                this.tabGameGrid.RowDefinitions[2].Height = new GridLength(0);
             }
         }
         #endregion
@@ -229,22 +231,27 @@ namespace AoeNetwork
         {
             Dispatcher.Invoke(new Action(() =>
             {
+                this.roomInChannelList.clearData();
                 foreach (DataRow row in dataTable.Rows)
                 {
                     Room room = new Room();
                     room.room_id = int.Parse(row["room_id"].ToString());
                     room.room_name = row["name"].ToString();
+                    room.members = row["members"].ToString();
+                    room.maximum = row["maximum"].ToString();
                     room.server_id = row["server_id"].ToString();
                     room.parent_id = int.Parse(row["parent_id"].ToString());
                     room.host = row["host"].ToString();
                     room.port = row["port"].ToString();
                     room.hub = row["hub"].ToString();
 
-                    MessageBox.Show(room.room_name);
+                    this.roomInChannelList.addItem(room);
                 }
             }));
         }
 
+        #region Tree room no use now
+        /*
         public void SetTreeRoom(DataTable dataTable)
         {
             Dispatcher.Invoke(new Action(() => {
@@ -287,6 +294,8 @@ namespace AoeNetwork
                 }
             }
         }
+        */
+        #endregion
 
         private bool isRoomSet = false;
         public void SuccessJoinRoom(Room room)
@@ -351,21 +360,44 @@ namespace AoeNetwork
 
         private void tabHome_Click(object sender, RoutedEventArgs e)
         {
-            this.tabGameContent.Visibility = Visibility.Hidden;
+            this.tabRoom.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabGame.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabHome.Foreground = Brushes.White;
+
             this.tabHomeContent.Visibility = Visibility.Visible;
+            this.tabHomeContent.IsHitTestVisible = true;
+
+            this.channelListContainer.Visibility = Visibility.Hidden;
+            this.channelListContainer.IsHitTestVisible = false;
+            this.tabGameContent.Visibility = Visibility.Hidden;
+            this.tabGameContent.IsHitTestVisible = false;
             this.tabRoomContent.Visibility = Visibility.Hidden;
+            this.tabRoomContent.IsHitTestVisible = false;
             this.tabRoomContent_extend.Visibility = Visibility.Hidden;
-            this.tabGameContent_extend.Visibility = Visibility.Hidden;            
+            this.tabRoomContent_extend.IsHitTestVisible = false;
+            this.tabGameContent_extend.Visibility = Visibility.Hidden;
+            this.tabGameContent_extend.IsHitTestVisible = false;
         }
 
         private void tabGame_Click(object sender, RoutedEventArgs e)
         {
+            this.tabRoom.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabHome.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabGame.Foreground = Brushes.White;
+
             this.tabGameContent.Visibility = Visibility.Visible;
+            this.tabGameContent.IsHitTestVisible = true;
+            this.tabGameContent_extend.Visibility = Visibility.Visible;
+            this.tabGameContent_extend.IsHitTestVisible = true;
+            this.channelListContainer.Visibility = Visibility.Visible;
+            this.channelListContainer.IsHitTestVisible = true;
+
             this.tabHomeContent.Visibility = Visibility.Hidden;
             this.tabHomeContent.IsHitTestVisible = false;
-            this.tabRoomContent.Visibility = Visibility.Hidden;            
+            this.tabRoomContent.Visibility = Visibility.Hidden;
+            this.tabRoomContent.IsHitTestVisible = false;
             this.tabRoomContent_extend.Visibility = Visibility.Hidden;
-            this.tabGameContent_extend.Visibility = Visibility.Visible;      
+            this.tabRoomContent_extend.IsHitTestVisible = false;
         }
 
         private void tabRoom_Click(object sender, RoutedEventArgs e)
@@ -375,11 +407,24 @@ namespace AoeNetwork
                 MessageBox.Show("Bạn chưa tham gia phòng nào!");
                 return;
             }
-            this.tabGameContent.Visibility = Visibility.Hidden;
-            this.tabHomeContent.Visibility = Visibility.Hidden;
+
+            this.tabHome.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabGame.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabRoom.Foreground = Brushes.White;
+
+            this.channelListContainer.Visibility = Visibility.Visible;
+            this.channelListContainer.IsHitTestVisible = true;
             this.tabRoomContent.Visibility = Visibility.Visible;
+            this.tabRoomContent.IsHitTestVisible = true;
             this.tabRoomContent_extend.Visibility = Visibility.Visible;
-            this.tabGameContent_extend.Visibility = Visibility.Hidden;      
+            this.tabRoomContent_extend.IsHitTestVisible = true;
+
+            this.tabGameContent.Visibility = Visibility.Hidden;
+            this.tabGameContent.IsHitTestVisible = false;
+            this.tabHomeContent.Visibility = Visibility.Hidden;
+            this.tabHomeContent.IsHitTestVisible = false;
+            this.tabGameContent_extend.Visibility = Visibility.Hidden;
+            this.tabGameContent_extend.IsHitTestVisible = false;
         }
 
         private void messageBox_KeyDown(object sender, KeyEventArgs e)
@@ -404,21 +449,11 @@ namespace AoeNetwork
             }));
         }
 
-        private void GameTreeItemMouseDoubleClick(object sender, MouseButtonEventArgs args)
+        public void JoinARoom(Room room)
         {
-            if (sender is TreeViewItem)
-            {
-                if (!((TreeViewItem)sender).IsSelected)
-                {
-                    return;
-                }
-            }
+            
             DisplayLoadingGame(true);
-            //
-            // Get the selected node.
-            //
-            TreeViewItem node = (TreeViewItem)sender;
-            Room room = (Room)node.Tag;
+            
             if (room.server_id != "0")
             {
                 // Join room and Access VPN here
@@ -484,6 +519,26 @@ namespace AoeNetwork
         private void exitStripMenuItem_Click(object sender, RoutedEventArgs e)
         {
             chatView.exitStripMenuItem_Click(null, null);
+        }
+
+        public void SetUserInfo(string username, string status, string avatar, string level, string diamond, int state)
+        {
+            this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
+            this.userLevel.Content = "Level " + level;
+            this.userDiamond.Content = "" + diamond;            
+            this.userName.Content = username;
+            if (state == 2)
+            {
+                userState.Source = SystemUtils.getResource("login_busy");
+            }
+            else if (state == 1)
+            {
+                userState.Source = SystemUtils.getResource("login_offline");
+            }
+            else
+            {
+                userState.Source = SystemUtils.getResource("login_avail");
+            }
         }
     }
 }

@@ -19,7 +19,10 @@ namespace AoeNetwork
             this.parentList = parentList;
             this.parentWindow = parentWindow;
             InitContextMenu();
+            addHeader();
         }
+
+        SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#3c444a"));
 
         private ContextMenu contextMenu;
         MenuItem showUsername;
@@ -27,19 +30,30 @@ namespace AoeNetwork
         MenuItem copyIpMenu;
         private void InitContextMenu()
         {
+            Style styleMenu = parentWindow.FindResource("customContextMenu") as Style;
+            Style styleMenuItem = parentWindow.FindResource("customContextMenuItem") as Style;
+
             contextMenu = new ContextMenu();
+            contextMenu.Style = styleMenu;
             
             showUsername = new MenuItem();
-            showUsername.IsEnabled = false;
+            showUsername.Foreground = Brushes.Red;
+            showUsername.Style = styleMenuItem;
+            showUsername.Tag = "Images/arrow_right.png";
+
             showUserIp = new MenuItem();
-            showUserIp.IsEnabled = false;
+            showUserIp.Style = styleMenuItem;
+            showUserIp.Foreground = Brushes.Red;
+            showUserIp.Tag = "Images/arrow_right.png";
+
             copyIpMenu = new MenuItem();
             copyIpMenu.Header = "Copy IP Address";
+            copyIpMenu.Style = styleMenuItem;
+            copyIpMenu.Tag = "Images/arrow_right.png";
             copyIpMenu.Click += copyIpMenu_Click;
 
             contextMenu.Items.Add(showUsername);
-            contextMenu.Items.Add(showUserIp);
-            contextMenu.Items.Add(new Separator());
+            contextMenu.Items.Add(showUserIp);            
             contextMenu.Items.Add(copyIpMenu);
         }
 
@@ -50,7 +64,7 @@ namespace AoeNetwork
 
         private void listItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Grid container = sender as Grid;
+            Border container = sender as Border;
             UserCache user = (UserCache)container.Tag;
             contextMenu.PlacementTarget = container;
             showUsername.Header = user.user_name;
@@ -61,7 +75,8 @@ namespace AoeNetwork
         class DataItem
         {
             public Image state;
-            public Grid container;
+            public Label ping;
+            public Border container;
             public UserCache user;
         }
 
@@ -93,18 +108,86 @@ namespace AoeNetwork
             }
         }
 
-        public void addUser(UserCache user)
+        public void addHeader()
         {
-            if (dataItems.ContainsKey(user.user_id))
+            DataItem dataItem = new DataItem();
+            Grid itemPanel = new Grid();
+            itemPanel.Children.Clear();
+            itemPanel.Width = this.parentList.Width;
+            itemPanel.Height = 30;
+
+            // Adding Rows and Colums to Grid.
+            RowDefinition[] rows = new RowDefinition[1];
+            ColumnDefinition[] columns = new ColumnDefinition[3];
+            // Draw Rows.
+
+            rows[0] = new RowDefinition();
+            rows[0].Height = new GridLength(100, GridUnitType.Star);
+            itemPanel.RowDefinitions.Add(rows[0]);
+
+            // Draw Columns.
+            columns[0] = new ColumnDefinition();
+            columns[0].Width = new GridLength(50);
+            itemPanel.ColumnDefinitions.Add(columns[0]);
+
+            columns[1] = new ColumnDefinition();
+            columns[1].Width = new GridLength(100, GridUnitType.Star);
+            itemPanel.ColumnDefinitions.Add(columns[1]);
+
+            columns[2] = new ColumnDefinition();
+            columns[2].Width = new GridLength(50);
+            itemPanel.ColumnDefinitions.Add(columns[2]);
+
+            Label level = new Label();
+            level.Foreground = Brushes.WhiteSmoke;
+            level.Content = "Bậc";// itemObj.level;
+            level.VerticalContentAlignment = VerticalAlignment.Center;
+            level.FontWeight = FontWeights.Bold;
+            itemPanel.Children.Add(level);
+
+            Label name = new Label();
+            name.Foreground = Brushes.WhiteSmoke;
+            name.Content = "Tên tài khoản";
+            name.VerticalContentAlignment = VerticalAlignment.Center;
+            name.FontWeight = FontWeights.Bold;
+            itemPanel.Children.Add(name);
+            Grid.SetColumn(name, 1);
+
+            Label ping = new Label();
+            ping.Foreground = Brushes.WhiteSmoke;
+            ping.Content = "Ping";// itemObj.ping;
+            ping.VerticalContentAlignment = VerticalAlignment.Center;
+            ping.FontWeight = FontWeights.Bold;
+            itemPanel.Children.Add(ping);
+            dataItem.ping = ping;
+            Grid.SetColumn(ping, 2);
+            
+            Border itemBorder = new Border();
+            itemBorder.BorderThickness = new Thickness(1, 1, 1, 1);
+            itemBorder.BorderBrush = borderColor;
+            itemBorder.Child = itemPanel;
+
+            this.parentList.Children.Add(itemBorder);
+        }
+
+        public void addUser(UserCache itemObj)
+        {
+            if (dataItems.ContainsKey(itemObj.user_id))
             {
 
                 DataItem existedItem = null;
-                dataItems.TryGetValue(user.user_id, out existedItem);
+                dataItems.TryGetValue(itemObj.user_id, out existedItem);
                 if (existedItem != null)
                 {
                     //Update object
                     UserCache existedUser = existedItem.user;
+                    
+                    // Update ping
+                    //if (itemObj.ping != existedUser.ping)
+                    //{
+                    //}
 
+                    /*
                     //Update GUI
                     if (user.state != existedUser.state)
                     {
@@ -121,30 +204,60 @@ namespace AoeNetwork
                         {
                             existedItem.state.Source = SystemUtils.getResource("login_offline");
                         }
-                    }
+                    }*/
                 }
 
                 return; // da ton tai thi next luon
             }
 
-            Label indexLbl = new Label();
-            indexLbl.Content = (_IDs.Count + 1) + ".";
-            indexLbl.VerticalContentAlignment = VerticalAlignment.Center;
-            indexLbl.Foreground = Brushes.White;
-            indexLbl.FontWeight = FontWeights.Bold;
-            Grid.SetRow(indexLbl, 0);
-            Grid.SetColumn(indexLbl, 0);
+            DataItem dataItem = new DataItem();
+            Grid itemPanel = new Grid();
+            itemPanel.Children.Clear();
+            itemPanel.Width = this.parentList.Width;
+            itemPanel.Height = 25;
+
+            // Adding Rows and Colums to Grid.
+            RowDefinition[] rows = new RowDefinition[1];
+            ColumnDefinition[] columns = new ColumnDefinition[3];
+            // Draw Rows.
+
+            rows[0] = new RowDefinition();
+            rows[0].Height = new GridLength(100, GridUnitType.Star);
+            itemPanel.RowDefinitions.Add(rows[0]);
+
+            // Draw Columns.
+            columns[0] = new ColumnDefinition();
+            columns[0].Width = new GridLength(50);
+            itemPanel.ColumnDefinitions.Add(columns[0]);
+
+            columns[1] = new ColumnDefinition();
+            columns[1].Width = new GridLength(100, GridUnitType.Star);
+            itemPanel.ColumnDefinitions.Add(columns[1]);
+
+            columns[2] = new ColumnDefinition();
+            columns[2].Width = new GridLength(50);
+            itemPanel.ColumnDefinitions.Add(columns[2]);
+
+            Label level = new Label();
+            level.Foreground = Brushes.WhiteSmoke;
+            level.Content = itemObj.level;
+            itemPanel.Children.Add(level);
 
             Label name = new Label();
-            name.Foreground = Brushes.White;
-            name.VerticalContentAlignment = VerticalAlignment.Center;
-            name.FontWeight = FontWeights.Bold;
-            name.Tag = user.user_id;
-            name.Content = user.user_name;
-            Grid.SetRow(name, 0);
+            name.Foreground = Brushes.WhiteSmoke;
+            name.Content = itemObj.user_name;
+            itemPanel.Children.Add(name);
             Grid.SetColumn(name, 1);
 
-            Image state = new Image();
+            Label ping = new Label();
+            ping.Foreground = Brushes.WhiteSmoke;
+            ping.Content = itemObj.ping;
+            itemPanel.Children.Add(ping);
+            dataItem.ping = ping;
+            Grid.SetColumn(ping, 2);
+
+            #region state of user , not use now
+            /*Image state = new Image();
             state.StretchDirection = StretchDirection.Both;
             state.Width = 12;
             state.Height = 12;
@@ -161,49 +274,22 @@ namespace AoeNetwork
             else
             {
                 state.Source = SystemUtils.getResource("login_offline");
-            }
+            }*/
+            #endregion
 
-            Grid itemPanel = new Grid();
-            itemPanel.Tag = user;
-            itemPanel.Children.Clear();
-            itemPanel.MouseDown += this.listItem_MouseDown;
+            Border itemBorder = new Border();
+            itemBorder.BorderThickness = new Thickness(1, 0, 1, 1);
+            itemBorder.BorderBrush = borderColor;
+            itemBorder.Child = itemPanel;
+            itemBorder.Tag = itemObj;
+            itemBorder.ToolTip = "Chuột phải để chọn copy IP";
+            itemBorder.MouseRightButtonDown += listItem_MouseDown;
+            dataItem.container = itemBorder;
+            dataItem.user = itemObj;
 
-            // Adding Rows and Colums to Grid.
-            RowDefinition[] rows = new RowDefinition[1];
-            ColumnDefinition[] columns = new ColumnDefinition[3];
-            // Draw Rows.
-            rows[0] = new RowDefinition();
-            rows[0].Height = new GridLength(30);
-            itemPanel.RowDefinitions.Add(rows[0]);
-
-            // Draw Columns.
-            columns[0] = new ColumnDefinition();
-            columns[0].Width = new GridLength(40);
-            itemPanel.ColumnDefinitions.Add(columns[0]);
-
-            columns[1] = new ColumnDefinition();
-            columns[1].Width = new GridLength(100, GridUnitType.Star);
-            itemPanel.ColumnDefinitions.Add(columns[1]);
-
-            columns[2] = new ColumnDefinition();
-            columns[2].Width = new GridLength(40);
-            itemPanel.ColumnDefinitions.Add(columns[2]);
-
-            itemPanel.Width = this.parentList.Width;
-            itemPanel.Height = 50;
-
-            itemPanel.Children.Add(indexLbl);
-            itemPanel.Children.Add(name);
-            itemPanel.Children.Add(state);
-
-            DataItem dataItem = new DataItem();
-            dataItem.state = state;
-            dataItem.user = user;
-            dataItem.container = itemPanel;
-
-            this.dataItems.Add(user.user_id, dataItem);
-            this.IDs.Add(user.user_id);
-            this.parentList.Children.Add(itemPanel);
+            this.dataItems.Add(itemObj.user_id, dataItem);
+            this.IDs.Add(itemObj.user_id);
+            this.parentList.Children.Add(itemBorder);
         }
 
         public void SearchByString(string searchKey)
@@ -225,16 +311,6 @@ namespace AoeNetwork
                 DataItem item = entry.Value;
                 item.container.Height = 50;
             }
-        }
-
-        private BitmapImage getResource(string name)
-        {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri("pack://application:,,,/Images/" + name + ".png");
-            bitmap.EndInit();
-
-            return bitmap;
         }
     }
 }

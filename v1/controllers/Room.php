@@ -87,31 +87,17 @@ class Room extends \SlimController\SlimController
             $channel_id = $this->param('channel_id');
             $list = array();
             if (!$channel_id) {
-                $list = array (
-                    array('id' => "1",'name' => "Hanoi", "image" => ""),
-                    array('id' => "2",'name' => "GameTV", "image" => ""),
-                    array('id' => "3",'name' => "Thai Binh FC", "image" => ""),
-                    array('id' => "4",'name' => "Toi di tim toi", "image" => ""),
-                    array('id' => "5",'name' => "Test1", "image" => ""),
-                    array('id' => "6",'name' => "Ho Chi Minh City", "image" => ""),
-                    array('id' => "7",'name' => "Test2", "image" => ""),
-                    array('id' => "8",'name' => "Khong ten", "image" => ""),
-                    array('id' => "9",'name' => "Test3", "image" => ""),
-                    array('id' => "10",'name' => "Hai phong VN", "image" => ""),
-                );
+                $result = file_get_contents('http://trading.gametv.vn/api_platform/get_channel');
+                $result = json_decode($result, true);
+                if($result['status'] == true) {
+                    $list = $result['data'];
+                }
             } else {
-                $list = array (
-                    array('id' => "111",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "122",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "133",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "144",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "155",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "166",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "177",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "188",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "199",'name' => "Hanoi test1", "image" => ""),
-                    array('id' => "100",'name' => "Hanoi test1", "image" => ""),
-                );
+                $result = file_get_contents('http://trading.gametv.vn/api_platform/get_room/' . $channel_id);
+                $result = json_decode($result, true);
+                if($result['status'] == true) {
+                    $list = $result['data'];
+                }
             }
 
             foreach ($list as &$room) {

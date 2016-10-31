@@ -155,6 +155,11 @@ namespace AoeNetwork
             return "";
         }
 
+        public static String getVPNPing()
+        {
+            return "100";
+        }
+
         public static void OpenGame(string pathToExe)
         {
             try

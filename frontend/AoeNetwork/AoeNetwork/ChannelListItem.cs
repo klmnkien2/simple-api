@@ -21,10 +21,15 @@ namespace AoeNetwork
 
         }
 
+        SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#3c444a"));
+        SolidColorBrush bgColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#080909"));
+        SolidColorBrush selectBorderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#3381bb"));
+        SolidColorBrush selectBgColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1e1e1e"));
+
         class DataItem
         {
             public Image image;
-            public Label name;
+            public TextBlock name;
             public Border container;
             public Channel channel;
         }
@@ -33,6 +38,7 @@ namespace AoeNetwork
         RoomWindow parentWindow;
         StackPanel parentList;
 
+        int selectedId = -1;
         ArrayList _IDs = new ArrayList();
         public ArrayList IDs
         {
@@ -73,7 +79,7 @@ namespace AoeNetwork
                     if (itemObj.name != existedChannel.name)
                     {
                         existedChannel.name = itemObj.name;
-                        existedItem.name.Content = itemObj.name;
+                        existedItem.name.Text = itemObj.name;
                     }
 
                     if (itemObj.image != existedChannel.image)
@@ -96,6 +102,7 @@ namespace AoeNetwork
             StackPanel itemPanel = new StackPanel();
             itemPanel.Children.Clear();
             itemPanel.Width = this.parentList.Width;
+            itemPanel.Cursor = Cursors.Hand;
             
             if (itemObj.image != null && itemObj.image != "") {
                 Image image = new Image();
@@ -105,26 +112,26 @@ namespace AoeNetwork
                 dataItem.image = image;
             }
 
-            Label name = new Label();
-            name.Foreground = Brushes.White;
-            name.VerticalContentAlignment = VerticalAlignment.Bottom;
-            name.FontWeight = FontWeights.Bold;
-            name.Content = itemObj.name;
+            TextBlock name = new TextBlock();
+            name.Foreground = Brushes.WhiteSmoke;
+            name.HorizontalAlignment = HorizontalAlignment.Stretch;
+            name.TextWrapping = TextWrapping.WrapWithOverflow;
+            name.Text = itemObj.name;
             itemPanel.Children.Add(name);
             dataItem.name = name;
 
-            itemPanel.Cursor = Cursors.Hand;
-
-
             Border itemBorder = new Border();
+            itemBorder.Margin = new Thickness(5, 2, 5, 2);
+            itemBorder.Padding = new Thickness(5, 5, 5, 5);
             itemBorder.BorderThickness = new Thickness(1,1,1,1);
-            itemBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0e1e28"));
-            itemBorder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            itemBorder.BorderBrush = borderColor;
+            itemBorder.Background = bgColor;
             itemBorder.Child = itemPanel;
             itemBorder.Tag = itemObj;
             itemBorder.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
             itemBorder.MouseRightButtonDown += itemPanel_MouseLeftButtonDown;
             dataItem.container = itemBorder;
+            dataItem.channel = itemObj;
 
             this.dataItems.Add(itemObj.id, dataItem);
             this.IDs.Add(itemObj.id);
@@ -133,18 +140,32 @@ namespace AoeNetwork
 
         void itemPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("0");
-            if (e.ClickCount == 2)
-            {
-                MessageBox.Show("1");
                 Channel channel = (sender as Border).Tag as Channel;
-                MessageBox.Show(channel.ToString());
+
                 if (channel != null)
                 {
+                    //update select item
+                    DataItem existedItem = null;
+                    dataItems.TryGetValue(selectedId, out existedItem);
+                    if (existedItem != null)
+                    {
+                        existedItem.container.BorderBrush = borderColor;
+                        existedItem.container.Background = bgColor;
+                    }
+
+                    selectedId = channel.id; 
+                    existedItem = null;
+                    dataItems.TryGetValue(selectedId, out existedItem);
+                    if (existedItem != null)
+                    {
+                        existedItem.container.BorderBrush = selectBorderColor;
+                        existedItem.container.Background = selectBgColor;
+                    }
+
+                    // load data
                     parentWindow.LoadRoomInChannel(channel);
                 }
-            }
-        }
+         }
 
     }
 }

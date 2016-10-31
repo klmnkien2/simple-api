@@ -246,7 +246,7 @@ class User {
     public function getUserInRoom($room_id) {
         $r = array();
 
-        $sql = "SELECT ru.room_id, ru.ip, u.user_id, u.user_name, u.avatar, u.state, UNIX_TIMESTAMP(u.last_active) AS last_active
+        $sql = "SELECT ru.room_id, ru.ip, ru.ping, u.user_id, u.user_name, u.avatar, u.state, u.level, u.diamond, UNIX_TIMESTAMP(u.last_active) AS last_active
         	FROM room_users ru
             LEFT JOIN user_caches u ON ru.user_id = u.user_id 
         	WHERE ru.room_id = :room_id";
@@ -260,11 +260,12 @@ class User {
 		return $r;
 	}
 	
-	public function updateUserRoom($room_id, $user_id, $ip) {
-        $stmt = $this->core->dbh->prepare("UPDATE room_users SET ip = :ip WHERE user_id = :user_id AND room_id = :room_id");
+	public function updateUserRoom($room_id, $user_id, $ip, $ping) {
+        $stmt = $this->core->dbh->prepare("UPDATE room_users SET ip = :ip, ping = :ping WHERE user_id = :user_id AND room_id = :room_id");
 		$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
 		$stmt->bindParam(':ip', $ip, PDO::PARAM_STR);
+		$stmt->bindParam(':ping', $ping, PDO::PARAM_STR);
 		
         $stmt->execute();
     }

@@ -92,6 +92,7 @@
     <Compile Include="Controller\PrivateController.cs" />
     <Compile Include="Controller\RoomController.cs" />
     <Compile Include="ChannelListItem.cs" />
+    <Compile Include="RoomInChannelList.cs" />
     <Compile Include="Model\Channel.cs" />
     <Compile Include="PaymentWindow.xaml.cs">
       <DependentUpon>PaymentWindow.xaml</DependentUpon>
