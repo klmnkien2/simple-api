@@ -43,6 +43,8 @@ namespace AoeNetwork
             //LoadAds();
             LoadChannel(null);
             //LoadTreeRoom();
+            _view.SetUserInfo(StaticValue.username, StaticValue.status, StaticValue.avatar,
+                StaticValue.level, StaticValue.diamond, StaticValue.state);
         }
 
         private void ScheduleWork()
@@ -59,6 +61,8 @@ namespace AoeNetwork
         {
             ReceiveMessage();
             LoadUsers();
+            _view.SetUserInfo(StaticValue.username, StaticValue.status, StaticValue.avatar,
+                StaticValue.level, StaticValue.diamond, StaticValue.state);
         }
 
         public void LoadAds()
@@ -166,7 +170,8 @@ namespace AoeNetwork
             request.AddParameter("room_id", _room.room_id);
             request.AddParameter("user_id", StaticValue.user_id);
             request.AddParameter("ip", SystemUtils.getVPNLanIp());
-            request.AddParameter("ping", SystemUtils.getVPNPing());
+            request.AddParameter("ping", SystemUtils.getVPNPing(_room.host));
+
 
             // easily add HTTP Headers
             request.Timeout = 10000;

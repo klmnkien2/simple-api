@@ -1,7 +1,7 @@
 ﻿<Window x:Class="AoeNetwork.WebWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="GameTV" Height="800" Width="600" FontFamily="Tahoma" BorderThickness="0" Background="Transparent" WindowStyle="None" Foreground="White"  ResizeMode="NoResize" AllowsTransparency="True" >
+        Title="GameTV" Height="800" Width="600" FontFamily="Tahoma" BorderThickness="0" WindowStyle="None" ResizeMode="NoResize" >
     <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
         <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
@@ -30,7 +30,8 @@
 
 
             <Grid Grid.Row="1">
-                <WebBrowser x:Name="browser" Navigating="browser_Navigating" Navigated="browser_Navigated" />
+                <Label x:Name="loadingLbl" Content="Loading..." VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ClipToBounds="True" FontSize="20" FontWeight="Bold" Foreground="White" />
+                <WebBrowser x:Name="browser" Navigating="browser_Navigating" Navigated="browser_Navigated" Visibility="Hidden"/>
             </Grid>
         </Grid>
     </Border>

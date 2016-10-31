@@ -125,32 +125,34 @@ namespace AoeNetwork
 
         public void SetUserInfo(string username, string status, string avatar, string level, string diamond, int state)
         {
-            this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
-            this.userLevel.Content = "Level " + level;
-            this.userDiamond.Content = "" + diamond;
-            if (avatar != "")
-            {
-                //load image avatar
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(avatar, UriKind.RelativeOrAbsolute);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                userAvatar.Source = bitmap;
-            }
-            this.userName.Content = username;
-            if (state == 2)
-            {
-                userState.Source = SystemUtils.getResource("login_busy");
-            }
-            else if (state == 1)
-            {
-                userState.Source = SystemUtils.getResource("login_offline");
-            }
-            else
-            {
-                userState.Source = SystemUtils.getResource("login_avail");
-            }
+            Dispatcher.Invoke(new Action(() => {
+                this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
+                this.userLevel.Content = "Level " + level;
+                this.userDiamond.Content = "" + diamond;
+                if (avatar != "")
+                {
+                    //load image avatar
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(avatar, UriKind.RelativeOrAbsolute);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    userAvatar.Source = bitmap;
+                }
+                this.userName.Content = username;
+                if (state == 2)
+                {
+                    userState.Source = SystemUtils.getResource("login_busy");
+                }
+                else if (state == 0)
+                {
+                    userState.Source = SystemUtils.getResource("login_offline");
+                }
+                else
+                {
+                    userState.Source = SystemUtils.getResource("login_avail");
+                }
+            }));
         }
 
         public void AfterAddFriend(Friend friend, string error)
@@ -450,12 +452,14 @@ namespace AoeNetwork
                 //Link web trang danh sach cua hang
                 WebWindow browser = new WebWindow();
                 browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+                browser.ShowDialog();
             }
             else if (menu.Uid == "3")
             {
                 //Link web trang cham soc khach hang
                 WebWindow browser = new WebWindow();
                 browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+                browser.ShowDialog();
             }
         }
 
@@ -470,7 +474,7 @@ namespace AoeNetwork
         {
             MenuItem menu = sender as MenuItem;
             StaticValue.state = int.Parse(menu.Uid);
-
+            
             if (StaticValue.state == 0)
             {
                 this.userState.Source = SystemUtils.getResource("login_offline");

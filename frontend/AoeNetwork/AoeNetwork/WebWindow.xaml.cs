@@ -51,12 +51,14 @@ namespace AoeNetwork
 
         private void browser_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
         {
-            this.Title = "Loading... Please wait...";
+            this.browser.Visibility = Visibility.Hidden;
+            this.loadingLbl.Visibility = Visibility.Visible;
         }
 
         private void browser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            this.Title = "GameTV";
+            this.browser.Visibility = Visibility.Visible;
+            this.loadingLbl.Visibility = Visibility.Hidden;
         }
     }
 }

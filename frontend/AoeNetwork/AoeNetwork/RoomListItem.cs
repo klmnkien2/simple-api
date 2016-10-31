@@ -53,7 +53,7 @@ namespace AoeNetwork
             copyIpMenu.Click += copyIpMenu_Click;
 
             contextMenu.Items.Add(showUsername);
-            contextMenu.Items.Add(showUserIp);            
+            contextMenu.Items.Add(showUserIp);
             contextMenu.Items.Add(copyIpMenu);
         }
 
@@ -183,9 +183,16 @@ namespace AoeNetwork
                     UserCache existedUser = existedItem.user;
                     
                     // Update ping
-                    //if (itemObj.ping != existedUser.ping)
-                    //{
-                    //}
+                    if (itemObj.ping != existedUser.ping)
+                    {
+                        existedUser.ping = itemObj.ping;
+                        existedItem.ping.Content = itemObj.ping;
+                    }
+
+                    if (itemObj.ip != existedUser.ip)
+                    {
+                        existedUser.ip = itemObj.ip;
+                    }
 
                     /*
                     //Update GUI

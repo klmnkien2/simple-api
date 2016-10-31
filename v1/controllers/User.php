@@ -70,6 +70,11 @@ class User extends \SlimController\SlimController
     
     public function paymentAction()
     {
+		// http://trading.gametv.vn/api_platform/mobile_card/?ajax=ajax&user_id=1000015993&card_type=92&card_seri=11111111111111&card_code=22222222222222 <- OK
+			// Update level
+			// http://trading.gametv.vn/api_platform/update_level/?ajax=ajax&id=3&level=12
+			// Update Gem
+			// http://trading.gametv.vn/api_platform/update_gem/?ajax=ajax&id=3&gem=1200
 //         http://trading.gametv.vn/api_platform/mobile_card/?ajax=ajax&user_id=1card_type=92&card_seri=xxxx&card_code=yyyyy
 //         + Card_seri
 //         + Card_code
@@ -269,10 +274,16 @@ class User extends \SlimController\SlimController
         $currentRoom = $this->model->currentRoom($room_user['user_id']);
         // leave current room
         if (!empty($currentRoom)) {
-            $this->leaveRoom($room_user['room_id'], $room_user['user_id']);
+            $this->leaveRoom($currentRoom['room_id'], $room_user['user_id']);
+			$this->model->decreaseMember($currentRoom['room_id']);
         }
         // create new room
-        $result = $this->model->createRoomUser($room_user);
+		$test = $this->model->increaseMember($room_user['room_id']);
+		if ($test) {
+			$result = $this->model->createRoomUser($room_user);
+		} else {
+			$result = false;
+		}
 
         if ($result) {
             $this->echoRespnse(200, array('status' => 'ok'));

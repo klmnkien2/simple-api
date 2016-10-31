@@ -155,9 +155,25 @@ namespace AoeNetwork
             return "";
         }
 
-        public static String getVPNPing()
+        public static String getVPNPing(string host)
         {
-            return "100";
+            try
+            {
+                string cmd = "ping -n 1 " + host + " | FIND \"Average\"";
+                string result = runCommand(cmd);
+                if (!result.Contains("--ERROR--"))
+                {
+                    string ms = result.Substring(result.IndexOf("Average") + 9);
+                    return ms;
+                }
+
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return "N/A";
         }
 
         public static void OpenGame(string pathToExe)

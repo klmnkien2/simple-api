@@ -312,6 +312,36 @@ class User {
 
 		return $result;
     }
+	
+	public function increaseMember($room_id) {
+		$stmt = $this->core->dbh->prepare("SELECT maximum - members AS 'left' FROM rooms WHERE room_id = :room_id");
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->execute();
+		
+		$r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$remain = 0;
+		if(!empty($r) && !empty($r[0]) && !empty($r[0]['left'])) {
+			$remain = $r[0]['left'];
+		}
+		
+        if ($remain > 0) {
+			$stmt = $this->core->dbh->prepare("UPDATE rooms SET members = members + 1 WHERE room_id = :room_id");
+			$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+			$stmt->execute();
+			
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+	
+	public function decreaseMember($room_id) {
+		$stmt = $this->core->dbh->prepare("UPDATE rooms SET members = members - 1 WHERE room_id = :room_id AND members > 0");
+		$stmt->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+		$stmt->execute();
+        
+    }
     
     //=========================
     // BELLOW FOR MESSAGE QUERY

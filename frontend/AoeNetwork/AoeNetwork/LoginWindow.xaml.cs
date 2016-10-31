@@ -205,13 +205,14 @@ namespace AoeNetwork
         {
             WebWindow browser = new WebWindow();
             browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+            browser.ShowDialog();
         }
 
         private void forgotPassLink_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("1");
             WebWindow browser = new WebWindow();
             browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+            browser.ShowDialog();
         }
 
     }

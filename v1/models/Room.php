@@ -135,7 +135,7 @@ class Room {
             $data['room_name'] = $data['name'];
             $data['image'] = !empty($data['image']) ? $data['image'] : "";
             $data['members'] = 0;
-            $data['maximum'] = 0;
+            $data['maximum'] = 100;
             if ($data['has_child'] == 0) {
                 $server = $this->getFreeServer();
                 $data['server_id'] = $server['server_id'];

@@ -32,7 +32,7 @@ namespace AoeNetwork
             DisplayLoadingGame(false);
 
             //home browser
-            this.homePageBrowser.Navigate("http://www.google.com");
+            this.homePageBrowser.Navigate("http://www.google.com/");
         }
 
         #region action for extend MainWindow (title bar, border, ...)
@@ -225,6 +225,7 @@ namespace AoeNetwork
         public void LoadRoomInChannel(Channel channel)
         {
             roomController.LoadChannel(channel.id.ToString());
+            this.tabGame_Click(null, null);
         }
 
         public void SetRoomOfChannel(DataTable dataTable)
@@ -506,6 +507,13 @@ namespace AoeNetwork
             chatView.Coin_Menu_Click(sender, e);
         }
 
+        private void State_Menu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu cm = this.FindResource("cmStateChanging") as ContextMenu;
+            cm.PlacementTarget = sender as WrapPanel;
+            cm.IsOpen = true;
+        }
+
         private void State_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             chatView.State_MenuItem_Click(sender, e);
@@ -523,22 +531,24 @@ namespace AoeNetwork
 
         public void SetUserInfo(string username, string status, string avatar, string level, string diamond, int state)
         {
-            this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
-            this.userLevel.Content = "Level " + level;
-            this.userDiamond.Content = "" + diamond;            
-            this.userName.Content = username;
-            if (state == 2)
-            {
-                userState.Source = SystemUtils.getResource("login_busy");
-            }
-            else if (state == 1)
-            {
-                userState.Source = SystemUtils.getResource("login_offline");
-            }
-            else
-            {
-                userState.Source = SystemUtils.getResource("login_avail");
-            }
+            Dispatcher.Invoke(new Action(() => {
+                this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
+                this.userLevel.Content = "Level " + level;
+                this.userDiamond.Content = "" + diamond;
+                this.userName.Content = username;
+                if (state == 2)
+                {
+                    userState.Source = SystemUtils.getResource("login_busy");
+                }
+                else if (state == 0)
+                {
+                    userState.Source = SystemUtils.getResource("login_offline");
+                }
+                else
+                {
+                    userState.Source = SystemUtils.getResource("login_avail");
+                }
+            }));
         }
     }
 }

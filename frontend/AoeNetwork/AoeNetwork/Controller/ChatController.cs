@@ -61,6 +61,8 @@ namespace AoeNetwork
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             LoadFriends();
+            _view.SetUserInfo(StaticValue.username, StaticValue.status, StaticValue.avatar,
+                StaticValue.level, StaticValue.diamond, StaticValue.state);
         }
 
         public void LoadFriends()
@@ -171,7 +173,7 @@ namespace AoeNetwork
         public void UpdateStatus(int state, string status)
         {
             if (StaticValue.user_id == 0 || StaticValue.username == "") return;
-            if (state == null) state = StaticValue.state;
+            //if (state == null) state = StaticValue.state;
             if (status == null) status = StaticValue.status;
 
             var client = new RestClient(Properties.Resources.API_URL);
@@ -191,7 +193,11 @@ namespace AoeNetwork
                 {
                     if (r.StatusCode == HttpStatusCode.OK)
                     {
+                        StaticValue.state = state;
+                        StaticValue.status = status;
                         // DO NOTHING
+                        _view.SetUserInfo(StaticValue.username, StaticValue.status, StaticValue.avatar,
+                StaticValue.level, StaticValue.diamond, StaticValue.state);
                     }
                 }
                 else
