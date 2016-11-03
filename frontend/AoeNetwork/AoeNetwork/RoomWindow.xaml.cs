@@ -359,8 +359,8 @@ namespace AoeNetwork
 
         private void tabHome_Click(object sender, RoutedEventArgs e)
         {
-            this.tabRoom.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
-            this.tabGame.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabRoom.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#535859"));
+            this.tabGame.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#535859"));
             this.tabHome.Foreground = Brushes.White;
 
             this.tabHomeContent.Visibility = Visibility.Visible;
@@ -380,8 +380,8 @@ namespace AoeNetwork
 
         private void tabGame_Click(object sender, RoutedEventArgs e)
         {
-            this.tabRoom.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
-            this.tabHome.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabRoom.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#535859"));
+            this.tabHome.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#535859"));
             this.tabGame.Foreground = Brushes.White;
 
             this.tabGameContent.Visibility = Visibility.Visible;
@@ -407,8 +407,8 @@ namespace AoeNetwork
                 return;
             }
 
-            this.tabHome.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
-            this.tabGame.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+            this.tabHome.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#535859"));
+            this.tabGame.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#535859"));
             this.tabRoom.Foreground = Brushes.White;
 
             this.channelListContainer.Visibility = Visibility.Visible;

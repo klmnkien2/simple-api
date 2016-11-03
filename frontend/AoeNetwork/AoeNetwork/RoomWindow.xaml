@@ -57,13 +57,13 @@
                     </Grid.RowDefinitions>
                     <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="1">
                         <DockPanel LastChildFill="False">
-                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabHome" Foreground="#FFDDDDDD" Content="TRANG CHỦ" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabHome_Click" FontFamily="Verdana" Cursor="Hand">
+                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabHome" Foreground="#535859" Content="TRANG CHỦ" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabHome_Click" FontFamily="Verdana" Cursor="Hand">
 
                             </Button>
-                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabGame" Grid.Column="1" Foreground="#FFDDDDDD" Content="KÊNH" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabGame_Click" FontFamily="Verdana" Cursor="Hand">
+                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabGame" Grid.Column="1" Foreground="#535859" Content="KÊNH" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabGame_Click" FontFamily="Verdana" Cursor="Hand">
 
                             </Button>
-                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabRoom" Grid.Column="2" Foreground="#FFDDDDDD" Content="PHÒNG TÁN GẪU" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" FontFamily="Verdana" Click="tabRoom_Click" Cursor="Hand" >
+                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabRoom" Grid.Column="2" Foreground="#535859" Content="PHÒNG TÁN GẪU" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" FontFamily="Verdana" Click="tabRoom_Click" Cursor="Hand" >
 
                             </Button>
                         </DockPanel>
@@ -130,15 +130,15 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45"/>
                                 <RowDefinition Height="100*"/>
-                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="100"/>
                             </Grid.RowDefinitions>
-                            <Label x:Name="roomNameLbl" Grid.ColumnSpan="2" Content="ROOM CHAT: " FontSize="16" BorderBrush="#FF3c444a" Foreground="#FFFFFFFF" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" Margin="15,0,0,0" />
+                            <Label x:Name="roomNameLbl" Grid.ColumnSpan="2" Content="ROOM CHAT: " FontSize="16" BorderBrush="#FF3c444a" Foreground="#FFFFFFFF" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" Padding="15,0,0,0" />
                             
                             <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                                <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent"/>
+                                <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent" Margin="16,0,0,0"/>
                             </Border>
 
-                            <Border BorderThickness="1,1,1,1" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="5,0,10,5" Padding="5">
+                            <Border BorderThickness="1,1,1,1" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="15,0,10,10" Padding="5">
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0" Width="20" Height="15" VerticalAlignment="Bottom" Click="buttonEnter_Click"  >
                                         <Button.Background>
@@ -149,7 +149,7 @@
                                 </DockPanel>
                             </Border>
 
-                            <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True" Margin="0,5,5,5">
+                            <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True" Margin="0,5,5,10">
                                 <DockPanel LastChildFill="True" DockPanel.Dock="Top">
                                     <Button DockPanel.Dock="Right" Width="16" Height="16" Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
                                         <Button.Background>
@@ -219,9 +219,9 @@
                         </Grid>
                     </Grid>
 
-                    <Grid x:Name="tabGameContent_extend" Grid.Column="2" Margin="0">
-                        <WebBrowser x:Name="channelTabBrowserTop" Source="http://gametv.vn/landing/banner_top.html" Height="200" VerticalAlignment="Top"/>
-                        <WebBrowser x:Name="channelTabBrowserBottom" Source="http://gametv.vn/landing/banner_bottom.html" Height="200" VerticalAlignment="Bottom"/>
+                    <Grid x:Name="tabGameContent_extend" Grid.Column="2" Margin="0,10,10,10">
+                        <WebBrowser x:Name="channelTabBrowserTop" Source="http://gametv.vn/landing/banner_top.html" Height="200" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                        <WebBrowser x:Name="channelTabBrowserBottom" Source="http://gametv.vn/landing/banner_bottom.html" Height="200" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
                     </Grid>
 
                     <Border x:Name="channelListContainer" BorderThickness="0,0,1,0" BorderBrush="#FF3c444a" Grid.Column="0" Grid.Row="1" Margin="0" >

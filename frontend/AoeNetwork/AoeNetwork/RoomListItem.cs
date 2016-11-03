@@ -22,7 +22,7 @@ namespace AoeNetwork
             addHeader();
         }
 
-        SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#3c444a"));
+        SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0c1b27"));
 
         private ContextMenu contextMenu;
         MenuItem showUsername;

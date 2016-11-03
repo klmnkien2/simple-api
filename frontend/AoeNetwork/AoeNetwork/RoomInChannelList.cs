@@ -24,14 +24,15 @@ namespace AoeNetwork
         class DataItem
         {
             public Label name;
-            public Label level;
+            public Label minLevel;
             public Label member;
             public Border container;
             public Room room;
         }
 
         SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#3c444a"));
-        SolidColorBrush textColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#dddddd"));
+        SolidColorBrush textColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#828282"));
+        SolidColorBrush bgColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#031012"));
 
         Dictionary<int, DataItem> dataItems = new Dictionary<int, DataItem>();
         RoomWindow parentWindow;
@@ -79,7 +80,7 @@ namespace AoeNetwork
 
             // Adding Rows and Colums to Grid.
             RowDefinition[] rows = new RowDefinition[1];
-            ColumnDefinition[] columns = new ColumnDefinition[2];
+            ColumnDefinition[] columns = new ColumnDefinition[3];
             // Draw Rows.
 
             rows[0] = new RowDefinition();
@@ -88,12 +89,16 @@ namespace AoeNetwork
 
             // Draw Columns.
             columns[0] = new ColumnDefinition();
-            columns[0].Width = new GridLength(60, GridUnitType.Star);
+            columns[0].Width = new GridLength(40, GridUnitType.Star);
             itemPanel.ColumnDefinitions.Add(columns[0]);
 
             columns[1] = new ColumnDefinition();
-            columns[1].Width = new GridLength(40, GridUnitType.Star);
+            columns[1].Width = new GridLength(30, GridUnitType.Star);
             itemPanel.ColumnDefinitions.Add(columns[1]);
+
+            columns[2] = new ColumnDefinition();
+            columns[2].Width = new GridLength(30, GridUnitType.Star);
+            itemPanel.ColumnDefinitions.Add(columns[2]);   
 
 
             Label name = new Label();
@@ -107,15 +112,27 @@ namespace AoeNetwork
             Label member = new Label();
             member.Foreground = Brushes.White;
             member.VerticalContentAlignment = VerticalAlignment.Bottom;
+            member.HorizontalContentAlignment = HorizontalAlignment.Center;
             member.FontWeight = FontWeights.Bold;
             member.Content = "Số lượng";
             itemPanel.Children.Add(member);
             dataItem.member = member;
-            Grid.SetColumn(member, 1);
+            Grid.SetColumn(member, 2);
+
+            Label minLevel = new Label();
+            minLevel.Foreground = Brushes.White;
+            minLevel.VerticalContentAlignment = VerticalAlignment.Bottom;
+            minLevel.HorizontalContentAlignment = HorizontalAlignment.Center;
+            name.FontWeight = FontWeights.Bold;
+            minLevel.Content = "Cấp độ đầu vào";
+            itemPanel.Children.Add(minLevel);
+            dataItem.minLevel = minLevel;
+            Grid.SetColumn(minLevel, 1);
 
             Border itemBorder = new Border();
             itemBorder.BorderThickness = new Thickness(1, 1, 1, 1);
             itemBorder.BorderBrush = borderColor;
+            itemBorder.Background = bgColor;
             itemBorder.Child = itemPanel;
             dataItem.container = itemBorder;
 
@@ -160,7 +177,7 @@ namespace AoeNetwork
 
             // Adding Rows and Colums to Grid.
             RowDefinition[] rows = new RowDefinition[1];
-            ColumnDefinition[] columns = new ColumnDefinition[2];
+            ColumnDefinition[] columns = new ColumnDefinition[3];
             // Draw Rows.
 
             rows[0] = new RowDefinition();
@@ -169,13 +186,16 @@ namespace AoeNetwork
 
             // Draw Columns.
             columns[0] = new ColumnDefinition();
-            columns[0].Width = new GridLength(60, GridUnitType.Star);
+            columns[0].Width = new GridLength(40, GridUnitType.Star);
             itemPanel.ColumnDefinitions.Add(columns[0]);
 
             columns[1] = new ColumnDefinition();
-            columns[1].Width = new GridLength(40, GridUnitType.Star);
+            columns[1].Width = new GridLength(30, GridUnitType.Star);
             itemPanel.ColumnDefinitions.Add(columns[1]);
-            
+
+            columns[2] = new ColumnDefinition();
+            columns[2].Width = new GridLength(30, GridUnitType.Star);
+            itemPanel.ColumnDefinitions.Add(columns[2]);            
             
             Label name = new Label();
             name.Foreground = textColor;
@@ -187,16 +207,28 @@ namespace AoeNetwork
             Label member = new Label();
             member.Foreground = textColor;
             member.VerticalContentAlignment = VerticalAlignment.Bottom;
+            member.HorizontalContentAlignment = HorizontalAlignment.Center;
             member.Content = itemObj.members + "/" + itemObj.maximum;
             itemPanel.Children.Add(member);
             dataItem.member = member;
-            Grid.SetColumn(member, 1);
+            Grid.SetColumn(member, 2);
+
+            Label minLevel = new Label();
+            minLevel.Foreground = textColor;
+            minLevel.VerticalContentAlignment = VerticalAlignment.Bottom;
+            minLevel.HorizontalContentAlignment = HorizontalAlignment.Center;
+            minLevel.Content = "N/A";
+            itemPanel.Children.Add(minLevel);
+            dataItem.minLevel = minLevel;
+            Grid.SetColumn(minLevel, 1);
 
             Border itemBorder = new Border();
             itemBorder.BorderThickness = new Thickness(1,0,1,1);
             itemBorder.BorderBrush = borderColor;
+            itemBorder.Background = bgColor;
             itemBorder.Child = itemPanel;
             itemBorder.Tag = itemObj;
+            itemBorder.Cursor = Cursors.Hand;
             itemBorder.ToolTip = "Double Click để chọn phòng này";
             itemBorder.MouseLeftButtonDown += itemPanel_MouseLeftButtonDown;
             itemBorder.MouseRightButtonDown += itemPanel_MouseLeftButtonDown;
