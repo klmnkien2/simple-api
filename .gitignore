@@ -5,3 +5,4 @@ frontend/AoeNetwork/AoeNetwork/obj/*
 /.settings/*
 /.buildpath
 /.project
+/project.info

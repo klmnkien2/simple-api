@@ -32,8 +32,8 @@
                 </Grid.RowDefinitions>
                 <Image Grid.Column="0" Grid.RowSpan="1" Source="pack://application:,,,/Images/logo.png" Stretch="Fill" VerticalAlignment="Top" Height="21" Margin="0,10,0,-9"/>
                 <Label x:Name="coolform_titletext" Content="" Grid.Column="1" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="40" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-                <Image x:Name="coolform_mini_btn" Grid.Column="2" RenderTransformOrigin="0.533,1.674" Source="Images/btn_minimum.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_mini_btn_MouseDown"/>
-                <Image x:Name="coolform_close_btn" Grid.Column="3" RenderTransformOrigin="0.533,1.674" Source="pack://application:,,,/Images/btn_close.png" Stretch="Fill" Margin="0" Height="20" Width="20" MouseDown="coolform_close_btn_MouseDown"/>
+                <Label x:Name="coolform_mini_btn" Grid.Column="2"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                <Label x:Name="coolform_close_btn" Grid.Column="3" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
             </Grid>
         </Border>
 
@@ -58,7 +58,8 @@
                                 <RowDefinition Height="100*"/>
                             </Grid.RowDefinitions>
                             <Image Source="Images/username.png" Stretch="None" />
-                            <TextBox x:Name="usernameTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" VerticalContentAlignment="Center" CaretBrush="White" KeyDown="usernameTextbox_KeyDown" />
+                            <TextBox x:Name="usernameTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" Grid.Column="1" Foreground="White" VerticalContentAlignment="Center" CaretBrush="White" KeyDown="usernameTextbox_KeyDown" GotFocus="usernameTextbox_GotFocus" LostFocus="usernameTextbox_LostFocus" />
+                            <Label x:Name="usernamePlaceHolder" IsHitTestVisible="False" Content="Tên đăng nhập" Foreground="#FF7D7D7D" VerticalContentAlignment="Center" BorderThickness="0" Background="Transparent" Grid.Column="1" />
                         </Grid>
                     </Border>
                     <Border Height="44" Canvas.Left="75" Canvas.Top="265" Width="301" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">
@@ -71,7 +72,8 @@
                                 <RowDefinition Height="100*"/>
                             </Grid.RowDefinitions>
                             <Image Source="Images/password.png" Stretch="None" />
-                            <PasswordBox  x:Name="passwordTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" Grid.Row="2" VerticalContentAlignment="Center" PasswordChar="*" CaretBrush="White" KeyDown="passwordTextbox_KeyDown" />
+                            <PasswordBox  x:Name="passwordTextbox" BorderBrush="{x:Null}" BorderThickness="0" Background="Transparent" AllowDrop="False" Grid.Column="1" Foreground="White" Grid.Row="2" VerticalContentAlignment="Center" PasswordChar="*" CaretBrush="White" KeyDown="passwordTextbox_KeyDown" LostFocus="passwordTextbox_LostFocus" GotFocus="passwordTextbox_GotFocus" />
+                            <Label x:Name="passworldPlaceHolder" IsHitTestVisible="False" Content="Mật khẩu" Foreground="#FF7D7D7D" VerticalContentAlignment="Center" BorderThickness="0" Background="Transparent" Grid.Column="1" />
                         </Grid>
                     </Border>
                     <Border Height="22" Canvas.Left="354" Canvas.Top="321" Width="22" Background="#FF030808" AllowDrop="True" BorderBrush="#FF0E232C" BorderThickness="1">

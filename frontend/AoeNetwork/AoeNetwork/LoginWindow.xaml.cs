@@ -163,7 +163,13 @@ namespace AoeNetwork
             if (savePwd == "1")
             {
                 this.usernameTextbox.Text = Properties.Settings.Default["USERNAME"].ToString();
+                this.usernameTextbox_GotFocus(null, null);
+                this.usernameTextbox_LostFocus(null, null);
+
                 this.passwordTextbox.Password = Properties.Settings.Default["PASSWORD"].ToString();
+                this.passwordTextbox_GotFocus(null, null);
+                this.passwordTextbox_LostFocus(null, null);
+
                 this.rememberPassChk.IsChecked = true;
             }
             else
@@ -213,6 +219,28 @@ namespace AoeNetwork
             WebWindow browser = new WebWindow();
             browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
             browser.ShowDialog();
+        }
+
+        private void usernameTextbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            this.usernamePlaceHolder.Visibility = Visibility.Hidden;
+        }
+
+        private void usernameTextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(String.IsNullOrWhiteSpace(this.usernameTextbox.Text))
+                this.usernamePlaceHolder.Visibility = Visibility.Visible;
+        }
+
+        private void passwordTextbox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(this.passwordTextbox.Password))
+                this.passworldPlaceHolder.Visibility = Visibility.Visible;
+        }
+
+        private void passwordTextbox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            this.passworldPlaceHolder.Visibility = Visibility.Hidden;
         }
 
     }

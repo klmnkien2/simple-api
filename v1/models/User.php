@@ -22,7 +22,7 @@ class User {
     public function getUserById($user_id) {
         $r = null;
 
-        $sql = "SELECT * FROM user_caches WHERE user_id=:user_id";
+        $sql = "SELECT user_id, level, level_hours, UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(last_active) AS taken_hours FROM user_caches WHERE user_id=:user_id";
         $stmt = $this->core->dbh->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 
@@ -114,13 +114,13 @@ class User {
             $stmt->execute();
         }
     }
-    
+
     public function updateUserInfo($user_id, $state, $status) {
     
         $condition = "";
         $param = array();
         $param[':user_id'] = $user_id;
-        
+    
         if ($status!==null) {
             $condition .= " ,status=:status ";
             $param[':status'] = $status;
@@ -129,11 +129,24 @@ class User {
             $condition .= " ,state=:state ";
             $param[':state'] = $state;
         }
-        
+    
         //UPDATE
         $stmt = $this->core->dbh->prepare("UPDATE user_caches SET " .
             "last_active = now() " .
             $condition .
+            "WHERE user_id = :user_id");
+        $stmt->execute($param);
+    }
+
+    public function updateLevel($user_id, $level, $level_hours) {
+        $param = array();
+        $param[':user_id'] = $user_id;
+        $param[':level'] = $level;
+        $param[':level_hours'] = $level_hours;
+
+        //UPDATE
+        $stmt = $this->core->dbh->prepare("UPDATE user_caches SET " .
+            "last_active = now(), level = :level, level_hours = :level_hours " .
             "WHERE user_id = :user_id");
         $stmt->execute($param);
     }
