@@ -31,8 +31,6 @@ namespace AoeNetwork
             InitUserList();
             DisplayLoadingGame(false);
 
-            //home browser
-            this.homePageBrowser.Navigate("http://www.google.com/");
         }
 
         #region action for extend MainWindow (title bar, border, ...)

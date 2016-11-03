@@ -210,14 +210,14 @@ namespace AoeNetwork
         private void registerButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WebWindow browser = new WebWindow();
-            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+            browser.OpenLink("http://trading.gametv.vn/api_platform/app_register");
             browser.ShowDialog();
         }
 
         private void forgotPassLink_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WebWindow browser = new WebWindow();
-            browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+            browser.OpenLink("http://trading.gametv.vn/api_platform/app_forgot");
             browser.ShowDialog();
         }
 

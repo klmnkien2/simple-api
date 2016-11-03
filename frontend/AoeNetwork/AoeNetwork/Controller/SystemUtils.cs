@@ -205,6 +205,7 @@ namespace AoeNetwork
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
             bitmap.UriSource = new Uri(url, UriKind.RelativeOrAbsolute);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
 
             return bitmap;

@@ -126,7 +126,10 @@ namespace AoeNetwork
         public void SetUserInfo(string username, string status, string avatar, string level, string diamond, int state)
         {
             Dispatcher.Invoke(new Action(() => {
-                this.userStatus.Text = (status == null || status.Trim() == "") ? "status..." : status;
+                this.userStatus.Text = (status == null || status.Trim() == "") ? "" : status;
+                this.userStatus_GotFocus(null, null);
+                this.userStatus_LostFocus(null, null);
+
                 this.userLevel.Content = "Level " + level;
                 this.userDiamond.Content = "" + diamond;
                 if (avatar != "")
@@ -451,14 +454,14 @@ namespace AoeNetwork
             {
                 //Link web trang danh sach cua hang
                 WebWindow browser = new WebWindow();
-                browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+                browser.OpenLink("http://gametv.vn/landing/list.html");
                 browser.ShowDialog();
             }
             else if (menu.Uid == "3")
             {
                 //Link web trang cham soc khach hang
                 WebWindow browser = new WebWindow();
-                browser.OpenLink("http://trading.gametv.vn/api_app/app_register");
+                browser.OpenLink("http://gametv.vn/landing/support.html");
                 browser.ShowDialog();
             }
         }
@@ -511,6 +514,35 @@ namespace AoeNetwork
 
                 this.WindowState = System.Windows.WindowState.Minimized;
             }));
+        }
+
+        private void userSearchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+           this.userSearchPlaceHolder.Visibility = Visibility.Hidden;
+        }
+
+        private void userSearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(this.userSearchBox.Text))
+                this.userSearchPlaceHolder.Visibility = Visibility.Visible;
+        }
+
+        private void userStatus_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (StaticValue.status == null || StaticValue.status.Trim() == "")
+            {
+                if (String.IsNullOrWhiteSpace(this.userStatus.Text))
+                    this.userStatusPlaceHolder.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.userStatus.Text = StaticValue.status;
+            }
+        }
+
+        private void userStatus_GotFocus(object sender, RoutedEventArgs e)
+        {
+            this.userStatusPlaceHolder.Visibility = Visibility.Hidden;
         }
 
     }

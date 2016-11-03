@@ -123,22 +123,6 @@ namespace AoeNetwork
                     Friend existedUser = existedItem.user;
 
                     //Update GUI
-                    if (user.state != existedUser.state)
-                    {
-                        existedUser.state = user.state;
-                        if (user.state == 1)
-                        {
-                            existedItem.state.Source = SystemUtils.getResource("login_avail"); ;
-                        }
-                        if (user.state == 2)
-                        {
-                            existedItem.state.Source = SystemUtils.getResource("login_busy"); ;
-                        }
-                        else
-                        {
-                            existedItem.state.Source = SystemUtils.getResource("login_offline");
-                        }
-                    }
 
                     if (user.status != existedUser.status)
                     {
@@ -149,13 +133,27 @@ namespace AoeNetwork
                     if (user.avatar != existedUser.avatar)
                     {
                         existedUser.avatar = user.avatar;
+                        existedItem.avatar.Source = SystemUtils.getImageUrl(user.avatar);
+                    }
 
-                        BitmapImage bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(user.avatar, UriKind.RelativeOrAbsolute);
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-                        existedItem.avatar.Source = bitmap;
+                    if (user.state != existedUser.state)
+                    {
+                        existedUser.state = user.state;
+                        if (user.state == 1)
+                        {
+                            existedItem.state.Source = SystemUtils.getResource("login_avail");
+                            existedItem.status.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#79942c"));
+                        }
+                        else if (user.state == 2)
+                        {
+                            existedItem.state.Source = SystemUtils.getResource("login_busy");
+                            existedItem.status.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#858889"));
+                        }
+                        else
+                        {
+                            existedItem.state.Source = SystemUtils.getResource("login_offline");
+                            existedItem.status.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#858889"));
+                        }
                     }
                 }
 
@@ -181,7 +179,7 @@ namespace AoeNetwork
             Label status = new Label();
             status.VerticalContentAlignment = VerticalAlignment.Top;
             status.Foreground = Brushes.White;
-            status.FontSize = status.FontSize - 2;
+            status.FontSize = status.FontSize - 1;
             status.Tag = user.user_id;
             status.Content = user.status;
             Grid.SetRow(status, 1);
@@ -197,14 +195,17 @@ namespace AoeNetwork
             if (user.state == 1)
             {
                 state.Source = SystemUtils.getResource("login_avail");
+                status.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#79942c"));
             }
             else if (user.state == 2)
             {
                 state.Source = SystemUtils.getResource("login_busy");
+                status.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#858889"));
             }
             else
             {
                 state.Source = SystemUtils.getResource("login_offline");
+                status.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#858889"));
             }
 
             Image avatar = new Image();
@@ -305,8 +306,11 @@ namespace AoeNetwork
             }
             else if (selectContextItem.type == 0)
             {
-                contextMenu.Items.Add(acceptFriendMenu);
-                contextMenu.Items.Add(denyFriendMenu);
+                if (selectContextItem.from != selectContextItem.user_id)
+                {
+                    contextMenu.Items.Add(acceptFriendMenu);
+                    contextMenu.Items.Add(denyFriendMenu);
+                }
                 contextMenu.Items.Add(ignoreFriendMenu);
             }
             else if (selectContextItem.type == -1)
@@ -335,7 +339,7 @@ namespace AoeNetwork
             foreach (KeyValuePair<int, DataItem> entry in dataItems)
             {
                 DataItem item = entry.Value;
-                item.container.Height = 50;
+                item.container.Height = 62;
             }
         }
 
