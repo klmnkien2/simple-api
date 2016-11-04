@@ -74,6 +74,8 @@ namespace AoeNetwork
                             amessage.receive_name = friend.user_name;
                             amessage.user_id = StaticValue.user_id;
                             amessage.user_name = StaticValue.username;
+                            amessage.create_time = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
                             amessage.message = message;
                             parentView.AddPrivateMessage(amessage);
 

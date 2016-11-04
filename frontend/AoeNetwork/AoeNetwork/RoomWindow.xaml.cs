@@ -56,6 +56,8 @@ namespace AoeNetwork
         private RoomListItem userList;
         private ChannelListItem channelList;
         private RoomInChannelList roomInChannelList;
+        private string htmlChatBody = ""; // hold all in <body> tag of html chat
+
         public void SetRoomController(RoomController roomController)
         {
             this.roomController = roomController;
@@ -65,13 +67,8 @@ namespace AoeNetwork
             this.chatView = chatView;
         }
 
-        int last_view_id = 0;
-        public int LastViewId
-        {
-            get { return this.last_view_id; }
-            set { this.last_view_id = value; }
-        }
-
+        int min_view_id = 0;
+        int max_view_id = 0;
 
         #region private function, init function...
 
@@ -106,12 +103,17 @@ namespace AoeNetwork
         public void AddPrivateMessage(APIMessage message)
         {
             Dispatcher.Invoke(new Action(() => {
-                string extend = "";
-                //DateTime mesDate = new DateTime();
-                //extend += mesDate.ToString("[H:mm:ss]");
-                extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
-                htmlChatContent.Text += YahooIcon.translateText("<div>" + extend + "</div>");
-
+                
+                if (max_view_id == 0 || max_view_id < message.message_id)
+                {
+                    string times = DateTime.Now.ToString("HH:mm:ss");
+                    string extend = "";
+                    extend += ("<span style='color:green'>[" +times+"][" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
+                    htmlChatBody += YahooIcon.translateText("<div>" + extend + "</div>");
+                    this.reGenerateHtml();
+                
+                    max_view_id = message.message_id;
+                }
             }));
         }
 
@@ -121,32 +123,33 @@ namespace AoeNetwork
                 for (int i = messages.Count - 1; i >= 0; i--)
                 {
                     APIMessage message = (APIMessage)messages[i];
-                    string extend = "";
-                    //DateTime mesDate = new DateTime();
-                    //extend += mesDate.ToString("[H:mm:ss]");
-                    if (message.notify == 0)
+                    if ((max_view_id == 0 || max_view_id < message.message_id))
                     {
-                        if (message.user_id == StaticValue.user_id)
+                        string extend = "";
+                        string times = SystemUtils.UnixTimeStampToDateTime(message.create_time);
+                        if (message.notify == 0)
                         {
-                            extend = ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
-                        }
-                        else
-                        {
-                            extend = ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
-                        }
+                            if (message.user_id == StaticValue.user_id)
+                            {
+                                extend = ("<span style='color:green'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
+                            }
+                            else
+                            {
+                                extend = ("<span style='color:blue'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
+                            }
 
-                    }
-                    else if (message.notify == 1)
-                    {
-                        extend = ("<span style='color:red'>[Thông báo]:</span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
-                    }
-                    if (extend != "")
-                    {
-                        htmlChatContent.Text += YahooIcon.translateText("<div>" + extend + "</div>");
-                    }
-                    if (last_view_id == 0 || last_view_id > message.message_id)
-                    {
-                        last_view_id = message.message_id;
+                        }
+                        else if (message.notify == 2)
+                        {
+                            extend += ("<span style='color:red'>[" + times + "][Tin nhắn từ hệ thống]:</span>" + "<span style='color:white'>Chào mừng đến với " + message.message + "</span>");
+                        }
+                        if (extend != "")
+                        {
+                            htmlChatBody += YahooIcon.translateText("<div>" + extend + "</div>");
+                            this.reGenerateHtml();
+                        }
+                    
+                        max_view_id = message.message_id;
                     }
                 }
             }));
@@ -157,32 +160,58 @@ namespace AoeNetwork
             Dispatcher.Invoke(new Action(() => {
                 for (int i = messages.Count - 1; i >= 0; i--)
                 {
+                    
                     APIMessage message = (APIMessage)messages[i];
-                    string extend = "";
-                    //DateTime mesDate = new DateTime();
-                    //extend += mesDate.ToString("[H:mm:ss]");
-                    if (message.notify == 0)
+                    if ((min_view_id == 0 || min_view_id > message.message_id))
                     {
-                        if (message.user_id == StaticValue.user_id)
+                        string extend = "";
+                        string times = SystemUtils.UnixTimeStampToDateTime(message.create_time);
+                        if (message.notify == 0)
                         {
-                            extend = ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
-                        }
-                        else
-                        {
-                            extend = ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
-                        }
+                            if (message.user_id == StaticValue.user_id)
+                            {
+                                extend = ("<span style='color:green'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
+                            }
+                            else
+                            {
+                                extend = ("<span style='color:blue'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + HttpUtility.HtmlEncode(message.message) + "</span>");
+                            }
 
-                    }
-                    if (extend != "")
-                    {
-                        htmlChatContent.Text = YahooIcon.translateText("<div>" + extend + "</div>") + htmlChatContent.Text;
-                    }
-                    if (last_view_id == 0 || last_view_id > message.message_id)
-                    {
-                        last_view_id = message.message_id;
+                        }
+                        else if (message.notify == 2)
+                        {
+                            extend += ("<span style='color:red'>[" + times + "][Tin nhắn từ hệ thống]:</span>" + "<span style='color:white'>Chào mừng đến với " + message.message + "</span>");
+                        }
+                        if (extend != "")
+                        {
+                            htmlChatBody = YahooIcon.translateText("<div>" + extend + "</div>") + htmlChatBody;
+                            this.reGenerateHtml();
+                        }
+                    
+                        min_view_id = message.message_id;
                     }
                 }
             }));
+        }
+
+        private void reGenerateHtml()
+        {
+            this.htmlChatContent.Text = "<html>"
++ "<head>"
++ "<meta charset=\"utf-8\">"
++ "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
++ "<style>"
++ "body {"
+    + "font-family: Helvetica, Arial, Meiryo, sans-serif;"
+    + "font-size: 13px;"
+    + "line-height: 1.5;"
++ "}"
++ "</style>"
++ "</head>" 
++ "<body>"
++ this.htmlChatBody
++ "</body>"
++ "</html>";
         }
 
         public void SetAdsInfo(string url, string image, int type)
@@ -302,10 +331,16 @@ namespace AoeNetwork
             Dispatcher.Invoke(new Action(() => {
                 isRoomSet = true;
                 roomNameLbl.Content = room.room_name;
+                htmlChatContent.Text = "";
+                htmlChatBody = "";
+                min_view_id = 0;
+                max_view_id = 0;
+
                 tabRoom_Click(null, null);
                 DisplayLoadingGame(false);
 
-                roomController.LoadUsers();
+                roomController.ScheduleWork();
+                roomController.HistoryMessage(0);
             }));
         }
 
@@ -547,6 +582,27 @@ namespace AoeNetwork
                     userState.Source = SystemUtils.getResource("login_avail");
                 }
             }));
+        }
+
+        private void channelTabBrowserTop_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            string script = "document.body.style.overflow ='hidden'";
+            WebBrowser wb = (WebBrowser)sender;
+            wb.InvokeScript("execScript", new Object[] { script, "JavaScript" });
+        }
+
+        private void channelTabBrowserBottom_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            string script = "document.body.style.overflow ='hidden'";
+            WebBrowser wb = (WebBrowser)sender;
+            wb.InvokeScript("execScript", new Object[] { script, "JavaScript" });
+        }
+
+        private void homePageBrowser_LoadCompleted(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            string script = "document.body.style.overflow ='hidden'";
+            WebBrowser wb = (WebBrowser)sender;
+            wb.InvokeScript("execScript", new Object[] { script, "JavaScript" });
         }
     }
 }

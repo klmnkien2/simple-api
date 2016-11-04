@@ -22,7 +22,8 @@ namespace AoeNetwork
             addHeader();
         }
 
-        SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0c1b27"));
+        SolidColorBrush borderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#3c444a"));//0c1b27
+        SolidColorBrush bgColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#000000"));
 
         private ContextMenu contextMenu;
         MenuItem showUsername;
@@ -165,6 +166,8 @@ namespace AoeNetwork
             Border itemBorder = new Border();
             itemBorder.BorderThickness = new Thickness(1, 1, 1, 1);
             itemBorder.BorderBrush = borderColor;
+            bgColor.Opacity = 0.1;
+            itemBorder.Background = bgColor;
             itemBorder.Child = itemPanel;
 
             this.parentList.Children.Add(itemBorder);
@@ -287,6 +290,7 @@ namespace AoeNetwork
             Border itemBorder = new Border();
             itemBorder.BorderThickness = new Thickness(1, 0, 1, 1);
             itemBorder.BorderBrush = borderColor;
+            itemBorder.Background = bgColor;
             itemBorder.Child = itemPanel;
             itemBorder.Tag = itemObj;
             itemBorder.ToolTip = "Chuột phải để chọn copy IP";

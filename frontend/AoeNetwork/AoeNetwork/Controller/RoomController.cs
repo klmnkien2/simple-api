@@ -38,6 +38,14 @@ namespace AoeNetwork
             }
         }
 
+        public Room CurrentRoom
+        {
+            get
+            {
+                return this._room;
+            }
+        }
+
         public void LoadView()
         {
             //LoadAds();
@@ -47,7 +55,7 @@ namespace AoeNetwork
                 StaticValue.level, StaticValue.diamond, StaticValue.state);
         }
 
-        private void ScheduleWork()
+        public void ScheduleWork()
         {
             OnTimedEvent(null, null);
 
@@ -265,6 +273,7 @@ namespace AoeNetwork
             request.AddParameter("user_id", StaticValue.user_id);
             request.AddParameter("user_name", StaticValue.username);
             request.AddParameter("room_id", room.room_id);
+            request.AddParameter("room_name", room.room_name);
 
             // easily add HTTP Headers
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -277,8 +286,11 @@ namespace AoeNetwork
                     if (r.StatusCode == HttpStatusCode.OK)
                     {
                         _room = room;
-                        this.ScheduleWork();
+                        _users = new ArrayList();
+                        _messages = new ArrayList();
+                        read_ids = "0";
                         _view.SuccessJoinRoom(room);
+                        
                     }
                     else
                     {

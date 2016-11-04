@@ -229,7 +229,7 @@ class User extends \SlimController\SlimController
             // NOTIFY MESSAGE
             $messageArr = array(
                 'room_id' => 0,
-                'notify' => 0,
+                'notify' => 1,
                 'user_id' => $user_id,
                 'user_name' => $user_name,
                 'receive_id' => $friend_id,
@@ -307,10 +307,11 @@ class User extends \SlimController\SlimController
     {
         // reads multiple params only if they are POST
         $room_user = $this->params(
-            array('room_id', 'user_id', 'user_name'), 
+            array('room_id', 'user_id', 'user_name', 'room_name'), 
             'post', 
             array(
                 'room_id' => 0,
+                'room_name' => '',
                 'user_id' => 0,
                 'user_name' => ''
             )
@@ -326,6 +327,19 @@ class User extends \SlimController\SlimController
         // create new room
         $test = $this->model->increaseMember($room_user['room_id']);
         if ($test) {
+            // NOTIFY MESSAGE
+            $messageArr = array(
+                'room_id' => $room_user['room_id'],
+                'notify' => 2, // 2= join room 1= add friend
+                'user_id' => 0,
+                'user_name' => '',
+                'receive_id' => 0,
+                'receive_name' => '',
+                'message' => $room_user['room_name']
+            );
+            $this->roomModel->createMessage($messageArr);
+
+            unset($room_user['room_name']); // khi insert ko co
             $result = $this->model->createRoomUser($room_user);
         } else {
             $result = false;

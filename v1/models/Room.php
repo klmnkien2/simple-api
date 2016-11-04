@@ -234,21 +234,20 @@ class Room {
     public function historyMessage($room_id, $last_view_id, $limit) {
         $r = array();
 
-        $condition = "";
+        $condition = "m.room_id = :room_id";
         $param = array();
+        $param[':room_id'] = $room_id;
         if ($last_view_id) {
             $condition .= " AND m.message_id < :last_view_id ";
             $param[':last_view_id'] = $last_view_id;
         }
         
-        $sql = "SELECT message_id, user_id, user_name, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
+        $sql = "SELECT message_id, user_id, user_name, room_id, message, notify, UNIX_TIMESTAMP(create_time) AS create_time
         FROM messages m
-        WHERE m.room_id = :room_id
-            $condition
+        WHERE $condition
         ORDER BY m.create_time DESC
         LIMIT $limit";
-        $param[':room_id'] = $room_id;
-        
+
         $stmt = $this->core->dbh->prepare($sql);
     
         if ($stmt->execute($param)) {

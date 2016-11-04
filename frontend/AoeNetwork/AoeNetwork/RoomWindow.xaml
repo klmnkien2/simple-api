@@ -45,7 +45,7 @@
                 </Grid>
             </Border>
 
-            <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Background="#011013" Grid.Row="1">
+            <Border Background="#011013" Grid.Row="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="125"/>
@@ -135,7 +135,7 @@
                             <Label x:Name="roomNameLbl" Grid.ColumnSpan="2" Content="ROOM CHAT: " FontSize="16" BorderBrush="#FF3c444a" Foreground="#FFFFFFFF" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" Padding="15,0,0,0" />
                             
                             <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                                <wpf:HtmlPanel x:Name="htmlChatContent" Text="" Background="Transparent" Margin="16,0,0,0"/>
+                                <wpf:HtmlPanel x:Name="htmlChatContent"  Text="" Background="Transparent" Margin="16,0,0,0"/>
                             </Border>
 
                             <Border BorderThickness="1,1,1,1" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="15,0,10,10" Padding="5">
@@ -149,15 +149,17 @@
                                 </DockPanel>
                             </Border>
 
-                            <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True" Margin="0,5,5,10">
-                                <DockPanel LastChildFill="True" DockPanel.Dock="Top">
-                                    <Button DockPanel.Dock="Right" Width="16" Height="16" Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
-                                        <Button.Background>
-                                            <ImageBrush ImageSource="Images/room_setting.png"/>
-                                        </Button.Background>
-                                    </Button>
-                                    <Label Content="Đường dẫn Game" Foreground="#FFFFFFFF" />
-                                </DockPanel>
+                            <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True" Margin="0,0,0,10">
+                                <Border DockPanel.Dock="Top" BorderThickness="1,1,1,0" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" >
+                                    <DockPanel LastChildFill="True" >
+                                        <Button DockPanel.Dock="Right" Width="16" Height="16" Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
+                                            <Button.Background>
+                                                <ImageBrush ImageSource="Images/room_setting.png"/>
+                                            </Button.Background>
+                                        </Button>
+                                        <Label Content="Đường dẫn Game" Foreground="#FFFFFFFF" />
+                                    </DockPanel>
+                                </Border>
                                 <Button x:Name="buttonStart" Foreground="White" BorderBrush="#FF704E3C" Content="KHỞI ĐỘNG" BorderThickness="1"  Click="buttonStart_Click" Background="#FF0093d7" FontSize="15" FontWeight="Bold" />
                                 
                             </DockPanel>
@@ -166,7 +168,7 @@
 
                     <Grid x:Name="tabHomeContent" Grid.Column="0" Grid.ColumnSpan="3" Margin="0">
                         <Label x:Name="homePageBrowserLabel" Content="ĐANG TẢI..." VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="15" FontWeight="Bold" />
-                        <WebBrowser Source="http://gametv.vn/landing/index.html" x:Name="homePageBrowser" Visibility="Hidden" Navigated="homePageBrowser_Navigated" />
+                        <WebBrowser Source="http://gametv.vn/landing/index.html" x:Name="homePageBrowser" Visibility="Hidden" Navigated="homePageBrowser_Navigated" LoadCompleted="homePageBrowser_LoadCompleted" />
                     </Grid>
 
                     <Border x:Name="tabGameContent" Grid.Column="1" Margin="10" >
@@ -220,12 +222,12 @@
                     </Grid>
 
                     <Grid x:Name="tabGameContent_extend" Grid.Column="2" Margin="0,10,10,10">
-                        <WebBrowser x:Name="channelTabBrowserTop" Source="http://gametv.vn/landing/banner_top.html" Height="200" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-                        <WebBrowser x:Name="channelTabBrowserBottom" Source="http://gametv.vn/landing/banner_bottom.html" Height="200" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                        <WebBrowser x:Name="channelTabBrowserTop" Source="http://gametv.vn/landing/banner_top.html" Height="240" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" LoadCompleted="channelTabBrowserTop_LoadCompleted"/>
+                        <WebBrowser x:Name="channelTabBrowserBottom" Source="http://gametv.vn/landing/banner_bottom.html" Height="240" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" LoadCompleted="channelTabBrowserBottom_LoadCompleted"/>
                     </Grid>
 
                     <Border x:Name="channelListContainer" BorderThickness="0,0,1,0" BorderBrush="#FF3c444a" Grid.Column="0" Grid.Row="1" Margin="0" >
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,5,0,0" >
                             <StackPanel x:Name="channelListControl"  />
                         </ScrollViewer>
                     </Border>

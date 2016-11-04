@@ -44,7 +44,10 @@ namespace AoeNetwork
         #region IntefaceView implementation
         PrivateController privateController;
         Friend friend;
-        int last_view_id = 0;
+
+        int min_view_id = 0;
+        int max_view_id = 0;
+
         ChatWindow chatView;
 
         public void SetController(PrivateController controller)
@@ -55,6 +58,27 @@ namespace AoeNetwork
         public void SetChatView(ChatWindow chatView)
         {
             this.chatView = chatView;
+        }
+
+        private string htmlChatBody = ""; // hold all in <body> tag of html chat
+        private void reGenerateHtml()
+        {
+            this.htmlChatContent.Text = "<html>"
++ "<head>"
++ "<meta charset=\"utf-8\">"
++ "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
++ "<style>"
++ "body {"
+    + "font-family: Helvetica, Arial, Meiryo, sans-serif;"
+    + "font-size: 13px;"
+    + "line-height: 1.5;"
++ "}"
++ "</style>"
++ "</head>"
++ "<body>"
++ this.htmlChatBody
++ "</body>"
++ "</html>";
         }
 
         public void SetFriendInfo(Friend friend)
@@ -115,65 +139,86 @@ namespace AoeNetwork
             }
         }
 
-        public int GetLastViewId()
+        public void ClientRenderMessage(APIMessage message)
         {
-            return this.last_view_id;
-        }
+            if (max_view_id == 0 || max_view_id < message.message_id)
+            {
+                string extend = "";
+                string times = DateTime.Now.ToString("HH:mm:ss");
+                if (message.notify == 0)
+                {
+                    if (message.user_id == StaticValue.user_id)
+                    {
+                        extend += ("<span style='color:green'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                    }
+                    else
+                    {
+                        extend += ("<span style='color:blue'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                    }
 
-        public void SetLastViewId(int last_view_id)
-        {
-            this.last_view_id = last_view_id;
+                }
+                else if (message.notify == 1)
+                {
+                    extend += ("<span style='color:red'>[" + times + "][Thông báo]:</span>" + "<span style='color:white'>" + message.message + "</span>");
+                }
+                this.htmlChatBody += YahooIcon.translateText("<div>" + extend + "</div>");
+                this.reGenerateHtml();
+
+                max_view_id = message.message_id;
+            }
         }
 
         public void RenderMessage(APIMessage message)
         {
-            string extend = "";
-            //DateTime mesDate = new DateTime();
-            //extend += mesDate.ToString("[H:mm:ss]");
-            if (message.notify == 0)
-            {
-                if (message.user_id == StaticValue.user_id)
+            if (max_view_id == 0 || max_view_id < message.message_id)
                 {
-                    extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
-                }
-                else
+                string extend = "";
+                string times = SystemUtils.UnixTimeStampToDateTime(message.create_time);
+                if (message.notify == 0)
                 {
-                    extend += ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
-                }
+                    if (message.user_id == StaticValue.user_id)
+                    {
+                        extend += ("<span style='color:green'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                    }
+                    else
+                    {
+                        extend += ("<span style='color:blue'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                    }
 
-            }
-            else if (message.notify == 1)
-            {
-                extend += ("<span style='color:red'>[Thông báo]:</span>" + "<span style='color:white'>" + message.message + "</span>");
-            }
-            htmlChatContent.Text += YahooIcon.translateText("<div>" + extend + "</div>");
-            if (last_view_id == 0 || last_view_id > message.message_id)
-            {
-                last_view_id = message.message_id;
+                }
+                else if (message.notify == 1)
+                {
+                    extend += ("<span style='color:red'>[" + times + "][Thông báo]:</span>" + "<span style='color:white'>" + message.message + "</span>");
+                }
+                this.htmlChatBody += YahooIcon.translateText("<div>" + extend + "</div>");
+                this.reGenerateHtml();
+
+                max_view_id = message.message_id;
             }
         }
 
         public void RenderOldMessage(APIMessage message)
         {
-            string extend = "";
-            //DateTime mesDate = new DateTime();
-            //extend += mesDate.ToString("[H:mm:ss]");
-            if (message.notify == 0)
+            if ((min_view_id == 0 || min_view_id > message.message_id))
             {
-                if (message.user_id == StaticValue.user_id)
+                string extend = "";
+                string times = SystemUtils.UnixTimeStampToDateTime(message.create_time);
+                if (message.notify == 0)
                 {
-                    extend += ("<span style='color:green'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
-                }
-                else
-                {
-                    extend += ("<span style='color:blue'>[" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
-                }
+                    if (message.user_id == StaticValue.user_id)
+                    {
+                        extend += ("<span style='color:green'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                    }
+                    else
+                    {
+                        extend += ("<span style='color:blue'>[" + times + "][" + message.user_name + "]: </span>" + "<span style='color:white'>" + message.message + "</span>");
+                    }
 
-            }
-            htmlChatContent.Text = YahooIcon.translateText("<div>" + extend + "</div>") + htmlChatContent.Text;
-            if (last_view_id == 0 || last_view_id > message.message_id)
-            {
-                last_view_id = message.message_id;
+                }
+                this.htmlChatBody = YahooIcon.translateText("<div>" + extend + "</div>") + this.htmlChatBody;
+                this.reGenerateHtml();
+            
+                min_view_id = message.message_id;
             }
         }
         #endregion
@@ -199,7 +244,7 @@ namespace AoeNetwork
 
         private void loadMoreLbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            privateController.HistoryMessage(this.friend.user_id, this.last_view_id);
+            privateController.HistoryMessage(this.friend.user_id, this.min_view_id);
         }
 
         private void btnAcceptFriend_Click(object sender, RoutedEventArgs e)
@@ -226,7 +271,7 @@ namespace AoeNetwork
 
         private void loadMoreLbl_Click(object sender, RoutedEventArgs e)
         {
-            privateController.HistoryMessage(this.friend.user_id, this.last_view_id);
+            privateController.HistoryMessage(this.friend.user_id, this.min_view_id);
         }
     }
 }

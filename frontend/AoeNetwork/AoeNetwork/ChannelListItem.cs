@@ -114,7 +114,8 @@ namespace AoeNetwork
 
             TextBlock name = new TextBlock();
             name.Foreground = Brushes.WhiteSmoke;
-            name.HorizontalAlignment = HorizontalAlignment.Stretch;
+            name.HorizontalAlignment = HorizontalAlignment.Center;
+            name.TextAlignment = TextAlignment.Center;
             name.TextWrapping = TextWrapping.WrapWithOverflow;
             name.Text = itemObj.name;
             itemPanel.Children.Add(name);
