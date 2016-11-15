@@ -272,6 +272,7 @@ namespace AoeNetwork
                     room.host = row["host"].ToString();
                     room.port = row["port"].ToString();
                     room.hub = row["hub"].ToString();
+                    room.level = row["level"].ToString();
 
                     this.roomInChannelList.addItem(room);
                 }

@@ -217,7 +217,7 @@ namespace AoeNetwork
             minLevel.Foreground = textColor;
             minLevel.VerticalContentAlignment = VerticalAlignment.Bottom;
             minLevel.HorizontalContentAlignment = HorizontalAlignment.Center;
-            minLevel.Content = "N/A";
+            minLevel.Content = itemObj.level;
             itemPanel.Children.Add(minLevel);
             dataItem.minLevel = minLevel;
             Grid.SetColumn(minLevel, 1);
@@ -245,6 +245,18 @@ namespace AoeNetwork
             if (e.ClickCount == 2)
             {
                 Room room = (sender as Border).Tag as Room;
+                try
+                {
+                    if (int.Parse(StaticValue.level) < int.Parse(room.level))
+                    {
+                        throw new Exception();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Level của bạn chưa đạt yêu cầu của phòng.");
+                    return;
+                }
 
                 if (room != null)
                 {

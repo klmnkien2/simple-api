@@ -107,6 +107,8 @@ namespace AoeNetwork
             if (itemObj.image != null && itemObj.image != "") {
                 Image image = new Image();
                 image.Margin = new Thickness(6, 6, 6, 6);
+                image.Stretch = Stretch.Uniform;
+                image.Width = 50;
                 image.Source = SystemUtils.getImageUrl(itemObj.image);
                 itemPanel.Children.Add(image);
                 dataItem.image = image;

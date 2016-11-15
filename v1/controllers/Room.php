@@ -104,9 +104,11 @@ class Room extends \SlimController\SlimController
                 if (!$channel_id) {
                     $room['parent_id'] = 0;
                     $room['has_child'] = 1;
+                    $room['image'] = !empty($room['link_avatar']) ? $room['link_avatar'] : "";
                 } else {
                     $room['parent_id'] = $channel_id;
                     $room['has_child'] = 0;
+                    $room['level'] = !empty($room['level']) ? $room['level'] : "0";
                 }
                 $this->model->syncRoom($room);
             }

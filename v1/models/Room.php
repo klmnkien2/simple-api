@@ -121,8 +121,8 @@ class Room {
         if (!empty($r)) {
             $r = $r[0];
             $data['room_id'] = $r['room_id'];
-            $data['room_name'] = $r['room_id'];
-            $data['image'] = $r['image'];
+            $data['room_name'] = $data['name']; // room Name nen lay tu api
+            //$data['image'] = $r['image']; Image nen lay tu api
             $data['members'] = $r['members'];
             $data['maximum'] = $r['maximum'];
             $data['server_id'] = $r['server_id'];

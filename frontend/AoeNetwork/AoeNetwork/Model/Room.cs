@@ -16,7 +16,7 @@ namespace AoeNetwork
         public string port { get; set; }
         public string hub { get; set; }
         public int number_connected { get; set; }
-
+        public string level { get; set; }
     } 
 
 }
