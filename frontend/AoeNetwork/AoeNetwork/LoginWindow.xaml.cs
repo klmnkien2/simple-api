@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace AoeNetwork
         public LoginWindow()
         {
             InitializeComponent();
+            AoeNetwork.Controller.WebBrowserHelper.FixBrowserVersion();
+
             _controller = new AuthenController(this);
             _controller.LoadView();
         }
@@ -210,6 +213,8 @@ namespace AoeNetwork
         private void registerButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WebWindow browser = new WebWindow();
+            browser.Height = 640;
+            browser.Width = 840;
             browser.OpenLink("http://trading.gametv.vn/api_platform/app_register");
             browser.ShowDialog();
         }
@@ -217,6 +222,8 @@ namespace AoeNetwork
         private void forgotPassLink_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             WebWindow browser = new WebWindow();
+            browser.Height = 480;
+            browser.Width = 840;
             browser.OpenLink("http://trading.gametv.vn/api_platform/app_forgot");
             browser.ShowDialog();
         }

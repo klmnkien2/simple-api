@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="HtmlRenderer">
@@ -92,6 +95,7 @@
     <Compile Include="Controller\PrivateController.cs" />
     <Compile Include="Controller\RoomController.cs" />
     <Compile Include="ChannelListItem.cs" />
+    <Compile Include="Controller\WebBrowserHelper.cs" />
     <Compile Include="RoomInChannelList.cs" />
     <Compile Include="Model\Channel.cs" />
     <Compile Include="PaymentWindow.xaml.cs">
@@ -268,6 +272,9 @@
     <Content Include="Images\divider.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Images\expander.png" />
     <Content Include="Images\dsdaily.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
