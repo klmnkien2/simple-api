@@ -152,6 +152,7 @@ namespace AoeNetwork
                                 DataTable dataTable = dataSet.Tables["room"];
 
                                 _view.SetRoomOfChannel(dataTable);
+                                _view.DisplayLoadingGame(false);
                             }
 
                         }
@@ -159,11 +160,13 @@ namespace AoeNetwork
                     else
                     {
                         // LOG ERROR SENT
+                        _view.DisplayLoadingGame(false);
                     }
                 }
                 else
                 {
                     // LOG ERROR SENT REASON NETWORK CONNECTION
+                    _view.DisplayLoadingGame(false);
                 }
             });
         }
@@ -295,13 +298,15 @@ namespace AoeNetwork
                     else
                     {
                         // LOG ERROR SENT
-                        MessageBox.Show("Yêu cầu tham gia phòng không thành công. Vui lòng thử lại!");
+                        MessageBox.Show("Yêu cầu tham gia phòng không thành công. Vui lòng thử lại !");
+                        _view.DisplayLoadingGame(false);
                     }
                 }
                 else
                 {
                     // LOG ERROR SENT REASON NETWORK CONNECTION
-                    MessageBox.Show("Network error!");
+                    _view.DisplayLoadingGame(false);
+                    MessageBox.Show("Có lỗi xảy ra trong quá trình kết nối. Vui lòng thử lại !");
                 }
             });
         }

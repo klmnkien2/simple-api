@@ -84,18 +84,20 @@ namespace AoeNetwork
             this.roomInChannelList = new RoomInChannelList(this, this.roomInChannelListControl);
         }
 
-        private void DisplayLoadingGame(bool loading)
+        public void DisplayLoadingGame(bool loading)
         {
-            if (loading)
-            {
-                this.tabGameGrid.RowDefinitions[1].Height = new GridLength(30);
-                this.tabGameGrid.RowDefinitions[2].Height = new GridLength(40);
-            }
-            else
-            {
-                this.tabGameGrid.RowDefinitions[1].Height = new GridLength(0);
-                this.tabGameGrid.RowDefinitions[2].Height = new GridLength(0);
-            }
+            Dispatcher.Invoke(new Action(() => {
+                if (loading)
+                {
+                    this.tabGameGrid.RowDefinitions[1].Height = new GridLength(30);
+                    this.tabGameGrid.RowDefinitions[2].Height = new GridLength(40);
+                }
+                else
+                {
+                    this.tabGameGrid.RowDefinitions[1].Height = new GridLength(0);
+                    this.tabGameGrid.RowDefinitions[2].Height = new GridLength(0);
+                }
+            }));
         }
         #endregion
 
@@ -251,6 +253,7 @@ namespace AoeNetwork
 
         public void LoadRoomInChannel(Channel channel)
         {
+            DisplayLoadingGame(true);
             roomController.LoadChannel(channel.id.ToString());
             this.tabGame_Click(null, null);
         }
@@ -326,11 +329,11 @@ namespace AoeNetwork
         */
         #endregion
 
-        private bool isRoomSet = false;
+        private int inRoomSet = -1;
         public void SuccessJoinRoom(Room room)
         {            
             Dispatcher.Invoke(new Action(() => {
-                isRoomSet = true;
+                inRoomSet = room.room_id;
                 roomNameLbl.Content = room.room_name;
                 htmlChatContent.Text = "";
                 htmlChatBody = "";
@@ -376,7 +379,7 @@ namespace AoeNetwork
 
         private void buttonEnter_Click(object sender, RoutedEventArgs e)
         {
-            if (!isRoomSet)
+            if (inRoomSet < 0)
             {
                 return;
             }
@@ -437,7 +440,7 @@ namespace AoeNetwork
 
         private void tabRoom_Click(object sender, RoutedEventArgs e)
         {
-            if (!isRoomSet)
+            if (inRoomSet < 0)
             {
                 MessageBox.Show("Bạn chưa tham gia phòng nào!");
                 return;
@@ -486,26 +489,34 @@ namespace AoeNetwork
 
         public void JoinARoom(Room room)
         {
+            if (room.room_id == inRoomSet)
+            {
+                tabRoom_Click(null, null);
+                return;
+            }
             
-            DisplayLoadingGame(true);
             
             if (room.server_id != "0")
             {
+                DisplayLoadingGame(true);
                 // Join room and Access VPN here
-                string requestError = SystemUtils.CallVPNConnection(room);
-                if (requestError == null)
-                {
-                    roomController.JoinRoom(room);
-                }
-                else
-                {
-                    DisplayLoadingGame(false);
-                    MessageBox.Show("Kết nối VPN không thành công.");
-                }
-            }
-            else
-            {
-                DisplayLoadingGame(false);
+                Application.Current.Dispatcher.BeginInvoke(
+                  System.Windows.Threading.DispatcherPriority.Background,
+                  new Action(() =>
+                  {
+                      string requestError = SystemUtils.CallVPNConnection(room);
+                      if (requestError == null)
+                      {
+                          roomController.JoinRoom(room);
+                      }
+                      else
+                      {
+                          DisplayLoadingGame(false);
+                          MessageBox.Show("Kết nối VPN không thành công.");
+                      }
+                  }));
+                
+                
             }
 
         }
