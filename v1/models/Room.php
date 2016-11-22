@@ -129,6 +129,23 @@ class Room {
             $data['host'] = $r['host'];
             $data['port'] = $r['port'];
             $data['hub'] = $r['hub'];
+
+            try {
+                $stmt = $this->core->dbh->prepare("SELECT COUNT(*) AS members FROM room_users ru LEFT JOIN user_caches u ON u.user_id = ru.user_id WHERE ru.room_id = :room_id AND (UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(u.last_active)) < 300");
+                $stmt->bindParam(':room_id', $data['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($data['members'] != $r[0]['members']) {
+                    $data['members'] = $r[0]['members'];
+
+                    $stmt = $this->core->dbh->prepare("UPDATE rooms SET members = :members WHERE room_id = :room_id");
+                    $stmt->bindParam(':room_id', $data['room_id'], PDO::PARAM_INT);
+                    $stmt->bindParam(':members', $data['members'], PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+            } catch(\Exception $ex) {
+                // update data room error
+            }
         } else {
             //Insert
             $data['room_id'] = $data['id'];
