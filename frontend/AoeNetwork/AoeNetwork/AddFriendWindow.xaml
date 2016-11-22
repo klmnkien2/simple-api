@@ -5,38 +5,42 @@
     <Window.Resources>
         
     </Window.Resources>
-    <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
-        <Grid Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="100*"/>
-            </Grid.RowDefinitions>
-            <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="24"/>
-                        <ColumnDefinition Width="24"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
+    <Grid Background="Transparent" Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="#FF0B1A25" Opacity="1" BlurRadius="10" RenderingBias="Quality"/>
+        </Grid.Effect>
+        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="24"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
 
-                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-                    <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
-                    <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
-                </Grid>
-            </Border>
+                        <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                        <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                        <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
+                    </Grid>
+                </Border>
 
 
-            <Grid Grid.Row="1">
+                <Grid Grid.Row="1">
                     <Label Content="User name" HorizontalAlignment="Left" Margin="48,10,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <TextBox x:Name="username" Foreground="White" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="23" Margin="48,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" KeyDown="username_KeyDown"/>
+                    <TextBox x:Name="username" Foreground="White" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="23" Margin="48,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" KeyDown="username_KeyDown"/>
                     <Label Content="Message" HorizontalAlignment="Left" Margin="48,78,0,0" VerticalAlignment="Top" Foreground="White"/>
-                <TextBox x:Name="message" Foreground="White" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="77" Margin="48,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" KeyDown="message_KeyDown"/>
+                    <TextBox x:Name="message" Foreground="White" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="77" Margin="48,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" KeyDown="message_KeyDown"/>
                     <Button Style="{StaticResource buttonNoBg}" x:Name="submit" Content="Kết bạn" HorizontalAlignment="Left" Margin="197,200,0,0" VerticalAlignment="Top" Width="75" Click="submit_Click" BorderThickness="0" Foreground="White" Height="30">
                         <Button.Background>
                             <ImageBrush ImageSource="Images/friend_tab.png"/>
@@ -44,7 +48,8 @@
                     </Button>
 
                 </Grid>
-            
-        </Grid>
-    </Border>
+
+            </Grid>
+        </Border>
+    </Grid>
 </Window>

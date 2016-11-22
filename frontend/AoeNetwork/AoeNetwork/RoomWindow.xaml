@@ -18,222 +18,227 @@
             <MenuItem Header="Thoát" Click="exitStripMenuItem_Click" Style="{StaticResource customContextMenuItem}" Uid="4" Tag="Images/cross.png" />
         </ContextMenu>
     </Window.Resources>
-    <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
-        <Grid Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="100*"/>
-            </Grid.RowDefinitions>
-            <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="24"/>
-                        <ColumnDefinition Width="24"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-
-                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-                    <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
-                    <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
-                </Grid>
-            </Border>
-
-            <Border Background="#011013" Grid.Row="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="125"/>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="300"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="1">
-                        <DockPanel LastChildFill="False">
-                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabHome" Foreground="#535859" Content="TRANG CHỦ" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabHome_Click" FontFamily="Verdana" Cursor="Hand">
-
-                            </Button>
-                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabGame" Grid.Column="1" Foreground="#535859" Content="KÊNH" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabGame_Click" FontFamily="Verdana" Cursor="Hand">
-
-                            </Button>
-                            <Button Style="{StaticResource buttonNoBg}" x:Name="tabRoom" Grid.Column="2" Foreground="#535859" Content="PHÒNG TÁN GẪU" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" FontFamily="Verdana" Click="tabRoom_Click" Cursor="Hand" >
-
-                            </Button>
-                        </DockPanel>
-                    </Border>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="0">
-                        <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Image Margin="3" Source="Images/room_aoelogo.png" Stretch="Uniform" Width="68" Height="30" />
-                            <Image Source="Images/arrow_pink.png" Width="12" Height="13" Margin="3,0"/>
-                        </WrapPanel>
-                    </Border>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="2">
-                        <Grid Margin="5,0,5,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="100*"/>
-                                <RowDefinition Height="100*"/>
-                            </Grid.RowDefinitions>
-
-                            <WrapPanel Margin="0">
-                                <Label MouseLeftButtonDown="State_Menu_MouseLeftButtonDown" Cursor="Hand" x:Name="userName" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,5,0,0" FontWeight="SemiBold" />
-                                <Image MouseLeftButtonDown="State_Menu_MouseLeftButtonDown" Cursor="Hand" x:Name="userState" Source="Images/login_avail.png" Stretch="Fill" Width="12" Height="12" Margin="2,8,0,0" />
-                                <Image MouseLeftButtonDown="State_Menu_MouseLeftButtonDown" Cursor="Hand" x:Name="userStateArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,8,0,0" />
-                            </WrapPanel>
-                            <TextBox x:Name="userStatus" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="13" Text="status..." Margin="0,5,10,0" CaretBrush="White" KeyDown="userStatus_KeyDown" />
-
-                            <WrapPanel Grid.Column="1" x:Name="coinBlock" MouseLeftButtonDown="coinBlock_MouseLeftButtonDown">
-                                <Image Source="Images/coin.png"  Stretch="Fill" Width="18" Height="18" />
-                                <Label x:Name="userDiamond" Grid.Column="2" Foreground="#FFBDA422" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="000.000.000" Grid.Row="1" />
-                                <Image x:Name="userCoinArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,2,0,0" />
-                            </WrapPanel>
-                            <WrapPanel Grid.Column="1" Grid.Row="1">
-                                <Label x:Name="userLevel" Foreground="White" VerticalContentAlignment="Center" Content="LV" Margin="0" />
-                            </WrapPanel>
-
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-            
-            <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="2">
-                <Border.Background>
-                    <ImageBrush ImageSource="Images/room_background.png"/>
-                </Border.Background>
-                <Grid x:Name="windowAllContentGrid" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="125"/>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="360"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border x:Name="tabRoomContent" BorderThickness="1,1,1,1" BorderBrush="#FF3c444a" Grid.Column="1" Margin="10" >
-                        
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100*"/>
-                                <ColumnDefinition Width="150"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="45"/>
-                                <RowDefinition Height="100*"/>
-                                <RowDefinition Height="100"/>
-                            </Grid.RowDefinitions>
-                            <Label x:Name="roomNameLbl" Grid.ColumnSpan="2" Content="ROOM CHAT: " FontSize="16" BorderBrush="#FF3c444a" Foreground="#FFFFFFFF" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" Padding="15,0,0,0" />
-                            
-                            <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
-                                <wpf:HtmlPanel x:Name="htmlChatContent"  Text="" Background="Transparent" Margin="16,0,0,0"/>
-                            </Border>
-
-                            <Border BorderThickness="1,1,1,1" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="15,0,10,10" Padding="5">
-                                <DockPanel LastChildFill="True">
-                                    <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0" Width="20" Height="15" VerticalAlignment="Bottom" Click="buttonEnter_Click"  >
-                                        <Button.Background>
-                                            <ImageBrush ImageSource="Images/room_enter.png"/>
-                                        </Button.Background>
-                                    </Button>
-                                    <TextBox x:Name="messageBox" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" Margin="0" Background="Transparent" BorderThickness="0"/>
-                                </DockPanel>
-                            </Border>
-
-                            <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True" Margin="0,0,0,10">
-                                <Border DockPanel.Dock="Top" BorderThickness="1,1,1,0" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" >
-                                    <DockPanel LastChildFill="True" >
-                                        <Button DockPanel.Dock="Right" Width="16" Height="16" Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
-                                            <Button.Background>
-                                                <ImageBrush ImageSource="Images/room_setting.png"/>
-                                            </Button.Background>
-                                        </Button>
-                                        <Label Content="Đường dẫn Game" Foreground="#FFFFFFFF" />
-                                    </DockPanel>
-                                </Border>
-                                <Button x:Name="buttonStart" Foreground="White" BorderBrush="#FF704E3C" Content="KHỞI ĐỘNG" BorderThickness="1"  Click="buttonStart_Click" Background="#FF0093d7" FontSize="15" FontWeight="Bold" />
-                                
-                            </DockPanel>
-                        </Grid>
-                    </Border>
-
-                    <Grid x:Name="tabHomeContent" Grid.Column="0" Grid.ColumnSpan="3" Margin="0">
-                        <Label x:Name="homePageBrowserLabel" Content="ĐANG TẢI..." VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="15" FontWeight="Bold" />
-                        <WebBrowser Source="http://gametv.vn/landing/index.html" x:Name="homePageBrowser" Visibility="Hidden" Navigated="homePageBrowser_Navigated" LoadCompleted="homePageBrowser_LoadCompleted" />
-                    </Grid>
-
-                    <Border x:Name="tabGameContent" Grid.Column="1" Margin="10" >
-                        <Grid x:Name="tabGameGrid">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="100*"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="40"/>
-                            </Grid.RowDefinitions>
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <StackPanel x:Name="roomInChannelListControl"  />
-                            </ScrollViewer>
-                            <Label Content="Đang tải, vui lòng chờ..." FontSize="16" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
-                            <Image Source="Images/progress_bar.gif" Margin="0" Grid.Row="2" />
-                        </Grid>
-                    </Border>
-
-
-                    <Grid x:Name="tabRoomContent_extend" Grid.Column="2" Margin="0,10,10,10">
+    <Grid Background="Transparent" Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="#FF0B1A25" Opacity="1" BlurRadius="10" RenderingBias="Quality"/>
+        </Grid.Effect>
+        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="24"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="100*"/>
-                            <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"  Grid.Row="0" MinHeight="100">
-                            <StackPanel x:Name="userListControl"  />
-                        </ScrollViewer>
-                        <Grid Grid.Row="1"  Margin="0">
+
+                        <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                        <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                        <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="#011013" Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="300"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="1">
+                            <DockPanel LastChildFill="False">
+                                <Button Style="{StaticResource buttonNoBg}" x:Name="tabHome" Foreground="#535859" Content="TRANG CHỦ" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabHome_Click" FontFamily="Verdana" Cursor="Hand">
+
+                                </Button>
+                                <Button Style="{StaticResource buttonNoBg}" x:Name="tabGame" Grid.Column="1" Foreground="#535859" Content="KÊNH" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" Click="tabGame_Click" FontFamily="Verdana" Cursor="Hand">
+
+                                </Button>
+                                <Button Style="{StaticResource buttonNoBg}" x:Name="tabRoom" Grid.Column="2" Foreground="#535859" Content="PHÒNG TÁN GẪU" BorderBrush="{x:Null}" BorderThickness="0" FontSize="18" Margin="10,5,10,5" FontWeight="Medium" FontFamily="Verdana" Click="tabRoom_Click" Cursor="Hand" >
+
+                                </Button>
+                            </DockPanel>
+                        </Border>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="0">
+                            <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Image Margin="3" Source="Images/room_aoelogo.png" Stretch="Uniform" Width="68" Height="30" />
+                                <Image Source="Images/arrow_pink.png" Width="12" Height="13" Margin="3,0"/>
+                            </WrapPanel>
+                        </Border>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="#FF3c444a" Grid.Column="2">
+                            <Grid Margin="5,0,5,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="100*"/>
+                                </Grid.RowDefinitions>
+
+                                <WrapPanel Margin="0">
+                                    <Label MouseLeftButtonDown="State_Menu_MouseLeftButtonDown" Cursor="Hand" x:Name="userName" Grid.Column="2" Foreground="White" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="Username" Padding="0" Margin="0,5,0,0" FontWeight="SemiBold" />
+                                    <Image MouseLeftButtonDown="State_Menu_MouseLeftButtonDown" Cursor="Hand" x:Name="userState" Source="Images/login_avail.png" Stretch="Fill" Width="12" Height="12" Margin="2,8,0,0" />
+                                    <Image MouseLeftButtonDown="State_Menu_MouseLeftButtonDown" Cursor="Hand" x:Name="userStateArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,8,0,0" />
+                                </WrapPanel>
+                                <TextBox x:Name="userStatus" Grid.Column="0" Grid.Row="1" BorderThickness="0" Background="{x:Null}" Foreground="White" FontSize="13" Text="status..." Margin="0,5,10,0" CaretBrush="White" KeyDown="userStatus_KeyDown" />
+
+                                <WrapPanel Grid.Column="1" x:Name="coinBlock" MouseLeftButtonDown="coinBlock_MouseLeftButtonDown">
+                                    <Image Source="Images/coin.png"  Stretch="Fill" Width="18" Height="18" />
+                                    <Label x:Name="userDiamond" Grid.Column="2" Foreground="#FFBDA422" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Content="000.000.000" Grid.Row="1" />
+                                    <Image x:Name="userCoinArrow" Source="Images/arrow_down.png" Stretch="Fill" Width="14" Height="8" Margin="2,2,0,0" />
+                                </WrapPanel>
+                                <WrapPanel Grid.Column="1" Grid.Row="1">
+                                    <Label x:Name="userLevel" Foreground="White" VerticalContentAlignment="Center" Content="LV" Margin="0" />
+                                </WrapPanel>
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="2">
+                    <Border.Background>
+                        <ImageBrush ImageSource="Images/room_background.png"/>
+                    </Border.Background>
+                    <Grid x:Name="windowAllContentGrid" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="125"/>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="360"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="tabRoomContent" BorderThickness="1,1,1,1" BorderBrush="#FF3c444a" Grid.Column="1" Margin="10" >
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45"/>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="100"/>
+                                </Grid.RowDefinitions>
+                                <Label x:Name="roomNameLbl" Grid.ColumnSpan="2" Content="ROOM CHAT: " FontSize="16" BorderBrush="#FF3c444a" Foreground="#FFFFFFFF" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" Padding="15,0,0,0" />
+
+                                <Border x:Name="chatHistoryContainer" BorderThickness="1,1,1,1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10">
+                                    <wpf:HtmlPanel x:Name="htmlChatContent"  Text="" Background="Transparent" Margin="16,0,0,0"/>
+                                </Border>
+
+                                <Border BorderThickness="1,1,1,1" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" Margin="15,0,10,10" Padding="5">
+                                    <DockPanel LastChildFill="True">
+                                        <Button DockPanel.Dock="Right" Style="{StaticResource buttonNoBg}" x:Name="buttonEnter" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="0" Width="20" Height="15" VerticalAlignment="Bottom" Click="buttonEnter_Click"  >
+                                            <Button.Background>
+                                                <ImageBrush ImageSource="Images/room_enter.png"/>
+                                            </Button.Background>
+                                        </Button>
+                                        <TextBox x:Name="messageBox" Foreground="White" CaretBrush="White" KeyDown="messageBox_KeyDown" Margin="0" Background="Transparent" BorderThickness="0"/>
+                                    </DockPanel>
+                                </Border>
+
+                                <DockPanel Grid.Column="1" Grid.Row="2" LastChildFill="True" Margin="0,0,0,10">
+                                    <Border DockPanel.Dock="Top" BorderThickness="1,1,1,0" Grid.Row="2" BorderBrush="#FF3c444a" Background="Transparent" >
+                                        <DockPanel LastChildFill="True" >
+                                            <Button DockPanel.Dock="Right" Width="16" Height="16" Style="{StaticResource buttonNoBg}" x:Name="buttonSettting" Content="" BorderBrush="{x:Null}" BorderThickness="0" Margin="2" Click="buttonSettting_Click" >
+                                                <Button.Background>
+                                                    <ImageBrush ImageSource="Images/room_setting.png"/>
+                                                </Button.Background>
+                                            </Button>
+                                            <Label Content="Đường dẫn Game" Foreground="#FFFFFFFF" />
+                                        </DockPanel>
+                                    </Border>
+                                    <Button x:Name="buttonStart" Foreground="White" BorderBrush="#FF704E3C" Content="KHỞI ĐỘNG" BorderThickness="1"  Click="buttonStart_Click" Background="#FF0093d7" FontSize="15" FontWeight="Bold" />
+
+                                </DockPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid x:Name="tabHomeContent" Grid.Column="0" Grid.ColumnSpan="3" Margin="0">
+                            <Label x:Name="homePageBrowserLabel" Content="ĐANG TẢI..." VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="15" FontWeight="Bold" />
+                            <WebBrowser Source="http://gametv.vn/landing/index.html" x:Name="homePageBrowser" Visibility="Hidden" Navigated="homePageBrowser_Navigated" LoadCompleted="homePageBrowser_LoadCompleted" />
+                        </Grid>
+
+                        <Border x:Name="tabGameContent" Grid.Column="1" Margin="10" >
+                            <Grid x:Name="tabGameGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="40"/>
+                                </Grid.RowDefinitions>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <StackPanel x:Name="roomInChannelListControl"  />
+                                </ScrollViewer>
+                                <Label Content="Đang tải, vui lòng chờ..." FontSize="16" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
+                                <Image Source="Images/progress_bar.gif" Margin="0" Grid.Row="2" />
+                            </Grid>
+                        </Border>
+
+
+                        <Grid x:Name="tabRoomContent_extend" Grid.Column="2" Margin="0,10,10,10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10"/>
                                 <ColumnDefinition Width="100*"/>
-                                <ColumnDefinition Width="10"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100*"/>
+                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
-                            <Image Source="Images/room_search_left.png" Margin="0" Stretch="Fill"/>
-                            <TextBox x:Name="searchBox" Grid.Column="1" Foreground="White" CaretBrush="White" BorderThickness="0" VerticalContentAlignment="Center" Padding="5,0" TextChanged="searchBox_TextChanged" >
-                                <TextBox.Background>
-                                    <ImageBrush TileMode="Tile" ImageSource="Images/room_search_center.png"/>
-                                </TextBox.Background>
-                            </TextBox>
-                            <Image Source="Images/search.png" Grid.Column="1" HorizontalAlignment="Right" Width="20" Margin="0,0,5,0" />
-                            <Image Source="Images/room_search_right.png" Grid.Column="2" Stretch="Fill" />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"  Grid.Row="0" MinHeight="100">
+                                <StackPanel x:Name="userListControl"  />
+                            </ScrollViewer>
+                            <Grid Grid.Row="1"  Margin="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="100*"/>
+                                    <ColumnDefinition Width="10"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                </Grid.RowDefinitions>
+                                <Image Source="Images/room_search_left.png" Margin="0" Stretch="Fill"/>
+                                <TextBox x:Name="searchBox" Grid.Column="1" Foreground="White" CaretBrush="White" BorderThickness="0" VerticalContentAlignment="Center" Padding="5,0" TextChanged="searchBox_TextChanged" >
+                                    <TextBox.Background>
+                                        <ImageBrush TileMode="Tile" ImageSource="Images/room_search_center.png"/>
+                                    </TextBox.Background>
+                                </TextBox>
+                                <Image Source="Images/search.png" Grid.Column="1" HorizontalAlignment="Right" Width="20" Margin="0,0,5,0" />
+                                <Image Source="Images/room_search_right.png" Grid.Column="2" Stretch="Fill" />
+                            </Grid>
                         </Grid>
+
+                        <Grid x:Name="tabGameContent_extend" Grid.Column="2" Margin="0,10,10,10">
+                            <WebBrowser x:Name="channelTabBrowserTop" Source="http://gametv.vn/landing/banner_top.html" Height="240" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" LoadCompleted="channelTabBrowserTop_LoadCompleted"/>
+                            <WebBrowser x:Name="channelTabBrowserBottom" Source="http://gametv.vn/landing/banner_bottom.html" Height="240" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" LoadCompleted="channelTabBrowserBottom_LoadCompleted"/>
+                        </Grid>
+
+                        <Border x:Name="channelListContainer" BorderThickness="0,0,1,0" BorderBrush="#FF3c444a" Grid.Column="0" Grid.Row="1" Margin="0" >
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,5,0,0" >
+                                <StackPanel x:Name="channelListControl"  />
+                            </ScrollViewer>
+                        </Border>
                     </Grid>
+                </Border>
 
-                    <Grid x:Name="tabGameContent_extend" Grid.Column="2" Margin="0,10,10,10">
-                        <WebBrowser x:Name="channelTabBrowserTop" Source="http://gametv.vn/landing/banner_top.html" Height="240" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" LoadCompleted="channelTabBrowserTop_LoadCompleted"/>
-                        <WebBrowser x:Name="channelTabBrowserBottom" Source="http://gametv.vn/landing/banner_bottom.html" Height="240" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" LoadCompleted="channelTabBrowserBottom_LoadCompleted"/>
-                    </Grid>
-
-                    <Border x:Name="channelListContainer" BorderThickness="0,0,1,0" BorderBrush="#FF3c444a" Grid.Column="0" Grid.Row="1" Margin="0" >
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,5,0,0" >
-                            <StackPanel x:Name="channelListControl"  />
-                        </ScrollViewer>
-                    </Border>
-                </Grid>
-            </Border>
-
-        </Grid>
-    </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </Window>

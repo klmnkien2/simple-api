@@ -18,8 +18,10 @@
             <MenuItem Header="Thoát" Click="exitStripMenuItem_Click" Style="{StaticResource customContextMenuItem}" Uid="4" Tag="Images/cross.png" />
         </ContextMenu>
     </Window.Resources>
-    <Grid Background="Transparent">
-        
+    <Grid Background="Transparent" Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="#FF0B1A25" Opacity="1" BlurRadius="10" RenderingBias="Quality"/>
+        </Grid.Effect>
         <Border BorderThickness="1,1,1,1" BorderBrush="#FF737373" Background="#FF0B1A25">
             <Grid >
                 <Grid.ColumnDefinitions>

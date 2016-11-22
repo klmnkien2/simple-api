@@ -10,7 +10,10 @@
             <MenuItem Header="Offline" Style="{StaticResource customContextMenuItem}" Tag="Images/login_offline.png" Uid="0" Click="State_MenuItem_Click" />
         </ContextMenu>
     </Window.Resources>
-    <Grid Background="Transparent">
+    <Grid Background="Transparent" Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="#FF0B1A25" Opacity="1" BlurRadius="10" RenderingBias="Quality"/>
+        </Grid.Effect>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*"/>
         </Grid.ColumnDefinitions>

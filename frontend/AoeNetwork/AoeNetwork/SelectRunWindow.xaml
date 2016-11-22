@@ -6,35 +6,39 @@
     <Window.Resources>
         
     </Window.Resources>
-    <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
-        <Grid Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="100*"/>
-            </Grid.RowDefinitions>
-            <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100*"/>
-                        <ColumnDefinition Width="24"/>
-                        <ColumnDefinition Width="24"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
+    <Grid Background="Transparent" Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="#FF0B1A25" Opacity="1" BlurRadius="10" RenderingBias="Quality"/>
+        </Grid.Effect>
+        <Border BorderThickness="1,0,1,1" Grid.ColumnSpan="3" Grid.Row="1" BorderBrush="#FF3c444a" Background="#FF0B1A25" >
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="0,1,0,1" BorderBrush="#FF3c444a" Background="#FF011013" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="24"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
 
-                    <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
-                    <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
-                    <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
-                </Grid>
-            </Border>
+                        <Label x:Name="coolform_titletext" Content="" Margin="0" Grid.ColumnSpan="1" Foreground="White" HorizontalContentAlignment="Center" Height="30" VerticalContentAlignment="Center" MouseDown="coolform_titletext_MouseDown" />
+                        <Label x:Name="coolform_mini_btn" Grid.Column="1"  Content="_" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_mini_btn_MouseDown"/>
+                        <Label x:Name="coolform_close_btn" Grid.Column="2" Content="X" Foreground="#FFb4a57c" FontSize="14" FontWeight="Bold" Margin="0" VerticalContentAlignment="Center" MouseDown="coolform_close_btn_MouseDown"/>
+                    </Grid>
+                </Border>
 
 
-            <Grid Grid.Row="1">
-                <TextBox x:Name="textboxLink" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="23" Margin="56,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="368" Foreground="White"/>
+                <Grid Grid.Row="1">
+                    <TextBox x:Name="textboxLink" Background="#FF020607" BorderBrush="#FF102833" BorderThickness="1" CaretBrush="White" HorizontalAlignment="Left" Height="23" Margin="56,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="368" Foreground="White"/>
                     <Label Content="Đường dẫn đến game Đế chế" HorizontalAlignment="Left" Margin="56,26,0,0" VerticalAlignment="Top" Foreground="White"/>
                     <Button Style="{StaticResource buttonNoBg}" x:Name="btnComplete" Content="Hoàn tất" HorizontalAlignment="Left" Margin="137,102,0,0" VerticalAlignment="Top" Width="83" Foreground="White" BorderThickness="0" Height="30" Click="btnComplete_Click">
                         <Button.Background>
@@ -48,7 +52,8 @@
                     </Button>
 
                 </Grid>
-            
-        </Grid>
-    </Border>
+
+            </Grid>
+        </Border>
+    </Grid>
 </Window>
